@@ -26,12 +26,13 @@ def main(argv: list[str] | None = None) -> None:
     sub.add_parser("match", help="link employers to the latest register snapshot")
     rep = sub.add_parser("report", help="print coverage of junior NL postings")
     rep.add_argument("--days", type=int, default=7)
-    sub.add_parser("run", help="migrate, seed, register, collect, match, report")
+    sub.add_parser("prune", help="delete raw captures older than 14 days that nothing needs")
+    sub.add_parser("run", help="migrate, seed, register, collect, match, report, prune")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
     with db.connect() as conn, _client() as client:
-        steps = ["migrate", "seed", "register", "collect", "match", "report"] if args.command == "run" else [args.command]
+        steps = ["migrate", "seed", "register", "collect", "match", "report", "prune"] if args.command == "run" else [args.command]
         for step in steps:
             if step == "migrate":
                 print("migrations applied:", db.migrate(conn) or "none")
@@ -51,3 +52,5 @@ def main(argv: list[str] | None = None) -> None:
                 print("match status:", matching.match_sources(conn))
             elif step == "report":
                 print(report.build_report(conn, getattr(args, "days", 7)))
+            elif step == "prune":
+                print("raw captures pruned:", ingest.prune(conn))

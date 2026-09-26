@@ -15,6 +15,7 @@ import httpx
 import psycopg
 from psycopg.types.json import Jsonb
 
+from . import signals
 from .collectors import Posting, module_for
 
 log = logging.getLogger(__name__)
@@ -70,17 +71,23 @@ def apply_postings(
         conn.execute(
             """
             INSERT INTO job_postings (source_id, external_id, title, url, location, in_netherlands,
-                                      department, description, published_at, raw_capture_id, first_seen_at, last_seen_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, COALESCE(%s::timestamptz, now()), COALESCE(%s::timestamptz, now()))
+                                      department, description, published_at, raw_capture_id, first_seen_at, last_seen_at,
+                                      seniority, is_tech, dutch_required, min_years)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, COALESCE(%s::timestamptz, now()), COALESCE(%s::timestamptz, now()),
+                    %s, %s, %s, %s)
             ON CONFLICT (source_id, external_id) DO UPDATE SET
                 title = EXCLUDED.title, url = EXCLUDED.url, location = EXCLUDED.location,
                 in_netherlands = EXCLUDED.in_netherlands, department = EXCLUDED.department,
                 description = EXCLUDED.description, published_at = EXCLUDED.published_at,
                 raw_capture_id = EXCLUDED.raw_capture_id, closed_at = NULL,
-                last_seen_at = GREATEST(job_postings.last_seen_at, EXCLUDED.last_seen_at)
+                last_seen_at = GREATEST(job_postings.last_seen_at, EXCLUDED.last_seen_at),
+                seniority = EXCLUDED.seniority, is_tech = EXCLUDED.is_tech,
+                dutch_required = EXCLUDED.dutch_required, min_years = EXCLUDED.min_years
             """,
             (source_id, p.external_id, p.title, p.url, p.location, p.in_netherlands,
-             p.department, p.description, p.published_at, raw_capture_id, seen_at, seen_at),
+             p.department, p.description, p.published_at, raw_capture_id, seen_at, seen_at,
+             signals.seniority(p.title), signals.is_tech_role(p.title),
+             signals.dutch_required(p.description, p.title), signals.min_years(p.description)),
         )
     conn.execute(
         """
@@ -171,3 +178,26 @@ def replay(conn: psycopg.Connection) -> int:
         except Exception as exc:  # one broken payload must not stop the others
             log.warning("replay %s:%s failed: %s: %s", row["kind"], row["board"], type(exc).__name__, exc)
     return replayed
+
+
+def prune(conn: psycopg.Connection, keep_days: int = 14) -> int:
+    """Delete raw captures not used for `keep_days`, keeping each source's latest and any an open posting references.
+
+    Closed postings do not pin captures: they are never replayed, and their reference becomes NULL.
+    """
+    deleted = conn.execute(
+        """
+        DELETE FROM raw_captures r
+        WHERE r.first_fetched_at < now() - make_interval(days => %(days)s)
+          AND NOT EXISTS (SELECT 1 FROM job_postings p WHERE p.raw_capture_id = r.id AND p.closed_at IS NULL)
+          AND NOT EXISTS (
+              SELECT 1 FROM fetch_runs f
+              WHERE f.raw_capture_id = r.id AND f.started_at >= now() - make_interval(days => %(days)s))
+          AND r.id NOT IN (
+              SELECT DISTINCT ON (source_id) raw_capture_id FROM fetch_runs
+              WHERE raw_capture_id IS NOT NULL ORDER BY source_id, started_at DESC, id DESC)
+        """,
+        {"days": keep_days},
+    ).rowcount
+    conn.commit()
+    return deleted

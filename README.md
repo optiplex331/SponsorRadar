@@ -2,7 +2,7 @@
 
 International students looking for junior tech jobs in the Netherlands need an employer that the IND recognises as a sponsor for the highly skilled migrant permit. Job boards do not say which employers qualify. NL Sponsor Radar collects postings from public company job boards, links each employer to the [IND public register](https://ind.nl/en/public-register-recognised-sponsors/public-register-regular-labour-and-highly-skilled-migrants) by KvK number, and shows how confident each link is.
 
-Status: data pipeline (phase 1). The public web page comes next.
+Status: data pipeline and web page (phase 2a) run end to end with `docker compose`. Public hosting on K3s comes next.
 
 ## How it works
 
@@ -10,5 +10,6 @@ Status: data pipeline (phase 1). The public web page comes next.
 2. Postings are upserted by source and external id; postings that disappear are closed.
 3. The IND register is snapshotted only when its rows change.
 4. Each employer is linked to the register: a hand-verified KvK number first, then normalized name matching.
+5. Rules mark each posting's seniority, whether it is a tech role, whether it requires Dutch, and the years of experience it asks for. The page filters on these in the browser, and the filter lives in the URL.
 
 See `AGENTS.md` for commands.

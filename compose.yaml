@@ -14,5 +14,17 @@ services:
       interval: 2s
       retries: 30
 
+  # Same image as production. `docker compose up -d --build`, then http://127.0.0.1:8000.
+  web:
+    build: .
+    command: ["sh", "-c", "sponsor-radar migrate && exec uvicorn sponsor_radar.web:app --host 0.0.0.0 --port 8000"]
+    environment:
+      DATABASE_URL: postgresql://radar:radar@postgres:5432/radar
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   pgdata:

@@ -5,7 +5,7 @@ import copy
 import httpx
 
 from sponsor_radar.collectors import greenhouse
-from sponsor_radar.ingest import apply_postings, collect_source, replay, store_raw_capture
+from sponsor_radar.ingest import apply_postings, collect_source, prune, replay, store_raw_capture
 
 from conftest import load_fixture
 
@@ -85,3 +85,26 @@ def test_replay_picks_up_capture_whose_parse_failed(conn, monkeypatch):
 
     assert replay(conn) == 1
     assert len(_postings(conn)) == 3
+
+
+def test_prune_keeps_latest_referenced_and_recent_captures(conn):
+    source_id = _source(conn)
+    payload = load_fixture("greenhouse_flowtraders.json")
+    _ingest(conn, source_id, payload)
+    shrunk = copy.deepcopy(payload)
+    shrunk["jobs"] = shrunk["jobs"][1:]
+    _ingest(conn, source_id, shrunk)
+    empty = {"jobs": []}
+    _ingest(conn, source_id, empty)
+    _ingest(conn, source_id, shrunk)  # latest capture again; `empty` is now unreferenced
+    conn.execute("UPDATE raw_captures SET first_fetched_at = now() - interval '30 days'")
+    conn.execute("UPDATE fetch_runs SET started_at = now() - interval '30 days'")
+    conn.commit()
+
+    assert prune(conn) == 2
+
+    kept = [len(r["payload"]["jobs"]) for r in conn.execute("SELECT payload FROM raw_captures")]
+    assert kept == [2]  # shrunk is the latest; the closed posting no longer pins the full capture
+    assert conn.execute("SELECT count(*) AS n FROM fetch_runs WHERE raw_capture_id IS NULL").fetchone()["n"] == 2
+    closed = conn.execute("SELECT raw_capture_id FROM job_postings WHERE closed_at IS NOT NULL").fetchone()
+    assert closed["raw_capture_id"] is None
