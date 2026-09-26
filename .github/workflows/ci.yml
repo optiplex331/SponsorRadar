@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: radar
+          POSTGRES_PASSWORD: radar
+          POSTGRES_DB: radar_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U radar -d radar_test"
+          --health-interval 2s --health-retries 30
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      SPONSOR_RADAR_TEST_DATABASE_URL: postgresql://radar:radar@localhost:5432/radar_test
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --locked
+      - run: uv run pytest -q

@@ -1,0 +1,248 @@
+{
+ "jobs": [
+  {
+   "id": 8207616,
+   "title": "Engineering Manager",
+   "content": "&lt;p&gt;&lt;span data-olk-copy-source=&quot;MessageBody&quot;&gt;Flow Traders is strengthening leadership across its Product Development department and is hiring an Engineering Manager in London. As the firm scales, the quality of engineering management has become one of the most important factors in how well our teams grow, retain talent, and deliver - and this role exists to raise that bar.&lt;",
+   "offices": [
+    {
+     "id": 26356,
+     "name": "Amsterdam office",
+     "location": "Amsterdam, Noord-Holland, Netherlands",
+     "child_ids": [],
+     "parent_id": null
+    },
+    {
+     "id": 60494,
+     "name": "London Office ",
+     "location": "London, England, United Kingdom",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "language": "en",
+   "location": {
+    "name": "London"
+   },
+   "metadata": [
+    {
+     "id": 154575,
+     "name": "Contact",
+     "value": "Flow Traders Recruitment Team\n+31 (0)20 799 6799\ncareers.europe@flowtraders.com",
+     "value_type": "long_text"
+    },
+    {
+     "id": 10142200,
+     "name": "Start Date",
+     "value": "2025-07-23",
+     "value_type": "date"
+    },
+    {
+     "id": 13763368,
+     "name": "Division",
+     "value": "Technology",
+     "value_type": "single_select"
+    },
+    {
+     "id": 15473164,
+     "name": "High priority",
+     "value": "High priority",
+     "value_type": "single_select"
+    },
+    {
+     "id": 16792934,
+     "name": "Application form required",
+     "value": null,
+     "value_type": "yes_no"
+    }
+   ],
+   "updated_at": "2026-09-16T08:22:27-04:00",
+   "departments": [
+    {
+     "id": 133291,
+     "name": "Product Development",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "absolute_url": "https://job-boards.greenhouse.io/flowtraders/jobs/8207616",
+   "company_name": "Flow Traders",
+   "ai_disclaimer": "<p>We use Greenhouse’s AI-powered Talent Matching tool to help compare applications against the requirements of the role. This technology is used solely to support the recruitment process by highlighting potentially relevant skills and experience.</p><p>The tool does not make hiring or screening decisions on behalf of Flow Traders. All applications and CVs are reviewed by members of our recruitment team, and all hiring decisions are made by humans.</p>",
+   "requisition_id": "1630",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "retention_period": null,
+     "requires_retention_consent": false,
+     "requires_processing_consent": false,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "first_published": "2026-09-16T08:22:27-04:00",
+   "internal_job_id": 3417844,
+   "application_deadline": null,
+   "include_ai_disclaimer": true,
+   "ai_opt_out_request_url": "http://app.greenhouse.io/ai_opt_out_request/job_post/8207616/ai_opt_out"
+  },
+  {
+   "id": 7621695,
+   "title": "Compliance Officer - Digital Assets Specialist ",
+   "content": "&lt;p&gt;Flow Traders is looking for an experienced Digital Assets Compliance Officer to join our Regulatory Compliance team. In this role, you will focus on regulatory advisory, regulatory change management, and providing business-facing compliance support across our Digital Assets activities&lt;/p&gt;\n&lt;p&gt;The successful candidate has strong experience in regulatory analysis and business adv",
+   "offices": [
+    {
+     "id": 26356,
+     "name": "Amsterdam office",
+     "location": "Amsterdam, Noord-Holland, Netherlands",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "language": "en",
+   "location": {
+    "name": "Amsterdam"
+   },
+   "metadata": [
+    {
+     "id": 154575,
+     "name": "Contact",
+     "value": "Flow Traders Recruitment Team\n+31 (0)20 799 6799\ncareers.europe@flowtraders.com",
+     "value_type": "long_text"
+    },
+    {
+     "id": 10142200,
+     "name": "Start Date",
+     "value": "2026-05-01",
+     "value_type": "date"
+    },
+    {
+     "id": 13763368,
+     "name": "Division",
+     "value": "Business Support",
+     "value_type": "single_select"
+    },
+    {
+     "id": 15473164,
+     "name": "High priority",
+     "value": "High priority",
+     "value_type": "single_select"
+    },
+    {
+     "id": 16792934,
+     "name": "Application form required",
+     "value": null,
+     "value_type": "yes_no"
+    }
+   ],
+   "updated_at": "2026-08-05T09:33:35-04:00",
+   "departments": [
+    {
+     "id": 133280,
+     "name": "Compliance",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "absolute_url": "https://job-boards.greenhouse.io/flowtraders/jobs/7621695",
+   "company_name": "Flow Traders",
+   "ai_disclaimer": "<p>We use Greenhouse’s AI-powered Talent Matching tool to help compare applications against the requirements of the role. This technology is used solely to support the recruitment process by highlighting potentially relevant skills and experience.</p><p>The tool does not make hiring or screening decisions on behalf of Flow Traders. All applications and CVs are reviewed by members of our recruitment team, and all hiring decisions are made by humans.</p>",
+   "requisition_id": "1595",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "retention_period": null,
+     "requires_retention_consent": false,
+     "requires_processing_consent": false,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "first_published": "2026-02-19T09:36:29-05:00",
+   "internal_job_id": 3363756,
+   "application_deadline": null,
+   "include_ai_disclaimer": true,
+   "ai_opt_out_request_url": "http://app.greenhouse.io/ai_opt_out_request/job_post/7621695/ai_opt_out"
+  },
+  {
+   "id": 8092416,
+   "title": "Compliance Officer",
+   "content": "&lt;p&gt;Flow Traders is looking for a Compliance Officer to join our Compliance team in New York. The ideal candidate is self-motivated with a strong analytical and problem-solving mentality. This is a unique opportunity to join a leading proprietary trading firm with an entrepreneurial and innovative culture at the heart of its business. We value quick-witted, creative minds and challenge them t",
+   "offices": [
+    {
+     "id": 26353,
+     "name": "New York office",
+     "location": "New York, New York, United States",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "language": "en",
+   "location": {
+    "name": "New York"
+   },
+   "metadata": [
+    {
+     "id": 154575,
+     "name": "Contact",
+     "value": "Mike Mancuso\nRecruiter\nNew York Office\n+1 917 210 5000\ncareers.newyork@us.flowtraders.com",
+     "value_type": "long_text"
+    },
+    {
+     "id": 10142200,
+     "name": "Start Date",
+     "value": "2026-09-28",
+     "value_type": "date"
+    },
+    {
+     "id": 13763368,
+     "name": "Division",
+     "value": "Business Support",
+     "value_type": "single_select"
+    },
+    {
+     "id": 15473164,
+     "name": "High priority",
+     "value": null,
+     "value_type": "single_select"
+    },
+    {
+     "id": 16792934,
+     "name": "Application form required",
+     "value": null,
+     "value_type": "yes_no"
+    }
+   ],
+   "updated_at": "2026-09-10T02:39:25-04:00",
+   "departments": [
+    {
+     "id": 133280,
+     "name": "Compliance",
+     "child_ids": [],
+     "parent_id": null
+    }
+   ],
+   "absolute_url": "https://job-boards.greenhouse.io/flowtraders/jobs/8092416",
+   "company_name": "Flow Traders",
+   "ai_disclaimer": "<p>We use Greenhouse’s AI-powered Talent Matching tool to help compare applications against the requirements of the role. This technology is used solely to support the recruitment process by highlighting potentially relevant skills and experience.</p><p>The tool does not make hiring or screening decisions on behalf of Flow Traders. All applications and CVs are reviewed by members of our recruitment team, and all hiring decisions are made by humans.</p>",
+   "requisition_id": "1667",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "retention_period": null,
+     "requires_retention_consent": false,
+     "requires_processing_consent": false,
+     "demographic_data_consent_applies": false
+    }
+   ],
+   "first_published": "2026-07-28T19:08:29-04:00",
+   "internal_job_id": 3505666,
+   "application_deadline": null,
+   "include_ai_disclaimer": true,
+   "ai_opt_out_request_url": "http://app.greenhouse.io/ai_opt_out_request/job_post/8092416/ai_opt_out"
+  }
+ ],
+ "meta": {
+  "total": 3
+ }
+}

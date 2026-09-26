@@ -1,0 +1,55 @@
+{
+ "apiVersion": "1",
+ "jobs": [
+  {
+   "id": "d056f390-1d70-408e-8f85-2360d41eaa84",
+   "team": "Business Support",
+   "title": "Business Support Specialist - Dutch",
+   "jobUrl": "https://jobs.ashbyhq.com/mollie/d056f390-1d70-408e-8f85-2360d41eaa84",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "Limburg",
+     "streetAddress": "Sphinxcour 6 F02 6211 XZ Maastricht",
+     "addressCountry": "Netherlands",
+     "addressLocality": "Maastricht "
+    }
+   },
+   "applyUrl": "https://jobs.ashbyhq.com/mollie/d056f390-1d70-408e-8f85-2360d41eaa84/application",
+   "isListed": true,
+   "isRemote": null,
+   "location": "Maastricht",
+   "department": "Go To Market",
+   "publishedAt": "2026-06-24T07:40:12.278+00:00",
+   "workplaceType": null,
+   "employmentType": "FullTime",
+   "descriptionHtml": "<p style=\"min-height:1.5em\"><strong>Build with us</strong></p><p style=\"min-height:1.5em\">Businesses deserve better from finance. Less friction, more freedom. Since 2004, Mollie has been on a mission to make payments and money management effortless for every business in Europe.</p><p style=\"min-height:1.5em\">Today, more than 250,000 companies trust our all-in-one platform to get paid, manage money",
+   "descriptionPlain": "Build with us\n\nBusinesses deserve better from finance. Less friction, more freedom. Since 2004, Mollie has been on a mission to make payments and money management effortless for every business in Europe.\n\nToday, more than 250,000 companies trust our all-in-one platform to get paid, manage money and grow on their terms. Simple, scalable and built with real businesses in mind.\n\nWe're one of Europe's",
+   "secondaryLocations": []
+  },
+  {
+   "id": "0cda09b4-dfd1-48be-b710-b62d6c161962",
+   "team": "Business Support",
+   "title": "Business Support Specialist - French speaking",
+   "jobUrl": "https://jobs.ashbyhq.com/mollie/0cda09b4-dfd1-48be-b710-b62d6c161962",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "Estremadura",
+     "streetAddress": "Rua Camilo Castelo Branco 44 Piso/Floor 4 1050-045 Lisboa",
+     "addressCountry": "Portugal",
+     "addressLocality": "Lisbon "
+    }
+   },
+   "applyUrl": "https://jobs.ashbyhq.com/mollie/0cda09b4-dfd1-48be-b710-b62d6c161962/application",
+   "isListed": true,
+   "isRemote": null,
+   "location": "Lisbon",
+   "department": "Go To Market",
+   "publishedAt": "2026-02-03T08:11:40.112+00:00",
+   "workplaceType": null,
+   "employmentType": "FullTime",
+   "descriptionHtml": "<p style=\"min-height:1.5em\"><strong>Build with us</strong></p><p style=\"min-height:1.5em\">Businesses deserve better from finance. Less friction, more freedom. Since 2004, Mollie has been on a mission to make payments and money management effortless for every business in Europe.</p><p style=\"min-height:1.5em\">Today, more than 250,000 companies trust our all-in-one platform to get paid, manage money",
+   "descriptionPlain": "Build with us\n\nBusinesses deserve better from finance. Less friction, more freedom. Since 2004, Mollie has been on a mission to make payments and money management effortless for every business in Europe.\n\nToday, more than 250,000 companies trust our all-in-one platform to get paid, manage money and grow on their terms. Simple, scalable and built with real businesses in mind.\n\nWe're one of Europe's",
+   "secondaryLocations": []
+  }
+ ]
+}

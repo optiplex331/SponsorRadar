@@ -1,0 +1,442 @@
+{
+ "offers": [
+  {
+   "id": 2188355,
+   "city": "Copenhagen",
+   "guid": "snp9n",
+   "slug": "open-application-construction-management",
+   "tags": [],
+   "title": "Open application - Construction Management",
+   "hybrid": true,
+   "remote": false,
+   "salary": {
+    "max": null,
+    "min": null,
+    "period": null,
+    "currency": null
+   },
+   "status": "published",
+   "country": "Denmark",
+   "on_site": false,
+   "close_at": null,
+   "location": "Copenhagen, Hovedstaden, Denmark",
+   "position": 493,
+   "highlight": null,
+   "locations": [
+    {
+     "id": 96853,
+     "city": "Copenhagen",
+     "name": "Copenhagen Office",
+     "note": null,
+     "state": "Hovedstaden",
+     "street": null,
+     "country": "Denmark",
+     "state_code": "84",
+     "postal_code": null,
+     "country_code": "DK",
+     "translations": {
+      "en": {
+       "city": "Copenhagen",
+       "name": "Copenhagen Office",
+       "note": null,
+       "street": null,
+       "postal_code": null
+      }
+     }
+    },
+    {
+     "id": 96864,
+     "city": "Milan",
+     "name": "Milan Office",
+     "note": null,
+     "state": "Lombardia",
+     "street": "Via San Senatore 8",
+     "country": "Italy",
+     "state_code": "25",
+     "postal_code": "20122",
+     "country_code": "IT",
+     "translations": {
+      "en": {
+       "city": "Milan",
+       "name": "Milan Office",
+       "note": null,
+       "street": "Via San Senatore 8",
+       "postal_code": "20122"
+      }
+     }
+    },
+    {
+     "id": 96828,
+     "city": "Amsterdam",
+     "name": "Amsterdam Office",
+     "note": null,
+     "state": "Noord-Holland",
+     "street": "Amstelplein 44",
+     "country": "Netherlands",
+     "state_code": "NH",
+     "postal_code": "1096BC",
+     "country_code": "NL",
+     "translations": {
+      "en": {
+       "city": "Amsterdam",
+       "name": "Amsterdam Office",
+       "note": null,
+       "street": "Amstelplein 44",
+       "postal_code": "1096BC"
+      }
+     }
+    },
+    {
+     "id": 171545,
+     "city": "Köln",
+     "name": "Cologne Office",
+     "note": null,
+     "state": "Nordrhein-Westfalen",
+     "street": "Gregorius-Maurus-Straße 7-9",
+     "country": "Germany",
+     "state_code": "NW",
+     "postal_code": "50670",
+     "country_code": "DE",
+     "translations": {
+      "en": {
+       "city": "Köln",
+       "name": "Cologne Office",
+       "note": null,
+       "street": "Gregorius-Maurus-Straße 7-9",
+       "postal_code": "50670"
+      }
+     }
+    },
+    {
+     "id": 96860,
+     "city": "London",
+     "name": "London Office",
+     "note": null,
+     "state": "England",
+     "street": "3 Bath Pl",
+     "country": "United Kingdom",
+     "state_code": "ENG",
+     "postal_code": "EC2A 3DR",
+     "country_code": "GB",
+     "translations": {
+      "en": {
+       "city": "London",
+       "name": "London Office",
+       "note": null,
+       "street": "3 Bath Pl",
+       "postal_code": "EC2A 3DR"
+      }
+     }
+    },
+    {
+     "id": 96838,
+     "city": "Paris",
+     "name": "Paris Office",
+     "note": null,
+     "state": "Île-de-France",
+     "street": "18 Rue du Faubourg du Temple",
+     "country": "France",
+     "state_code": "IDF",
+     "postal_code": "75011",
+     "country_code": "FR",
+     "translations": {
+      "en": {
+       "city": "Paris",
+       "name": "Paris Office",
+       "note": null,
+       "street": "18 Rue du Faubourg du Temple",
+       "postal_code": "75011"
+      }
+     }
+    },
+    {
+     "id": 96847,
+     "city": "Zürich",
+     "name": "Zurich Office",
+     "note": null,
+     "state": "Zürich",
+     "street": "Bändliweg 20",
+     "country": "Switzerland",
+     "state_code": "ZH",
+     "postal_code": "8048",
+     "country_code": "CH",
+     "translations": {
+      "en": {
+       "city": "Zürich",
+       "name": "Zurich Office",
+       "note": null,
+       "street": "Bändliweg 20",
+       "postal_code": "8048"
+      }
+     }
+    },
+    {
+     "id": 209593,
+     "city": "Madrid",
+     "name": "Madrid Office",
+     "note": null,
+     "state": "Comunidad de Madrid",
+     "street": "Calle Zurbano 76",
+     "country": "Spain",
+     "state_code": "MD",
+     "postal_code": "28010",
+     "country_code": "ES",
+     "translations": {
+      "en": {
+       "city": "Madrid",
+       "name": "Madrid Office",
+       "note": null,
+       "street": "Calle Zurbano 76",
+       "postal_code": "28010"
+      }
+     }
+    },
+    {
+     "id": 171307,
+     "city": "Ghent",
+     "name": "Ghent Office",
+     "note": null,
+     "state": "Oost-Vlaanderen",
+     "street": null,
+     "country": "Belgium",
+     "state_code": "VOV",
+     "postal_code": null,
+     "country_code": "BE",
+     "translations": {
+      "en": {
+       "city": "Ghent",
+       "name": "Ghent Office",
+       "note": null,
+       "street": null,
+       "postal_code": null
+      }
+     }
+    }
+   ],
+   "max_hours": 40,
+   "min_hours": 30,
+   "created_at": "2025-06-27 14:33:25 UTC",
+   "department": "Construction Management",
+   "options_cv": "required",
+   "state_code": "84",
+   "state_name": "Hovedstaden",
+   "updated_at": "2026-08-04 11:30:55 UTC",
+   "careers_url": "https://fastned.recruitee.com/o/open-application-construction-management",
+   "cover_image": null,
+   "description": "<h3><strong>Join a fast-growing company with a purpose!</strong></h3><p>At Fastned, you’ll actively contribute to accelerating the transition to electric mobility. Our mission is to build a European network of 1,000 fast charging stations, giving freedom to electric drivers and restoring clean air to our cities. We are 300+ colleagues from 40+ nationalities, operating in 9+ countries, with our hea",
+   "postal_code": null,
+   "company_name": "Fastned",
+   "country_code": "DK",
+   "published_at": "2025-08-05 09:41:17 UTC",
+   "requirements": null,
+   "category_code": "construction",
+   "mailbox_email": "job.snp9n@fastned.recruitee.com",
+   "options_phone": "required",
+   "options_photo": "off",
+   "options_title": "off",
+   "sharing_image": null,
+   "sharing_title": "Open application - Construction Management",
+   "dynamic_fields": [],
+   "education_code": "bachelor_degree",
+   "experience_code": "entry_level",
+   "careers_apply_url": "https://fastned.recruitee.com/o/open-application-construction-management/c/new",
+   "locations_question": "What is your preferred work location?",
+   "max_hours_per_week": "40",
+   "min_hours_per_week": "30",
+   "options_salutation": "off",
+   "sharing_description": "Join a fast-growing company with a purpose!At Fastned, you’ll actively contribute to accelerating the transition to electric mobility. Our mission is to build a European network of 1,000 fast charging",
+   "employment_type_code": "fulltime_permanent",
+   "options_cover_letter": "off",
+   "locations_question_type": "multiple_choice",
+   "location_question_visible": true,
+   "locations_question_required": true
+  },
+  {
+   "id": 2760137,
+   "city": "Amsterdam",
+   "guid": "lmwfa",
+   "slug": "senior-backend-engineer-operator-team",
+   "tags": [],
+   "title": "Senior Backend Engineer - Operator Team",
+   "hybrid": true,
+   "remote": false,
+   "salary": {
+    "max": null,
+    "min": null,
+    "period": null,
+    "currency": null
+   },
+   "status": "published",
+   "country": "Netherlands",
+   "on_site": false,
+   "close_at": null,
+   "location": "Amsterdam, Noord-Holland, Netherlands",
+   "position": 727,
+   "highlight": null,
+   "locations": [
+    {
+     "id": 96828,
+     "city": "Amsterdam",
+     "name": "Amsterdam Office",
+     "note": null,
+     "state": "Noord-Holland",
+     "street": "Amstelplein 44",
+     "country": "Netherlands",
+     "state_code": "NH",
+     "postal_code": "1096BC",
+     "country_code": "NL",
+     "translations": {
+      "en": {
+       "city": "Amsterdam",
+       "name": "Amsterdam Office",
+       "note": null,
+       "street": "Amstelplein 44",
+       "postal_code": "1096BC"
+      }
+     }
+    }
+   ],
+   "max_hours": 40,
+   "min_hours": 40,
+   "created_at": "2026-09-25 13:34:32 UTC",
+   "department": "Software Engineering",
+   "options_cv": "required",
+   "state_code": "NH",
+   "state_name": "Noord-Holland",
+   "updated_at": "2026-09-25 13:44:46 UTC",
+   "careers_url": "https://fastned.recruitee.com/o/senior-backend-engineer-operator-team",
+   "cover_image": null,
+   "description": "<p><strong><span style=\"color:#121317\">Join a fast-growing, listed company with a purpose! Fastned owns and operates a network of 400+ fast charging stations across 10 European countries, allowing electric vehicle drivers to charge their car with 100% green energy in just 15 minutes. Our goal is a European network of 1000 fast charging stations in prime locations, where all electric vehicles can c",
+   "postal_code": "1096BC",
+   "company_name": "Fastned",
+   "country_code": "NL",
+   "published_at": "2026-09-25 13:36:22 UTC",
+   "requirements": "<h3><strong><span style=\"color:#000000\">Who we are looking for</span></strong></h3><p><span style=\"color:#000000\">In order to be successful in this role, you bring a strong sense of ownership and a pragmatic, proactive mindset. You enjoy working in a collaborative scale-up environment where things can change quickly and where taking initiative matters.</span></p><p><span style=\"color:#000000\">Addi",
+   "category_code": "engineering",
+   "mailbox_email": "job.lmwfa@fastned.recruitee.com",
+   "options_phone": "required",
+   "options_photo": "off",
+   "options_title": "off",
+   "sharing_image": null,
+   "sharing_title": "Senior Backend Engineer - Operator Team",
+   "dynamic_fields": [],
+   "education_code": "bachelor_degree",
+   "experience_code": "experienced",
+   "careers_apply_url": "https://fastned.recruitee.com/o/senior-backend-engineer-operator-team/c/new",
+   "locations_question": "What is your preferred work location?",
+   "max_hours_per_week": "40",
+   "min_hours_per_week": "40",
+   "options_salutation": "off",
+   "sharing_description": "Join a fast-growing, listed company with a purpose! Fastned owns and operates a network of 400+ fast charging stations across 10 European countries, allowing electric vehicle drivers to charge their c",
+   "employment_type_code": "fulltime_permanent",
+   "options_cover_letter": "off",
+   "locations_question_type": "multiple_choice",
+   "location_question_visible": false,
+   "locations_question_required": true
+  },
+  {
+   "id": 2760203,
+   "city": "Lyon",
+   "guid": "w86r9",
+   "slug": "expansion-manager-france-developpeurse-immobilier-grand-est",
+   "tags": [],
+   "title": "Expansion manager France / Développeur.se Immobilier - Grand Est",
+   "hybrid": true,
+   "remote": false,
+   "salary": {
+    "max": null,
+    "min": null,
+    "period": null,
+    "currency": null
+   },
+   "status": "published",
+   "country": "France",
+   "on_site": false,
+   "close_at": null,
+   "location": "Lyon, Auvergne-Rhône-Alpes, France",
+   "position": 728,
+   "highlight": null,
+   "locations": [
+    {
+     "id": 299104,
+     "city": "Lyon",
+     "name": "Auvergne-Rhône-Alpes",
+     "note": null,
+     "state": "Auvergne-Rhône-Alpes",
+     "street": null,
+     "country": "France",
+     "state_code": "ARA",
+     "postal_code": null,
+     "country_code": "FR",
+     "translations": {
+      "en": {
+       "city": "Lyon",
+       "name": "Auvergne-Rhône-Alpes",
+       "note": null,
+       "street": null,
+       "postal_code": null
+      }
+     }
+    },
+    {
+     "id": 296598,
+     "city": "Strasbourg",
+     "name": "Grand-Est",
+     "note": null,
+     "state": "Grand-Est",
+     "street": null,
+     "country": "France",
+     "state_code": "GES",
+     "postal_code": null,
+     "country_code": "FR",
+     "translations": {
+      "en": {
+       "city": "Strasbourg",
+       "name": "Grand-Est",
+       "note": null,
+       "street": null,
+       "postal_code": null
+      }
+     }
+    }
+   ],
+   "max_hours": 40,
+   "min_hours": 40,
+   "created_at": "2026-09-25 14:02:08 UTC",
+   "department": "Network Development",
+   "options_cv": "required",
+   "state_code": "ARA",
+   "state_name": "Auvergne-Rhône-Alpes",
+   "updated_at": "2026-09-25 14:06:03 UTC",
+   "careers_url": "https://fastned.recruitee.com/o/expansion-manager-france-developpeurse-immobilier-grand-est",
+   "cover_image": null,
+   "description": "<p style=\"text-align:justify;\"><strong><span style=\"color:#000000\">Rejoins Fastned pour accélérer la transition énergétique ! En tant qu’Expansion Manager, tu contribueras à notre croissance en France sur des sites clés et tu nous aideras à atteindre notre objectif de 1 000 stations. Aux côtés de +450 collègues avec +50 nationalités, répartis dans 10 pays, nous impulsons le changement dans la tran",
+   "postal_code": null,
+   "company_name": "Fastned",
+   "country_code": "FR",
+   "published_at": "2026-09-25 14:04:48 UTC",
+   "requirements": null,
+   "category_code": "sales",
+   "mailbox_email": "job.w86r9@fastned.recruitee.com",
+   "options_phone": "required",
+   "options_photo": "off",
+   "options_title": "off",
+   "sharing_image": null,
+   "sharing_title": "Expansion manager France / Développeur.se Immobilier - Grand Est",
+   "dynamic_fields": [],
+   "education_code": "associate_degree",
+   "experience_code": "mid_level",
+   "careers_apply_url": "https://fastned.recruitee.com/o/expansion-manager-france-developpeurse-immobilier-grand-est/c/new",
+   "locations_question": "What is your preferred work location?",
+   "max_hours_per_week": "40.0",
+   "min_hours_per_week": "40.00",
+   "options_salutation": "off",
+   "sharing_description": "Rejoins Fastned pour accélérer la transition énergétique ! En tant qu’Expansion Manager, tu contribueras à notre croissance en France sur des sites clés et tu nous aideras à atteindre notre objectif d",
+   "employment_type_code": "fulltime_permanent",
+   "options_cover_letter": "off",
+   "locations_question_type": "multiple_choice",
+   "location_question_visible": true,
+   "locations_question_required": true
+  }
+ ]
+}

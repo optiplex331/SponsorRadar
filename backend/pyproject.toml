@@ -1,0 +1,25 @@
+[project]
+name = "sponsor-radar"
+version = "0.1.0"
+description = "Junior tech postings in the Netherlands from IND recognised sponsors."
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "httpx>=0.28,<1",
+  "psycopg[binary]>=3.2,<4",
+]
+
+[project.scripts]
+sponsor-radar = "sponsor_radar.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sponsor_radar"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

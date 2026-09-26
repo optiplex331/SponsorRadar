@@ -1,0 +1,2511 @@
+# Seed job boards. Add `kvk = "12345678"` only after checking the employer's KvK entry by hand.
+
+[[source]]
+kind = "greenhouse"
+board = "adyen"
+employer = "Adyen"
+
+[[source]]
+kind = "recruitee"
+board = "bunq"
+employer = "bunq"
+
+[[source]]
+kind = "ashby"
+board = "bynder"
+employer = "Bynder"
+
+[[source]]
+kind = "greenhouse"
+board = "catawiki"
+employer = "Catawiki"
+
+[[source]]
+kind = "recruitee"
+board = "channable"
+employer = "Channable"
+
+[[source]]
+kind = "ashby"
+board = "crisp"
+employer = "Crisp"
+
+[[source]]
+kind = "greenhouse"
+board = "databricks"
+employer = "Databricks"
+
+[[source]]
+kind = "greenhouse"
+board = "dataiku"
+employer = "Dataiku"
+
+[[source]]
+kind = "greenhouse"
+board = "dept"
+employer = "DEPT"
+kvk = "27239483"  # Dept Design & Technology B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "recruitee"
+board = "effectory"
+employer = "Effectory"
+
+[[source]]
+kind = "greenhouse"
+board = "elastic"
+employer = "Elastic"
+kvk = "54656230"  # elasticsearch B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "recruitee"
+board = "fastned"
+employer = "Fastned"
+
+[[source]]
+kind = "greenhouse"
+board = "flowtraders"
+employer = "Flow Traders"
+
+[[source]]
+kind = "recruitee"
+board = "funda"
+employer = "funda"
+kvk = "34242436"  # Funda Real Estate B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "greenhouse"
+board = "getyourguide"
+employer = "GetYourGuide"
+
+[[source]]
+kind = "greenhouse"
+board = "gitlab"
+employer = "GitLab"
+
+[[source]]
+kind = "greenhouse"
+board = "hellofresh"
+employer = "HelloFresh"
+kvk = "54601312"  # HelloFresh Benelux B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "recruitee"
+board = "helloprint"
+employer = "Helloprint"
+
+[[source]]
+kind = "greenhouse"
+board = "imc"
+employer = "IMC Trading"
+kvk = "33223419"  # IMC Trading B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "ashby"
+board = "miro"
+employer = "Miro"
+kvk = "71057153"  # RealtimeBoard, Miro's former name, checked against the register 2026-09-26
+
+[[source]]
+kind = "ashby"
+board = "mollie"
+employer = "Mollie"
+
+[[source]]
+kind = "ashby"
+board = "prosus"
+employer = "Prosus"
+
+[[source]]
+kind = "ashby"
+board = "snowflake"
+employer = "Snowflake"
+kvk = "73059277"  # Snowflake Computing Netherlands B.V., checked against the register 2026-09-26
+
+[[source]]
+kind = "greenhouse"
+board = "typeform"
+employer = "Typeform"
+
+# Discovered 2026-09-26 by probing brand and register-derived slugs; each board had Netherlands postings.
+# Medium-confidence rows are rebrands or group boards. No kvk set: matching is by normalized name.
+
+[[source]]
+kind = "ashby"
+board = "airwallex"
+employer = "Airwallex"
+
+[[source]]
+kind = "ashby"
+board = "altura"
+employer = "Altura"
+
+[[source]]
+kind = "ashby"
+board = "atabix"
+employer = "Atabix"
+
+[[source]]
+kind = "ashby"
+board = "axelera"
+employer = "Axelera AI"
+
+[[source]]
+kind = "ashby"
+board = "blocktech"
+employer = "BlockTech"
+
+[[source]]
+kind = "ashby"
+board = "bluedolphin"
+employer = "BlueDolphin"
+
+[[source]]
+kind = "ashby"
+board = "cenosco"
+employer = "Cenosco"
+
+[[source]]
+kind = "ashby"
+board = "clearbank"
+employer = "ClearBank"
+
+[[source]]
+kind = "ashby"
+board = "clickhouse"
+employer = "ClickHouse"
+
+[[source]]
+kind = "ashby"
+board = "constructor"
+employer = "Constructor"
+
+[[source]]
+kind = "ashby"
+board = "contentoo"
+employer = "Contentoo"
+
+[[source]]
+kind = "ashby"
+board = "cradlebio"
+employer = "Cradle"
+
+[[source]]
+kind = "ashby"
+board = "datasnipper"
+employer = "DataSnipper"
+
+[[source]]
+kind = "ashby"
+board = "deepl"
+employer = "DeepL"
+
+[[source]]
+kind = "ashby"
+board = "deeploy"
+employer = "Deeploy"
+
+[[source]]
+kind = "ashby"
+board = "docplanner"
+employer = "Docplanner"
+
+[[source]]
+kind = "ashby"
+board = "elevenlabs"
+employer = "ElevenLabs"
+
+[[source]]
+kind = "ashby"
+board = "feedbackfruits"
+employer = "FeedbackFruits"
+
+[[source]]
+kind = "ashby"
+board = "fidamy"
+employer = "Fidamy"
+
+[[source]]
+kind = "ashby"
+board = "forto"
+employer = "Forto"
+
+[[source]]
+kind = "ashby"
+board = "horizon3ai"
+employer = "Horizon3.ai"
+
+[[source]]
+kind = "ashby"
+board = "innatera"
+employer = "Innatera"
+
+[[source]]
+kind = "ashby"
+board = "keyrock"
+employer = "Keyrock"
+
+[[source]]
+kind = "ashby"
+board = "lemonade"
+employer = "Lemonade"
+
+[[source]]
+kind = "ashby"
+board = "lightspeedhq"
+employer = "Lightspeed"
+
+[[source]]
+kind = "ashby"
+board = "manychat"
+employer = "Manychat"
+
+[[source]]
+kind = "ashby"
+board = "monumental"
+employer = "Monumental"
+
+[[source]]
+kind = "ashby"
+board = "motherduck"
+employer = "MotherDuck"
+
+[[source]]
+kind = "ashby"
+board = "oberst"
+employer = "Oberst"
+
+[[source]]
+kind = "ashby"
+board = "oyster"
+employer = "Oyster"
+
+[[source]]
+kind = "ashby"
+board = "paddle"
+employer = "Paddle"
+
+[[source]]
+kind = "ashby"
+board = "perk"
+employer = "Perk (formerly TravelPerk)"
+
+[[source]]
+kind = "ashby"
+board = "pleo"
+employer = "Pleo"
+
+[[source]]
+kind = "ashby"
+board = "plumerai"
+employer = "Plumerai"
+
+[[source]]
+kind = "ashby"
+board = "poki"
+employer = "Poki"
+
+[[source]]
+kind = "ashby"
+board = "polaroid"
+employer = "Polaroid"
+
+[[source]]
+kind = "ashby"
+board = "polarsteps"
+employer = "Polarsteps"
+
+[[source]]
+kind = "ashby"
+board = "qonto"
+employer = "Qonto"
+
+[[source]]
+kind = "ashby"
+board = "quantware"
+employer = "QuantWare"
+
+[[source]]
+kind = "ashby"
+board = "reaktor"
+employer = "Reaktor"
+
+[[source]]
+kind = "ashby"
+board = "rentman"
+employer = "Rentman"
+
+[[source]]
+kind = "ashby"
+board = "sensorfact"
+employer = "Sensorfact"
+
+[[source]]
+kind = "ashby"
+board = "sentry"
+employer = "Sentry"
+
+[[source]]
+kind = "ashby"
+board = "skynrg"
+employer = "SkyNRG"
+
+[[source]]
+kind = "ashby"
+board = "stacks"
+employer = "Stacks"
+
+[[source]]
+kind = "ashby"
+board = "swap"
+employer = "Swap"
+
+[[source]]
+kind = "ashby"
+board = "tebi"
+employer = "Tebi"
+
+[[source]]
+kind = "ashby"
+board = "teero"
+employer = "Teero"
+
+[[source]]
+kind = "ashby"
+board = "thoughtworks"
+employer = "Thoughtworks"
+
+[[source]]
+kind = "ashby"
+board = "voodoo"
+employer = "Voodoo"
+
+[[source]]
+kind = "ashby"
+board = "weaviate"
+employer = "Weaviate"
+
+[[source]]
+kind = "ashby"
+board = "wetravel"
+employer = "WeTravel"
+
+[[source]]
+kind = "greenhouse"
+board = "airspace"
+employer = "Airspace"
+
+[[source]]
+kind = "greenhouse"
+board = "akqa"
+employer = "AKQA"
+
+[[source]]
+kind = "greenhouse"
+board = "algolia"
+employer = "Algolia"
+
+[[source]]
+kind = "greenhouse"
+board = "amplitude"
+employer = "Amplitude"
+
+[[source]]
+kind = "greenhouse"
+board = "artefact"
+employer = "Artefact"
+
+[[source]]
+kind = "greenhouse"
+board = "asm"
+employer = "ASM"
+
+[[source]]
+kind = "greenhouse"
+board = "atricure"
+employer = "AtriCure"
+
+[[source]]
+kind = "greenhouse"
+board = "autoscout24"
+employer = "AutoScout24"
+
+[[source]]
+kind = "greenhouse"
+board = "avantium"
+employer = "Avantium"
+
+[[source]]
+kind = "greenhouse"
+board = "avepoint"
+employer = "AvePoint"
+
+[[source]]
+kind = "greenhouse"
+board = "awin"
+employer = "Awin"
+
+[[source]]
+kind = "greenhouse"
+board = "axicom"
+employer = "AxiCom"
+
+[[source]]
+kind = "greenhouse"
+board = "bluewireless"
+employer = "Blue Wireless"
+
+[[source]]
+kind = "greenhouse"
+board = "bolcom"
+employer = "bol"
+
+[[source]]
+kind = "greenhouse"
+board = "braincorporation"
+employer = "Brain Corp"
+
+[[source]]
+kind = "greenhouse"
+board = "bybit"
+employer = "Bybit"
+
+[[source]]
+kind = "greenhouse"
+board = "catonetworks"
+employer = "Cato Networks"
+
+[[source]]
+kind = "greenhouse"
+board = "celonis"
+employer = "Celonis"
+
+[[source]]
+kind = "greenhouse"
+board = "clevr"
+employer = "CLEVR"
+
+[[source]]
+kind = "greenhouse"
+board = "contentstack"
+employer = "Contentstack"
+
+[[source]]
+kind = "greenhouse"
+board = "creativefabrica"
+employer = "Creative Fabrica"
+
+[[source]]
+kind = "greenhouse"
+board = "datadog"
+employer = "Datadog"
+
+[[source]]
+kind = "greenhouse"
+board = "davinciderivatives"
+employer = "Da Vinci"
+
+[[source]]
+kind = "greenhouse"
+board = "dawnaerospace"
+employer = "Dawn Aerospace"
+
+[[source]]
+kind = "greenhouse"
+board = "droneshield"
+employer = "DroneShield"
+
+[[source]]
+kind = "greenhouse"
+board = "drweng"
+employer = "DRW"
+
+[[source]]
+kind = "greenhouse"
+board = "ebury"
+employer = "Ebury"
+
+[[source]]
+kind = "greenhouse"
+board = "edgeconnex"
+employer = "EdgeConneX"
+
+[[source]]
+kind = "greenhouse"
+board = "eqtpartners"
+employer = "EQT Group"
+
+[[source]]
+kind = "greenhouse"
+board = "fareharbor"
+employer = "FareHarbor"
+
+[[source]]
+kind = "greenhouse"
+board = "feverup"
+employer = "Fever"
+
+[[source]]
+kind = "greenhouse"
+board = "fireblocks"
+employer = "Fireblocks"
+
+[[source]]
+kind = "greenhouse"
+board = "flexport"
+employer = "Flexport"
+
+[[source]]
+kind = "greenhouse"
+board = "fourthline"
+employer = "Fourthline"
+
+[[source]]
+kind = "greenhouse"
+board = "genscript"
+employer = "GenScript/ProBio"
+
+[[source]]
+kind = "greenhouse"
+board = "goodman"
+employer = "Goodman"
+
+[[source]]
+kind = "greenhouse"
+board = "grafanalabs"
+employer = "Grafana Labs"
+
+[[source]]
+kind = "greenhouse"
+board = "gympass"
+employer = "Wellhub"
+
+[[source]]
+kind = "greenhouse"
+board = "gymshark"
+employer = "Gymshark"
+
+[[source]]
+kind = "greenhouse"
+board = "highradius"
+employer = "HighRadius"
+
+[[source]]
+kind = "greenhouse"
+board = "hightouch"
+employer = "Hightouch"
+
+[[source]]
+kind = "greenhouse"
+board = "housinganywhere"
+employer = "HousingAnywhere"
+
+[[source]]
+kind = "greenhouse"
+board = "hudl"
+employer = "Hudl"
+
+[[source]]
+kind = "greenhouse"
+board = "hunterdouglas"
+employer = "Hunter Douglas"
+
+[[source]]
+kind = "greenhouse"
+board = "jetbrains"
+employer = "JetBrains"
+
+[[source]]
+kind = "greenhouse"
+board = "jumptrading"
+employer = "Jump Trading"
+
+[[source]]
+kind = "greenhouse"
+board = "levelworks"
+employer = "Level.works"
+
+[[source]]
+kind = "greenhouse"
+board = "maverickderivatives"
+employer = "Maverick Derivatives"
+
+[[source]]
+kind = "greenhouse"
+board = "mediabrands"
+employer = "Omnicom Media"
+
+[[source]]
+kind = "greenhouse"
+board = "mewssystems"
+employer = "Mews"
+
+[[source]]
+kind = "greenhouse"
+board = "modulrfinance"
+employer = "Modulr"
+
+[[source]]
+kind = "greenhouse"
+board = "mongodb"
+employer = "MongoDB"
+
+[[source]]
+kind = "greenhouse"
+board = "monks"
+employer = "Monks"
+
+[[source]]
+kind = "greenhouse"
+board = "nebius"
+employer = "Nebius"
+
+[[source]]
+kind = "greenhouse"
+board = "netskope"
+employer = "Netskope"
+
+[[source]]
+kind = "greenhouse"
+board = "newtone"
+employer = "Newtone"
+
+[[source]]
+kind = "greenhouse"
+board = "nice"
+employer = "NICE"
+
+[[source]]
+kind = "greenhouse"
+board = "nielenschuman"
+employer = "Nielen Schuman"
+
+[[source]]
+kind = "greenhouse"
+board = "nlcventures"
+employer = "NLC"
+
+[[source]]
+kind = "greenhouse"
+board = "nlighten"
+employer = "nLighten"
+
+[[source]]
+kind = "greenhouse"
+board = "ogilvy"
+employer = "Ogilvy"
+
+[[source]]
+kind = "greenhouse"
+board = "okx"
+employer = "OKX"
+
+[[source]]
+kind = "greenhouse"
+board = "onetrust"
+employer = "OneTrust"
+
+[[source]]
+kind = "greenhouse"
+board = "openup"
+employer = "OpenUp"
+
+[[source]]
+kind = "greenhouse"
+board = "optiverus"
+employer = "Optiver"
+
+[[source]]
+kind = "greenhouse"
+board = "pingidentity"
+employer = "Ping Identity"
+
+[[source]]
+kind = "greenhouse"
+board = "pqshield"
+employer = "PQShield"
+
+[[source]]
+kind = "greenhouse"
+board = "priogen"
+employer = "Priogen"
+
+[[source]]
+kind = "greenhouse"
+board = "project44"
+employer = "project44"
+
+[[source]]
+kind = "greenhouse"
+board = "purestorage"
+employer = "Everpure (Pure Storage)"
+
+[[source]]
+kind = "greenhouse"
+board = "qphox"
+employer = "QphoX"
+
+[[source]]
+kind = "greenhouse"
+board = "reddit"
+employer = "Reddit"
+
+[[source]]
+kind = "greenhouse"
+board = "redwoodsoftware"
+employer = "Redwood Software"
+
+[[source]]
+kind = "greenhouse"
+board = "rubrik"
+employer = "Rubrik"
+
+[[source]]
+kind = "greenhouse"
+board = "schubergphilis"
+employer = "Schuberg Philis"
+
+[[source]]
+kind = "greenhouse"
+board = "skydreams"
+employer = "Skydreams"
+
+[[source]]
+kind = "greenhouse"
+board = "srm"
+employer = "S-RM"
+
+[[source]]
+kind = "greenhouse"
+board = "suitsupply"
+employer = "Suitsupply"
+
+[[source]]
+kind = "greenhouse"
+board = "sumup"
+employer = "SumUp"
+
+[[source]]
+kind = "greenhouse"
+board = "super"
+employer = "Super Technologies"
+
+[[source]]
+kind = "greenhouse"
+board = "surepay"
+employer = "SurePay"
+
+[[source]]
+kind = "greenhouse"
+board = "systemiq"
+employer = "Systemiq"
+
+[[source]]
+kind = "greenhouse"
+board = "sytac"
+employer = "Sytac"
+
+[[source]]
+kind = "greenhouse"
+board = "thoughtworks"
+employer = "Thoughtworks"
+
+[[source]]
+kind = "greenhouse"
+board = "towerresearchcapital"
+employer = "Tower Research Capital"
+
+[[source]]
+kind = "greenhouse"
+board = "travix"
+employer = "Travix"
+
+[[source]]
+kind = "greenhouse"
+board = "tripadvisor"
+employer = "Tripadvisor"
+
+[[source]]
+kind = "greenhouse"
+board = "trustpilot"
+employer = "Trustpilot"
+
+[[source]]
+kind = "greenhouse"
+board = "uberfreight"
+employer = "Uber Freight"
+
+[[source]]
+kind = "greenhouse"
+board = "valtech"
+employer = "Valtech"
+
+[[source]]
+kind = "greenhouse"
+board = "veeamsoftware"
+employer = "Veeam Software"
+
+[[source]]
+kind = "greenhouse"
+board = "velocityelectronics"
+employer = "Velocity Electronics"
+
+[[source]]
+kind = "greenhouse"
+board = "verifone"
+employer = "Verifone"
+
+[[source]]
+kind = "greenhouse"
+board = "williamblair"
+employer = "William Blair"
+
+[[source]]
+kind = "greenhouse"
+board = "wk"
+employer = "Wieden+Kennedy"
+
+[[source]]
+kind = "greenhouse"
+board = "workwize"
+employer = "Workwize"
+
+[[source]]
+kind = "greenhouse"
+board = "wppmedia"
+employer = "WPP Media"
+
+[[source]]
+kind = "greenhouse"
+board = "wrike"
+employer = "Wrike"
+
+[[source]]
+kind = "greenhouse"
+board = "zscaler"
+employer = "Zscaler"
+
+[[source]]
+kind = "recruitee"
+board = "12build"
+employer = "12Build"
+
+[[source]]
+kind = "recruitee"
+board = "50five"
+employer = "50five"
+
+[[source]]
+kind = "recruitee"
+board = "acomo"
+employer = "ACOMO N.V."
+
+[[source]]
+kind = "recruitee"
+board = "acorel"
+employer = "Acorel"
+
+[[source]]
+kind = "recruitee"
+board = "aegirmarine"
+employer = "AEGIR-Marine"
+
+[[source]]
+kind = "recruitee"
+board = "afsenergy"
+employer = "AFS Energy"
+
+[[source]]
+kind = "recruitee"
+board = "agriplace"
+employer = "Simvia"
+
+[[source]]
+kind = "recruitee"
+board = "aidence"
+employer = "DeepHealth"
+
+[[source]]
+kind = "recruitee"
+board = "aimms"
+employer = "AIMMS"
+
+[[source]]
+kind = "recruitee"
+board = "airborne"
+employer = "Airborne"
+
+[[source]]
+kind = "recruitee"
+board = "akd"
+employer = "AKD"
+
+[[source]]
+kind = "recruitee"
+board = "alewijnse"
+employer = "ALEWIJNSE"
+
+[[source]]
+kind = "recruitee"
+board = "allchiefs"
+employer = "AllChiefs"
+
+[[source]]
+kind = "recruitee"
+board = "allego"
+employer = "Allego"
+
+[[source]]
+kind = "recruitee"
+board = "allinq"
+employer = "Allinq"
+
+[[source]]
+kind = "recruitee"
+board = "allyourbi"
+employer = "All Your BI"
+
+[[source]]
+kind = "recruitee"
+board = "alphacomm"
+employer = "Alphacomm"
+
+[[source]]
+kind = "recruitee"
+board = "alpine"
+employer = "Alpine Hearing Protection"
+
+[[source]]
+kind = "recruitee"
+board = "altrex"
+employer = "Altrex - Flex Impact"
+
+[[source]]
+kind = "recruitee"
+board = "ampelmann"
+employer = "Ampelmann Operations B.V."
+
+[[source]]
+kind = "recruitee"
+board = "amsterdamdatacollective"
+employer = "Amsterdam Data Collective"
+
+[[source]]
+kind = "recruitee"
+board = "anyonecom"
+employer = "Anyone.com"
+
+[[source]]
+kind = "recruitee"
+board = "artez"
+employer = "ArtEZ University of the Arts"
+
+[[source]]
+kind = "recruitee"
+board = "athora"
+employer = "Athora Netherlands"
+
+[[source]]
+kind = "recruitee"
+board = "attendi"
+employer = "Attendi"
+
+[[source]]
+kind = "recruitee"
+board = "avantarte"
+employer = "Avant Arte"
+
+[[source]]
+kind = "recruitee"
+board = "avecodebondt"
+employer = "Aveco de Bondt"
+
+[[source]]
+kind = "recruitee"
+board = "axual"
+employer = "Axual"
+
+[[source]]
+kind = "recruitee"
+board = "baeken"
+employer = "BAEKEN"
+
+[[source]]
+kind = "recruitee"
+board = "bakertilly"
+employer = "Baker Tilly (Netherlands) B.V."
+
+[[source]]
+kind = "recruitee"
+board = "bdairy"
+employer = "Bdairy"
+
+[[source]]
+kind = "recruitee"
+board = "benchmarkelectronics"
+employer = "Benchmark"
+
+[[source]]
+kind = "recruitee"
+board = "bergmanclinics"
+employer = "Bergman Clinics Nederland B.V."
+
+[[source]]
+kind = "recruitee"
+board = "bettyblocks"
+employer = "Betty Blocks"
+
+[[source]]
+kind = "recruitee"
+board = "bgbdentistry"
+employer = "BGB Dentistry"
+
+[[source]]
+kind = "recruitee"
+board = "bidfood"
+employer = "Bidfood"
+
+[[source]]
+kind = "recruitee"
+board = "billink"
+employer = "Billink"
+
+[[source]]
+kind = "recruitee"
+board = "bloem"
+employer = "BLOEM!"
+
+[[source]]
+kind = "recruitee"
+board = "bloxs"
+employer = "Bloxs"
+
+[[source]]
+kind = "recruitee"
+board = "blue10"
+employer = "Blue10"
+
+[[source]]
+kind = "recruitee"
+board = "blueprintautomation"
+employer = "BluePrint Automation"
+
+[[source]]
+kind = "recruitee"
+board = "booqi"
+employer = "BooQi Media Solutions"
+
+[[source]]
+kind = "recruitee"
+board = "bosmanvanzaal"
+employer = "Bosman Van Zaal"
+
+[[source]]
+kind = "recruitee"
+board = "bouwinvestrealestateinvestors"
+employer = "Bouwinvest Real Estate Investors"
+
+[[source]]
+kind = "recruitee"
+board = "bpmcompany"
+employer = "BPM Company Netherlands B.V."
+
+[[source]]
+kind = "recruitee"
+board = "brainboss"
+employer = "Brainboss"
+
+[[source]]
+kind = "recruitee"
+board = "brainportdevelopment"
+employer = "Brainport Development"
+
+[[source]]
+kind = "recruitee"
+board = "brandnewday"
+employer = "Brand New Day"
+
+[[source]]
+kind = "recruitee"
+board = "brenger"
+employer = "Brenger"
+
+[[source]]
+kind = "recruitee"
+board = "bridgefund"
+employer = "BridgeFund"
+
+[[source]]
+kind = "recruitee"
+board = "brownline"
+employer = "Brownline B.V."
+
+[[source]]
+kind = "recruitee"
+board = "budgetthuis"
+employer = "Budget Thuis"
+
+[[source]]
+kind = "recruitee"
+board = "builders"
+employer = "Builders"
+
+[[source]]
+kind = "recruitee"
+board = "bureauschmidt"
+employer = "Bureau Schmidt"
+
+[[source]]
+kind = "recruitee"
+board = "centraalbureauvoordestatistiek"
+employer = "Centraal Bureau voor de Statistiek"
+
+[[source]]
+kind = "recruitee"
+board = "centric"
+employer = "Centric"
+
+[[source]]
+kind = "recruitee"
+board = "channelengine"
+employer = "ChannelEngine"
+
+[[source]]
+kind = "recruitee"
+board = "channext"
+employer = "Channext"
+
+[[source]]
+kind = "recruitee"
+board = "chiropractiecentraal"
+employer = "Chiropractie Centraal"
+
+[[source]]
+kind = "recruitee"
+board = "cloudbilling"
+employer = "CloudBilling"
+
+[[source]]
+kind = "recruitee"
+board = "cmcom"
+employer = "CM.com"
+
+[[source]]
+kind = "recruitee"
+board = "cnsmedia"
+employer = "CNS Media"
+
+[[source]]
+kind = "recruitee"
+board = "collins"
+employer = "KFC Nederland (Collins Foods)"
+
+[[source]]
+kind = "recruitee"
+board = "conclusion"
+employer = "Conclusion"
+
+[[source]]
+kind = "recruitee"
+board = "confocalnl"
+employer = "Confocal NL"
+
+[[source]]
+kind = "recruitee"
+board = "convious"
+employer = "Convious"
+
+[[source]]
+kind = "recruitee"
+board = "copernica"
+employer = "Copernica"
+
+[[source]]
+kind = "recruitee"
+board = "corendon"
+employer = "Corendon"
+
+[[source]]
+kind = "recruitee"
+board = "cosun"
+employer = "Cosun"
+
+[[source]]
+kind = "recruitee"
+board = "cowmanager"
+employer = "COWMANAGER B.V."
+
+[[source]]
+kind = "recruitee"
+board = "cpmview"
+employer = "CPMView Consulting"
+
+[[source]]
+kind = "recruitee"
+board = "creativeclicks"
+employer = "Creative Clicks B.V."
+
+[[source]]
+kind = "recruitee"
+board = "crowefoederer"
+employer = "Crowe"
+
+[[source]]
+kind = "recruitee"
+board = "cuccibu"
+employer = "Cuccibu BV"
+
+[[source]]
+kind = "recruitee"
+board = "customssupport"
+employer = "Customs Support Group"
+
+[[source]]
+kind = "recruitee"
+board = "dalsem"
+employer = "Dalsem B.V."
+
+[[source]]
+kind = "recruitee"
+board = "dashmote"
+employer = "Dashmote"
+
+[[source]]
+kind = "recruitee"
+board = "datenna"
+employer = "Datenna BV"
+
+[[source]]
+kind = "recruitee"
+board = "dealroomco"
+employer = "Dealroom.co"
+
+[[source]]
+kind = "recruitee"
+board = "dehora"
+employer = "Déhora Consultancy"
+
+[[source]]
+kind = "recruitee"
+board = "demaco"
+employer = "Demaco"
+
+[[source]]
+kind = "recruitee"
+board = "devleaps"
+employer = "Devleaps"
+
+[[source]]
+kind = "recruitee"
+board = "dexterenergyservices"
+employer = "Dexter Energy"
+
+[[source]]
+kind = "recruitee"
+board = "digiboox"
+employer = "DigiBoox"
+
+[[source]]
+kind = "recruitee"
+board = "digitalsurvivalcompany"
+employer = "Digital Survival Company"
+
+[[source]]
+kind = "recruitee"
+board = "ditio"
+employer = "Ditio"
+
+[[source]]
+kind = "recruitee"
+board = "dnata"
+employer = "dnata"
+
+[[source]]
+kind = "recruitee"
+board = "dpgmedia"
+employer = "DPG Media"
+
+[[source]]
+kind = "recruitee"
+board = "drieam"
+employer = "Drieam"
+
+[[source]]
+kind = "recruitee"
+board = "dts"
+employer = "DTS"
+
+[[source]]
+kind = "recruitee"
+board = "dtx"
+employer = "DTX"
+
+[[source]]
+kind = "recruitee"
+board = "dyflexis"
+employer = "Dyflexis"
+
+[[source]]
+kind = "recruitee"
+board = "dynamicpeople"
+employer = "Dynamic People B.V."
+
+[[source]]
+kind = "recruitee"
+board = "ebusco"
+employer = "Ebusco"
+
+[[source]]
+kind = "recruitee"
+board = "ecare"
+employer = "Ecare"
+
+[[source]]
+kind = "recruitee"
+board = "ecochain"
+employer = "Ecochain Technologies"
+
+[[source]]
+kind = "recruitee"
+board = "egeniq"
+employer = "Dawn Technology"
+
+[[source]]
+kind = "recruitee"
+board = "egeria"
+employer = "Egeria"
+
+[[source]]
+kind = "recruitee"
+board = "eichholtz"
+employer = "Eichholtz"
+
+[[source]]
+kind = "recruitee"
+board = "electude"
+employer = "Electude International BV"
+
+[[source]]
+kind = "recruitee"
+board = "emergo"
+employer = "E-mergo"
+
+[[source]]
+kind = "recruitee"
+board = "eneve"
+employer = "Eneve"
+
+[[source]]
+kind = "recruitee"
+board = "envipco"
+employer = "Envipco"
+
+[[source]]
+kind = "recruitee"
+board = "eraneos"
+employer = "Eraneos"
+
+[[source]]
+kind = "recruitee"
+board = "europeanhematologyassociation"
+employer = "European Hematology Association"
+
+[[source]]
+kind = "recruitee"
+board = "experience"
+employer = "Conclusion Experience"
+
+[[source]]
+kind = "recruitee"
+board = "fincoenergies"
+employer = "FincoEnergies"
+
+[[source]]
+kind = "recruitee"
+board = "findock"
+employer = "FinDock"
+
+[[source]]
+kind = "recruitee"
+board = "fixico"
+employer = "Fixico"
+
+[[source]]
+kind = "recruitee"
+board = "floryn"
+employer = "Floryn B.V."
+
+[[source]]
+kind = "recruitee"
+board = "forcyd"
+employer = "Forcyd"
+
+[[source]]
+kind = "recruitee"
+board = "freeday"
+employer = "Freeday"
+
+[[source]]
+kind = "recruitee"
+board = "funxtion"
+employer = "Funxtion"
+
+[[source]]
+kind = "recruitee"
+board = "futurewhiz"
+employer = "FutureWhiz"
+
+[[source]]
+kind = "recruitee"
+board = "gac"
+employer = "GAC"
+
+[[source]]
+kind = "recruitee"
+board = "gateterminal"
+employer = "GATE TERMINAL B.V."
+
+[[source]]
+kind = "recruitee"
+board = "gbmworks"
+employer = "GBM Works"
+
+[[source]]
+kind = "recruitee"
+board = "geodis"
+employer = "GEODIS Benelux"
+
+[[source]]
+kind = "recruitee"
+board = "gerimedica"
+employer = "Gerimedica"
+
+[[source]]
+kind = "recruitee"
+board = "gigastorage"
+employer = "GIGA STORAGE"
+
+[[source]]
+kind = "recruitee"
+board = "goldrepublic"
+employer = "GoldRepublic"
+
+[[source]]
+kind = "recruitee"
+board = "greenchoice"
+employer = "Greenchoice"
+
+[[source]]
+kind = "recruitee"
+board = "greenflux"
+employer = "GreenFlux"
+
+[[source]]
+kind = "recruitee"
+board = "hanos"
+employer = "HANOS"
+
+[[source]]
+kind = "recruitee"
+board = "hatchtech"
+employer = "HatchTech"
+
+[[source]]
+kind = "recruitee"
+board = "hbmmachines"
+employer = "HBM Machines"
+
+[[source]]
+kind = "recruitee"
+board = "heattransformers"
+employer = "HeatTransformers BV"
+
+[[source]]
+kind = "recruitee"
+board = "heembouw"
+employer = "Heembouw"
+
+[[source]]
+kind = "recruitee"
+board = "hellebrekers"
+employer = "Hellebrekers"
+
+[[source]]
+kind = "recruitee"
+board = "hollandia"
+employer = "Hollandia"
+
+[[source]]
+kind = "recruitee"
+board = "houthoff"
+employer = "Houthoff Legal"
+
+[[source]]
+kind = "recruitee"
+board = "howden"
+employer = "Howden"
+
+[[source]]
+kind = "recruitee"
+board = "htm"
+employer = "HTM"
+
+[[source]]
+kind = "recruitee"
+board = "huismanetechexperts"
+employer = "Huisman Etech Experts"
+
+[[source]]
+kind = "recruitee"
+board = "ichoosr"
+employer = "iChoosr"
+
+[[source]]
+kind = "recruitee"
+board = "indurex"
+employer = "Indurex"
+
+[[source]]
+kind = "recruitee"
+board = "infomedics"
+employer = "Infomedics"
+
+[[source]]
+kind = "recruitee"
+board = "innovamarketinsights"
+employer = "Innova Market Insights"
+
+[[source]]
+kind = "recruitee"
+board = "intergas"
+employer = "Intergas"
+
+[[source]]
+kind = "recruitee"
+board = "interrail"
+employer = "Interrail"
+
+[[source]]
+kind = "recruitee"
+board = "intigris"
+employer = "Intigris"
+
+[[source]]
+kind = "recruitee"
+board = "investnl"
+employer = "Invest-NL N.V."
+
+[[source]]
+kind = "recruitee"
+board = "invisix"
+employer = "Invisix"
+
+[[source]]
+kind = "recruitee"
+board = "iqip"
+employer = "IQIP B.V."
+
+[[source]]
+kind = "recruitee"
+board = "iquality"
+employer = "Iquality"
+
+[[source]]
+kind = "recruitee"
+board = "isispace"
+employer = "ISISPACE"
+
+[[source]]
+kind = "recruitee"
+board = "itqconsultancy"
+employer = "ITQ"
+
+[[source]]
+kind = "recruitee"
+board = "iwell"
+employer = "iwell"
+
+[[source]]
+kind = "recruitee"
+board = "joanknecht"
+employer = "Joanknecht B.V."
+
+[[source]]
+kind = "recruitee"
+board = "joinsonandspice"
+employer = "Joinson&Spice"
+
+[[source]]
+kind = "recruitee"
+board = "joulz"
+employer = "Joulz B.V."
+
+[[source]]
+kind = "recruitee"
+board = "jouwweb"
+employer = "JouwWeb"
+
+[[source]]
+kind = "recruitee"
+board = "jump"
+employer = "Jump"
+
+[[source]]
+kind = "recruitee"
+board = "kaizo"
+employer = "Kaizo"
+
+[[source]]
+kind = "recruitee"
+board = "kcap"
+employer = "KCAP B.V."
+
+[[source]]
+kind = "recruitee"
+board = "kenter"
+employer = "Kenter Groendus"
+
+[[source]]
+kind = "recruitee"
+board = "kinly"
+employer = "Kinly"
+
+[[source]]
+kind = "recruitee"
+board = "kommago"
+employer = "KommaGo BV"
+
+[[source]]
+kind = "recruitee"
+board = "koninklijkegazelle"
+employer = "Gazelle"
+
+[[source]]
+kind = "recruitee"
+board = "kubus"
+employer = "KUBUS"
+
+[[source]]
+kind = "recruitee"
+board = "learned"
+employer = "Learned"
+
+[[source]]
+kind = "recruitee"
+board = "leeruniek"
+employer = "Leeruniek"
+
+[[source]]
+kind = "recruitee"
+board = "lefebvresdu"
+employer = "Lefebvre Sdu"
+
+[[source]]
+kind = "recruitee"
+board = "lessonup"
+employer = "LessonUp"
+
+[[source]]
+kind = "recruitee"
+board = "leydenjar"
+employer = "LeydenJar"
+
+[[source]]
+kind = "recruitee"
+board = "linkit"
+employer = "LINKIT"
+
+[[source]]
+kind = "recruitee"
+board = "lleverage"
+employer = "LLEVERAGE"
+
+[[source]]
+kind = "recruitee"
+board = "logex"
+employer = "LOGEX"
+
+[[source]]
+kind = "recruitee"
+board = "luscii"
+employer = "Luscii"
+
+[[source]]
+kind = "recruitee"
+board = "maastrichtaachenairport"
+employer = "Maastricht Aachen Airport"
+
+[[source]]
+kind = "recruitee"
+board = "mainblades"
+employer = "Mainblades"
+
+[[source]]
+kind = "recruitee"
+board = "manometric"
+employer = "Manometric"
+
+[[source]]
+kind = "recruitee"
+board = "maqqie"
+employer = "Maqqie"
+
+[[source]]
+kind = "recruitee"
+board = "marktlink"
+employer = "Marktlink"
+
+[[source]]
+kind = "recruitee"
+board = "matchwornshirt"
+employer = "MATCHWORNSHIRT B.V."
+
+[[source]]
+kind = "recruitee"
+board = "megagrouptrade"
+employer = "MegaGroup Trade Holding"
+
+[[source]]
+kind = "recruitee"
+board = "mijndomein"
+employer = "The Sharing Group"
+
+[[source]]
+kind = "recruitee"
+board = "milence"
+employer = "Milence"
+
+[[source]]
+kind = "recruitee"
+board = "mistergreen"
+employer = "MisterGreen Products B.V."
+
+[[source]]
+kind = "recruitee"
+board = "momomedical"
+employer = "Momo Medical"
+
+[[source]]
+kind = "recruitee"
+board = "mondaymerch"
+employer = "Monday Merch"
+
+[[source]]
+kind = "recruitee"
+board = "multisafepay"
+employer = "MultiSafepay"
+
+[[source]]
+kind = "recruitee"
+board = "multitankcard"
+employer = "MultiTankcard"
+
+[[source]]
+kind = "recruitee"
+board = "mvrdv"
+employer = "MVRDV"
+
+[[source]]
+kind = "recruitee"
+board = "myjewellery"
+employer = "My Jewellery"
+
+[[source]]
+kind = "recruitee"
+board = "naktuinbouw"
+employer = "Naktuinbouw"
+
+[[source]]
+kind = "recruitee"
+board = "nearfieldinstruments"
+employer = "Nearfield Instruments"
+
+[[source]]
+kind = "recruitee"
+board = "nedal"
+employer = "Nedal Aluminium"
+
+[[source]]
+kind = "recruitee"
+board = "nepocon"
+employer = "Nepocon B.V."
+
+[[source]]
+kind = "recruitee"
+board = "newdayatwork"
+employer = "Workspace 365 - New Day at Work"
+
+[[source]]
+kind = "recruitee"
+board = "nikon"
+employer = "Nikon Europe B.V."
+
+[[source]]
+kind = "recruitee"
+board = "nmbrs"
+employer = "Nmbrs"
+
+[[source]]
+kind = "recruitee"
+board = "nmicertin"
+employer = "NMi Certin B.V."
+
+[[source]]
+kind = "recruitee"
+board = "nomios"
+employer = "Nomios"
+
+[[source]]
+kind = "recruitee"
+board = "northwave"
+employer = "Northwave Cyber Security"
+
+[[source]]
+kind = "recruitee"
+board = "novar"
+employer = "Novar Nederland BV"
+
+[[source]]
+kind = "recruitee"
+board = "novutech"
+employer = "Novutech"
+
+[[source]]
+kind = "recruitee"
+board = "nts"
+employer = "NTS"
+
+[[source]]
+kind = "recruitee"
+board = "nxfiltration"
+employer = "NX Filtration"
+
+[[source]]
+kind = "recruitee"
+board = "oceansofenergy"
+employer = "Oceans of Energy"
+
+[[source]]
+kind = "recruitee"
+board = "ockto"
+employer = "Ockto"
+
+[[source]]
+kind = "recruitee"
+board = "olenex"
+employer = "Olenex Holdings B.V."
+
+[[source]]
+kind = "recruitee"
+board = "olyx"
+employer = "OLYX"
+
+[[source]]
+kind = "recruitee"
+board = "omybag"
+employer = "O My Bag"
+
+[[source]]
+kind = "recruitee"
+board = "on2it"
+employer = "ON2IT"
+
+[[source]]
+kind = "recruitee"
+board = "onlinepaymentplatform"
+employer = "Online Payment Platform"
+
+[[source]]
+kind = "recruitee"
+board = "onramper"
+employer = "Onramper"
+
+[[source]]
+kind = "recruitee"
+board = "optics11"
+employer = "Optics11"
+
+[[source]]
+kind = "recruitee"
+board = "optics11life"
+employer = "Optics11 Life"
+
+[[source]]
+kind = "recruitee"
+board = "parfumado"
+employer = "Parfumado"
+
+[[source]]
+kind = "recruitee"
+board = "pay"
+employer = "Pay."
+
+[[source]]
+kind = "recruitee"
+board = "payconiq"
+employer = "Payconiq"
+
+[[source]]
+kind = "recruitee"
+board = "paylogic"
+employer = "EVENTIM Benelux"
+
+[[source]]
+kind = "recruitee"
+board = "peterson"
+employer = "Peterson"
+
+[[source]]
+kind = "recruitee"
+board = "phix"
+employer = "PHIX"
+
+[[source]]
+kind = "recruitee"
+board = "portbase"
+employer = "Portbase"
+
+[[source]]
+kind = "recruitee"
+board = "power2x"
+employer = "Power2X"
+
+[[source]]
+kind = "recruitee"
+board = "practical"
+employer = "Practical | Excellence in Finance"
+
+[[source]]
+kind = "recruitee"
+board = "primomarine"
+employer = "Primo Marine"
+
+[[source]]
+kind = "recruitee"
+board = "priva"
+employer = "Priva"
+
+[[source]]
+kind = "recruitee"
+board = "profitap"
+employer = "Profitap"
+
+[[source]]
+kind = "recruitee"
+board = "psv"
+employer = "PSV"
+
+[[source]]
+kind = "recruitee"
+board = "qblox"
+employer = "Qblox"
+
+[[source]]
+kind = "recruitee"
+board = "qbuzz"
+employer = "Qbuzz"
+
+[[source]]
+kind = "recruitee"
+board = "qps"
+employer = "QPS"
+
+[[source]]
+kind = "recruitee"
+board = "qts"
+employer = "Quercus Technical Services"
+
+[[source]]
+kind = "recruitee"
+board = "qualinx"
+employer = "Qualinx"
+
+[[source]]
+kind = "recruitee"
+board = "quandago"
+employer = "QuandaGo International B.V."
+
+[[source]]
+kind = "recruitee"
+board = "quintop"
+employer = "Quintop"
+
+[[source]]
+kind = "recruitee"
+board = "quion"
+employer = "Quion"
+
+[[source]]
+kind = "recruitee"
+board = "quooker"
+employer = "Quooker"
+
+[[source]]
+kind = "recruitee"
+board = "raminfotechnology"
+employer = "RAM Infotechnology"
+
+[[source]]
+kind = "recruitee"
+board = "ravo"
+employer = "RAVO Holding BV"
+
+[[source]]
+kind = "recruitee"
+board = "realworks"
+employer = "Realworks"
+
+[[source]]
+kind = "recruitee"
+board = "resumedia"
+employer = "Resumedia"
+
+[[source]]
+kind = "recruitee"
+board = "rewire"
+employer = "Rewire"
+
+[[source]]
+kind = "recruitee"
+board = "riverflex"
+employer = "Riverflex"
+
+[[source]]
+kind = "recruitee"
+board = "road"
+employer = "Road"
+
+[[source]]
+kind = "recruitee"
+board = "rockfeather"
+employer = "Rockfeather"
+
+[[source]]
+kind = "recruitee"
+board = "rocsys"
+employer = "Rocsys"
+
+[[source]]
+kind = "recruitee"
+board = "rotate"
+employer = "Rotate"
+
+[[source]]
+kind = "recruitee"
+board = "royalswinkels"
+employer = "Royal Swinkels"
+
+[[source]]
+kind = "recruitee"
+board = "rtl"
+employer = "RTL"
+
+[[source]]
+kind = "recruitee"
+board = "sallandengineering"
+employer = "Salland Engineering"
+
+[[source]]
+kind = "recruitee"
+board = "samotics"
+employer = "Samotics B.V."
+
+[[source]]
+kind = "recruitee"
+board = "sanday"
+employer = "Sanday"
+
+[[source]]
+kind = "recruitee"
+board = "sbe"
+employer = "SBE"
+
+[[source]]
+kind = "recruitee"
+board = "scwsystems"
+employer = "SCW Systems"
+
+[[source]]
+kind = "recruitee"
+board = "seenons"
+employer = "Seenons"
+
+[[source]]
+kind = "recruitee"
+board = "shiftbase"
+employer = "SHIFTBASE B.V."
+
+[[source]]
+kind = "recruitee"
+board = "shypple"
+employer = "Shypple"
+
+[[source]]
+kind = "recruitee"
+board = "sidn"
+employer = "SIDN"
+
+[[source]]
+kind = "recruitee"
+board = "siebel"
+employer = "Siebel Juweliers"
+
+[[source]]
+kind = "recruitee"
+board = "sirclecollection"
+employer = "Sircle Collection"
+
+[[source]]
+kind = "recruitee"
+board = "skygeo"
+employer = "SkyGeo"
+
+[[source]]
+kind = "recruitee"
+board = "skytree"
+employer = "SKYTREE"
+
+[[source]]
+kind = "recruitee"
+board = "snappet"
+employer = "Snappet"
+
+[[source]]
+kind = "recruitee"
+board = "solvinity"
+employer = "Solvinity"
+
+[[source]]
+kind = "recruitee"
+board = "source"
+employer = "Source.ag"
+
+[[source]]
+kind = "recruitee"
+board = "spheremall"
+employer = "SphereMall"
+
+[[source]]
+kind = "recruitee"
+board = "spotzer"
+employer = "Spotzer Digital"
+
+[[source]]
+kind = "recruitee"
+board = "sqills"
+employer = "Sqills"
+
+[[source]]
+kind = "recruitee"
+board = "studytube"
+employer = "Studytube"
+
+[[source]]
+kind = "recruitee"
+board = "sunrock"
+employer = "Sunrock Investments B.V."
+
+[[source]]
+kind = "recruitee"
+board = "surfly"
+employer = "Surfly"
+
+[[source]]
+kind = "recruitee"
+board = "swapsupport"
+employer = "Swap Support"
+
+[[source]]
+kind = "recruitee"
+board = "sweco"
+employer = "Sweco Nederland"
+
+[[source]]
+kind = "recruitee"
+board = "sympower"
+employer = "Sympower"
+
+[[source]]
+kind = "recruitee"
+board = "syntho"
+employer = "Syntho"
+
+[[source]]
+kind = "recruitee"
+board = "talk360"
+employer = "Talk360"
+
+[[source]]
+kind = "recruitee"
+board = "tameson"
+employer = "Tameson"
+
+[[source]]
+kind = "recruitee"
+board = "tccglobal"
+employer = "TCC Global"
+
+[[source]]
+kind = "recruitee"
+board = "tdentertainment"
+employer = "TD Entertainment"
+
+[[source]]
+kind = "recruitee"
+board = "teleperformance"
+employer = "Teleperformance Benelux & Surinam"
+
+[[source]]
+kind = "recruitee"
+board = "thefellasads"
+employer = "The Fellas Ads"
+
+[[source]]
+kind = "recruitee"
+board = "thinkwise"
+employer = "Thinkwise"
+
+[[source]]
+kind = "recruitee"
+board = "thisworkz"
+employer = "Thisworkz"
+
+[[source]]
+kind = "recruitee"
+board = "ticketswap"
+employer = "TicketSwap"
+
+[[source]]
+kind = "recruitee"
+board = "tkelevator"
+employer = "TK Elevator Netherlands B.V."
+
+[[source]]
+kind = "recruitee"
+board = "tkhartificialintelligence"
+employer = "TKH AI"
+
+[[source]]
+kind = "recruitee"
+board = "tkhomesolutions"
+employer = "TK Home Solutions"
+
+[[source]]
+kind = "recruitee"
+board = "tonyschocolonely"
+employer = "Tony's Chocolonely"
+
+[[source]]
+kind = "recruitee"
+board = "topicsoftwaredevelopment"
+employer = "Topic Software Development"
+
+[[source]]
+kind = "recruitee"
+board = "tradinorganicagriculture"
+employer = "Tradin Organic Agriculture"
+
+[[source]]
+kind = "recruitee"
+board = "transavia"
+employer = "Transavia"
+
+[[source]]
+kind = "recruitee"
+board = "transferz"
+employer = "Transferz"
+
+[[source]]
+kind = "recruitee"
+board = "transperfect"
+employer = "TransPerfect"
+
+[[source]]
+kind = "recruitee"
+board = "truefullstaq"
+employer = "TrueFullstaq"
+
+[[source]]
+kind = "recruitee"
+board = "trunkrs"
+employer = "Trunkrs"
+
+[[source]]
+kind = "recruitee"
+board = "twintos"
+employer = "Twintos"
+
+[[source]]
+kind = "recruitee"
+board = "uabonline"
+employer = "UAB-Online"
+
+[[source]]
+kind = "recruitee"
+board = "upfront"
+employer = "Upfront"
+
+[[source]]
+kind = "recruitee"
+board = "valori"
+employer = "Valori"
+
+[[source]]
+kind = "recruitee"
+board = "vandebron"
+employer = "Vandebron"
+
+[[source]]
+kind = "recruitee"
+board = "veris"
+employer = "Veris"
+
+[[source]]
+kind = "recruitee"
+board = "vesper"
+employer = "Vesper"
+
+[[source]]
+kind = "recruitee"
+board = "vialis"
+employer = "Vialis"
+
+[[source]]
+kind = "recruitee"
+board = "vibes"
+employer = "Vibes Technology"
+
+[[source]]
+kind = "recruitee"
+board = "vicentra"
+employer = "ViCentra B.V."
+
+[[source]]
+kind = "recruitee"
+board = "vijverberg"
+employer = "Vijverberg"
+
+[[source]]
+kind = "recruitee"
+board = "viktor"
+employer = "VIKTOR"
+
+[[source]]
+kind = "recruitee"
+board = "visualfabriq"
+employer = "Visualfabriq"
+
+[[source]]
+kind = "recruitee"
+board = "vitestro"
+employer = "Vitestro"
+
+[[source]]
+kind = "recruitee"
+board = "volkerrail"
+employer = "VolkerRail"
+
+[[source]]
+kind = "recruitee"
+board = "voortman"
+employer = "Voortman Steel Machinery"
+
+[[source]]
+kind = "recruitee"
+board = "vsparticle"
+employer = "VSPARTICLE B.V."
+
+[[source]]
+kind = "recruitee"
+board = "weeztix"
+employer = "Weeztix"
+
+[[source]]
+kind = "recruitee"
+board = "wefabricate"
+employer = "Wefabricate"
+
+[[source]]
+kind = "recruitee"
+board = "westfortvleesproducten"
+employer = "Westfort Vleesproducten"
+
+[[source]]
+kind = "recruitee"
+board = "windcat"
+employer = "Windcat"
+
+[[source]]
+kind = "recruitee"
+board = "winstontaylor"
+employer = "Winston Taylor N.V."
+
+[[source]]
+kind = "recruitee"
+board = "wonderkind"
+employer = "Wonderkind"
+
+[[source]]
+kind = "recruitee"
+board = "woodwing"
+employer = "WoodWing"
+
+[[source]]
+kind = "recruitee"
+board = "xeltis"
+employer = "Xeltis B.V."
+
+[[source]]
+kind = "recruitee"
+board = "xomnia"
+employer = "Xomnia"
+
+[[source]]
+kind = "recruitee"
+board = "xsens"
+employer = "Xsens"
+
+[[source]]
+kind = "recruitee"
+board = "yellowtail"
+employer = "Yellowtail Conclusion"
+
+[[source]]
+kind = "recruitee"
+board = "yenlo"
+employer = "Yenlo"
+
+[[source]]
+kind = "recruitee"
+board = "ynvolve"
+employer = "the Infinite Group"
+
+[[source]]
+kind = "recruitee"
+board = "youngcolfield"
+employer = "Young Colfield"
+
+[[source]]
+kind = "recruitee"
+board = "youwe"
+employer = "Youwe"
+
+[[source]]
+kind = "recruitee"
+board = "zenchef"
+employer = "Zenchef"
+
+[[source]]
+kind = "recruitee"
+board = "zeromotorcycles"
+employer = "Zero Motorcycles Inc."
+
+[[source]]
+kind = "recruitee"
+board = "zorgdomein"
+employer = "ZorgDomein"
+
+[[source]]
+kind = "recruitee"
+board = "zwarttechniek"
+employer = "Zwart Techniek"
