@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 
 import httpx
 
-from . import db, ingest, matching, register, report
+from . import db, evaluate, ingest, matching, register, report
 
 USER_AGENT = "SponsorRadar/0.1 (+https://github.com/optiplex331/SponsorRadar)"
 
@@ -28,8 +29,14 @@ def main(argv: list[str] | None = None) -> None:
     rep.add_argument("--days", type=int, default=7)
     sub.add_parser("prune", help="delete raw captures older than 14 days that nothing needs")
     sub.add_parser("run", help="migrate, seed, register, collect, match, report, prune")
+    ev = sub.add_parser("evaluate", help="score the rules against labeled pairs and postings")
+    ev.add_argument("--labels", type=Path, required=True, metavar="DIR")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+
+    if args.command == "evaluate":  # reads label files only; no database
+        print(evaluate.evaluate(args.labels))
+        return
 
     with db.connect() as conn, _client() as client:
         steps = ["migrate", "seed", "register", "collect", "match", "report", "prune"] if args.command == "run" else [args.command]

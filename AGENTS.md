@@ -20,6 +20,7 @@ uv run sponsor-radar run                     # migrate, seed, register, collect,
 uv run sponsor-radar collect --only greenhouse:adyen
 uv run sponsor-radar replay                  # re-parse latest raw captures and recompute signals, no network
 uv run sponsor-radar prune                   # drop raw captures unused for 14 days
+uv run sponsor-radar evaluate --labels ../../SponsorRadar-workbench/notes/labels   # score rules; no database
 uv run uvicorn sponsor_radar.web:app --reload --port 8000
 SPONSOR_RADAR_TEST_DATABASE_URL=postgresql://radar:radar@127.0.0.1:5433/radar_test uv run pytest -q
 cd ../frontend && npm ci && npm run dev      # http://localhost:5173, proxies /api to :8000
