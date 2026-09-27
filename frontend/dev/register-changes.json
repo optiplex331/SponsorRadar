@@ -1,0 +1,175 @@
+{
+  "_comment": "Dev-only mock of GET /api/register-changes built from real register rows; the pairing is invented.",
+  "current": {
+    "register_updated_on": "2026-09-03",
+    "captured_at": "2026-09-26T21:01:42.442789+00:00"
+  },
+  "previous": {
+    "register_updated_on": "2026-08-04",
+    "captured_at": "2026-08-05T05:00:00+00:00"
+  },
+  "added_count": 72,
+  "removed_count": 18,
+  "added": [
+    {
+      "kvk_number": "71482288",
+      "organisation": "Crisp",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": [
+        {
+          "employer": "Crisp",
+          "kind": "ashby",
+          "board": "crisp",
+          "open_postings": 1
+        }
+      ]
+    },
+    {
+      "kvk_number": "51208121",
+      "organisation": "Databricks",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": [
+        {
+          "employer": "Databricks",
+          "kind": "greenhouse",
+          "board": "databricks",
+          "open_postings": 18
+        }
+      ]
+    },
+    {
+      "kvk_number": "83000828",
+      "organisation": "Dataiku B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": [
+        {
+          "employer": "Dataiku",
+          "kind": "greenhouse",
+          "board": "dataiku",
+          "open_postings": 1
+        }
+      ]
+    },
+    {
+      "kvk_number": "27239483",
+      "organisation": "Dept Design & Technology B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": [
+        {
+          "employer": "DEPT",
+          "kind": "greenhouse",
+          "board": "dept",
+          "open_postings": 6
+        }
+      ]
+    },
+    {
+      "kvk_number": "54516013",
+      "organisation": "ComOps B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": []
+    },
+    {
+      "kvk_number": "24282858",
+      "organisation": "Global Data Collection Company B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "30120159",
+      "organisation": "Alpla Nederland B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "66873231",
+      "organisation": "Viet Yam B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": []
+    },
+    {
+      "kvk_number": "50741128",
+      "organisation": "Carrière Detachering B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "74486675",
+      "organisation": "Robert Morsink Bouwplan B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "27286953",
+      "organisation": "DENTAL Universe B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": []
+    },
+    {
+      "kvk_number": "34119762",
+      "organisation": "Cyber Freight Amsterdam B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "68483198",
+      "organisation": "Vaneigens B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": false,
+      "tracked": []
+    },
+    {
+      "kvk_number": "08145679",
+      "organisation": "Tandartspraktijk Brummelhuis Oldenzaal B.V.",
+      "first_seen_on": "2026-09-03",
+      "new_sponsor": true,
+      "tracked": []
+    }
+  ],
+  "removed": [
+    {
+      "kvk_number": "33223268",
+      "organisation": "Flow Traders B.V.",
+      "tracked": [
+        {
+          "employer": "Flow Traders",
+          "kind": "greenhouse",
+          "board": "flowtraders",
+          "open_postings": 12
+        }
+      ]
+    },
+    {
+      "kvk_number": "74650475",
+      "organisation": "IDIS Co., Ltd.",
+      "tracked": []
+    },
+    {
+      "kvk_number": "73422134",
+      "organisation": "Ferrovial SE",
+      "tracked": []
+    },
+    {
+      "kvk_number": "74581686",
+      "organisation": "Sharp Jusda Logistics (Netherlands) B.V.",
+      "tracked": []
+    },
+    {
+      "kvk_number": "61873268",
+      "organisation": "Hopmans FlexStay B.V.",
+      "tracked": []
+    }
+  ]
+}

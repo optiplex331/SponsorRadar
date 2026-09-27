@@ -3,15 +3,31 @@ import {
   applyFilters,
   cityOptions,
   DEFAULTS,
+  freshFirst,
+  isDefaultView,
+  isNew,
+  postedAgo,
   readFilters,
   SENIORITIES,
   shortLocation,
+  staleMonths,
   writeFilters,
   type Filters,
   type MatchStatus,
   type Posting,
   type Seniority,
 } from "./filters";
+import {
+  formatSalary,
+  KM_MONTHLY_EUR,
+  KM_SOURCE,
+  KM_TIER_LABEL,
+  KM_TIERS,
+  kmFlag,
+  type KmState,
+  type KmTier,
+} from "./km";
+import { RegisterChanges } from "./RegisterChanges";
 
 interface Status {
   last_collect_at: string | null;
@@ -31,13 +47,41 @@ const SENIORITY_LABEL: Record<Seniority, string> = {
 const MATCH_LABEL: Record<MatchStatus, string> = {
   kvk_confirmed: "KvK confirmed",
   name_inferred: "Name match",
-  unmatched: "Not on register",
+  unmatched: "Employer not on register",
 };
 const MATCH_HINT: Record<MatchStatus, string> = {
   kvk_confirmed: "The employer's KvK number was checked by hand against the IND register.",
   name_inferred: "The employer name matches a register organisation. Check the register before applying.",
-  unmatched: "No register organisation found for this employer.",
+  unmatched:
+    "The employer itself is not on the IND register. The register also lists payroll and employer-of-record firms, so hiring through one of them may still be possible.",
 };
+const KM_LABEL: Record<KmState, string> = {
+  meets: "Meets KM salary",
+  crosses: "KM salary: depends on offer",
+  below: "Below KM salary",
+};
+const euro = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+// The one thing kept in the browser: when this browser last opened the page, to mark new postings.
+// It never leaves the browser, and storage may be blocked, so every access is guarded.
+const LAST_VISIT_KEY = "lastVisit";
+
+function readLastVisit(): number | null {
+  try {
+    const value = Number(window.localStorage.getItem(LAST_VISIT_KEY));
+    return value > 0 ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeLastVisit(now: number): void {
+  try {
+    window.localStorage.setItem(LAST_VISIT_KEY, String(now));
+  } catch {
+    // Private mode or blocked storage: no "new" marks next time, nothing else changes.
+  }
+}
 
 const dayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const fullDayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -62,6 +106,9 @@ export default function App() {
   const [status, setStatus] = useState<Status | null | undefined>(undefined); // undefined: loading, null: failed
   const [error, setError] = useState<string | null>(null);
   const [shown, setShown] = useState(PAGE);
+  const [lastVisit] = useState(readLastVisit);
+
+  useEffect(() => writeLastVisit(Date.now()), []);
 
   useEffect(() => {
     getJson<Posting[]>("/api/postings").then(setPostings, () =>
@@ -76,7 +123,7 @@ export default function App() {
     setShown(PAGE);
   }, [filters]);
 
-  const results = useMemo(() => (postings ? applyFilters(postings, filters) : []), [postings, filters]);
+  const results = useMemo(() => (postings ? freshFirst(applyFilters(postings, filters)) : []), [postings, filters]);
   const cities = useMemo(() => (postings ? cityOptions(postings) : []), [postings]);
   const update = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
   const toggleSeniority = (s: Seniority) =>
@@ -85,7 +132,11 @@ export default function App() {
         ? filters.seniority.filter((x) => x !== s)
         : SENIORITIES.filter((x) => x === s || filters.seniority.includes(x)),
     });
-  const isDefault = writeFilters(filters) === "";
+  const isDefault = isDefaultView(filters);
+  const showEmployer = (employer: string, delisted: boolean) => {
+    update({ q: employer, ...(delisted ? { sponsor: "all" as const } : {}) });
+    window.scrollTo({ top: 0 });
+  };
 
   return (
     <>
@@ -98,6 +149,10 @@ export default function App() {
           <p className="lede">
             Tech jobs in the Netherlands at employers on the IND register of recognised sponsors for the
             highly skilled migrant permit.
+          </p>
+          <p className="default-note">
+            By default the list shows roles asking for 2 years of experience or less (or not saying), at employers on
+            the register, without a Dutch requirement, and hides postings that rule out visa sponsorship.
           </p>
           <StatusLine status={status} />
         </div>
@@ -135,10 +190,10 @@ export default function App() {
             <label htmlFor="years">Experience asked</label>
             <select
               id="years"
-              value={filters.maxYears ?? ""}
-              onChange={(e) => update({ maxYears: e.target.value === "" ? null : Number(e.target.value) })}
+              value={filters.maxYears ?? "any"}
+              onChange={(e) => update({ maxYears: e.target.value === "any" ? null : Number(e.target.value) })}
             >
-              <option value="">Any</option>
+              <option value="any">Any</option>
               {[0, 1, 2, 3, 5].map((n) => (
                 <option key={n} value={n}>
                   {n === 0 ? "No experience" : `Up to ${n} ${n === 1 ? "year" : "years"}`}
@@ -172,15 +227,49 @@ export default function App() {
               ))}
             </div>
           </fieldset>
-          <label className="toggle">
-            <input
-              type="checkbox"
-              checked={filters.hideDutch}
-              onChange={(e) => update({ hideDutch: e.target.checked })}
-            />
-            <span>Hide jobs that require Dutch</span>
-          </label>
+          <div className="field field-km">
+            <label htmlFor="km">KM salary check</label>
+            <select
+              id="km"
+              value={filters.km ?? ""}
+              onChange={(e) => update({ km: (e.target.value || null) as KmTier | null })}
+            >
+              <option value="">Off</option>
+              {KM_TIERS.map((t) => (
+                <option key={t} value={t}>
+                  {KM_TIER_LABEL[t]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="toggles">
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={filters.hideDutch}
+                onChange={(e) => update({ hideDutch: e.target.checked })}
+              />
+              <span>Hide jobs that require Dutch</span>
+            </label>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={!filters.showRefusesVisa}
+                onChange={(e) => update({ showRefusesVisa: !e.target.checked })}
+              />
+              <span>Hide jobs that rule out visa sponsorship</span>
+            </label>
+          </div>
         </form>
+
+        {filters.km && (
+          <p className="km-note">
+            Salary check against the IND highly skilled migrant threshold for 2026, {KM_TIER_LABEL[filters.km].toLowerCase()}:{" "}
+            <strong>{euro.format(KM_MONTHLY_EUR[filters.km])}</strong> gross a month, without holiday allowance. Only
+            postings with a salary in euros per month or year get a mark; yearly figures are divided by 12.{" "}
+            <a href={KM_SOURCE}>IND required amounts</a>.
+          </p>
+        )}
 
         <div className="results-bar">
           <p className="count" aria-live="polite">
@@ -195,7 +284,7 @@ export default function App() {
             )}
           </p>
           {!isDefault && (
-            <button type="button" className="reset" onClick={() => setFilters(DEFAULTS)}>
+            <button type="button" className="reset" onClick={() => setFilters({ ...DEFAULTS, km: filters.km })}>
               Reset filters
             </button>
           )}
@@ -208,7 +297,7 @@ export default function App() {
 
         <ol className="postings">
           {results.slice(0, shown).map((p) => (
-            <PostingRow key={p.id} posting={p} />
+            <PostingRow key={p.id} posting={p} km={filters.km} isNew={isNew(p, lastVisit)} />
           ))}
         </ol>
 
@@ -217,6 +306,8 @@ export default function App() {
             Show {Math.min(PAGE, results.length - shown)} more
           </button>
         )}
+
+        <RegisterChanges onShowEmployer={showEmployer} />
       </main>
 
       <footer className="wrap footer">
@@ -225,8 +316,10 @@ export default function App() {
           <a href="https://ind.nl/en/public-register-recognised-sponsors/public-register-regular-labour-and-highly-skilled-migrants">
             IND public register
           </a>{" "}
-          automatically. Dutch and experience hints are read from the posting text and can be wrong. No cookies, no
-          tracking. <a href="https://github.com/optiplex331/SponsorRadar">Source on GitHub</a>.
+          automatically. Dutch, experience, and sponsorship hints are read from the posting text and can be wrong. Salary
+          checks use the amounts the job board states and are not advice; check the{" "}
+          <a href={KM_SOURCE}>IND required amounts</a> before applying. No cookies, no tracking: your browser only
+          remembers when you last visited, to mark new postings, and never sends it to us. <a href="https://github.com/optiplex331/SponsorRadar">Source on GitHub</a>.
         </p>
       </footer>
     </>
@@ -256,13 +349,17 @@ function StatusLine({ status }: { status: Status | null | undefined }) {
   );
 }
 
-function PostingRow({ posting: p }: { posting: Posting }) {
+function PostingRow({ posting: p, km, isNew }: { posting: Posting; km: KmTier | null; isNew: boolean }) {
   const orgs = p.register_organisations;
   const date = p.published_at ?? p.first_seen_at;
+  const months = staleMonths(p);
+  const salary = formatSalary(p);
+  const flag = km ? kmFlag(p, km) : null;
   return (
     <li className="posting">
       <div className="posting-main">
         <h2 className="posting-title">
+          {isNew && <span className="new-mark">New</span>}
           <a href={p.url} target="_blank" rel="noopener noreferrer">
             {p.title}
           </a>
@@ -272,12 +369,33 @@ function PostingRow({ posting: p }: { posting: Posting }) {
           <span className={`match match-${p.match_status}`} title={MATCH_HINT[p.match_status]}>
             {MATCH_LABEL[p.match_status]}
           </span>
+          {p.sponsorship_stance === "offers" && (
+            <span className="stance-offers" title="The posting states visa or relocation support.">
+              Visa or relocation support
+            </span>
+          )}
         </p>
+        {p.delisted_on ? (
+          <p className="register-note">Removed from register on {fullDayFormat.format(new Date(p.delisted_on))}</p>
+        ) : (
+          p.match_status === "unmatched" && (
+            <p className="register-note">
+              Employer itself is not on the register; hiring through a payroll or employer-of-record firm may still be
+              possible.
+            </p>
+          )
+        )}
         {orgs.length > 0 && (
           <p className="register-orgs" title={orgs.join("\n")}>
             Register: {orgs.slice(0, 2).join(", ")}
             {orgs.length > 2 && ` +${orgs.length - 2}`}
           </p>
+        )}
+        {p.sponsorship_stance === "refuses_relocation" && (
+          <p className="stance-note">No relocation support: fine if you already live in the Netherlands.</p>
+        )}
+        {p.sponsorship_stance === "refuses_visa" && (
+          <p className="stance-note stance-refuses">The posting rules out visa sponsorship.</p>
         )}
       </div>
       <ul className="posting-meta" aria-label="Details">
@@ -285,8 +403,21 @@ function PostingRow({ posting: p }: { posting: Posting }) {
         {p.location && <li className="location">{shortLocation(p.location)}</li>}
         {p.min_years !== null && <li className="hint">{p.min_years}+ yrs asked</li>}
         {p.dutch_required && <li className="hint hint-dutch">Dutch required</li>}
-        <li className="date">
-          <time dateTime={date}>{formatDay(date)}</time>
+        {salary && <li className="salary">{salary}</li>}
+        {flag && (
+          <li className={`km km-${flag.state}`} title={`IND threshold ${euro.format(flag.threshold)} gross a month`}>
+            {KM_LABEL[flag.state]}
+            {flag.checkHolidayAllowance && <span className="km-check">check: IND excludes the 8% holiday allowance</span>}
+          </li>
+        )}
+        <li className={months === null ? "date" : "date date-stale"}>
+          {months === null ? (
+            <time dateTime={date}>{formatDay(date)}</time>
+          ) : (
+            <time dateTime={date} title={fullDayFormat.format(new Date(date))}>
+              Posted {postedAgo(months)} ago
+            </time>
+          )}
         </li>
       </ul>
     </li>
