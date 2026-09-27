@@ -66,3 +66,39 @@ def test_index_counts_page_views(client, conn):
     client.get("/?seniority=junior")
 
     assert conn.execute("SELECT sum(views) AS n FROM page_views").fetchone()["n"] == 2
+
+
+def test_postings_carry_delisted_date(client, conn):
+    source_id = conn.execute(
+        "INSERT INTO sources (kind, board, employer_name) VALUES ('greenhouse', 'acme', 'Acme') RETURNING id"
+    ).fetchone()["id"]
+    snapshot_id = conn.execute(
+        "INSERT INTO register_snapshots (content_sha256, register_updated_on, raw_html) VALUES ('a', '2026-09-03', '') RETURNING id"
+    ).fetchone()["id"]
+    conn.execute(
+        "INSERT INTO sponsor_matches (source_id, snapshot_id, status, kvk_numbers, organisations, delisted_on) "
+        "VALUES (%s, %s, 'unmatched', '{00123456}', '{Acme B.V.}', '2026-09-03')",
+        (source_id, snapshot_id),
+    )
+    _posting(conn, source_id, "open")
+    conn.commit()
+
+    (row,) = client.get("/api/postings").json()
+
+    assert row["match_status"] == "unmatched"
+    assert row["delisted_on"] == "2026-09-03"
+
+
+def test_register_changes_with_one_snapshot(client, conn):
+    conn.execute(
+        "INSERT INTO register_snapshots (content_sha256, register_updated_on, raw_html) VALUES ('a', '2026-09-03', '')"
+    )
+    conn.commit()
+
+    response = client.get("/api/register-changes")
+    body = response.json()
+
+    assert response.headers["cache-control"] == "public, max-age=300"
+    assert body["current"]["register_updated_on"] == "2026-09-03"
+    assert body["previous"] is None
+    assert (body["added_count"], body["removed_count"], body["added"], body["removed"]) == (0, 0, [], [])

@@ -41,7 +41,17 @@ def normalize_employer_name(name: str) -> str:
 
 
 def match_sources(conn: psycopg.Connection) -> dict[str, int]:
-    snapshot = conn.execute("SELECT id FROM register_snapshots ORDER BY captured_at DESC LIMIT 1").fetchone()
+    """Link every source to the live (latest captured) snapshot.
+
+    A matched source whose KvKs all left the register becomes `unmatched` with `delisted_on` set; it keeps
+    its old KvKs and organisations so the page and the register-changes view can say what was removed.
+    """
+    snapshot = conn.execute(
+        """
+        SELECT id, coalesce(register_updated_on, (captured_at AT TIME ZONE 'UTC')::date) AS updated_on
+        FROM register_snapshots ORDER BY captured_at DESC LIMIT 1
+        """
+    ).fetchone()
     if snapshot is None:
         raise RuntimeError("no register snapshot; run `sponsor-radar register` first")
     entries = conn.execute(
@@ -55,9 +65,16 @@ def match_sources(conn: psycopg.Connection) -> dict[str, int]:
             by_key[key].append((e["kvk_number"], e["organisation"]))
 
     counts: dict[str, int] = defaultdict(int)
+    sources = conn.execute(
+        """
+        SELECT s.id, s.employer_name, s.kvk_number, m.status AS old_status, m.kvk_numbers AS old_kvks,
+               m.organisations AS old_orgs, m.delisted_on AS old_delisted_on
+        FROM sources s LEFT JOIN sponsor_matches m ON m.source_id = s.id
+        """
+    ).fetchall()
     conn.commit()  # end the read transaction so the block below commits on its own
     with conn.transaction():
-        for source in conn.execute("SELECT id, employer_name, kvk_number FROM sources").fetchall():
+        for source in sources:
             if source["kvk_number"]:
                 # A verified KvK that is absent from the register means the employer is not a sponsor.
                 orgs = by_kvk.get(source["kvk_number"], [])
@@ -66,14 +83,22 @@ def match_sources(conn: psycopg.Connection) -> dict[str, int]:
                 candidates = by_key.get(normalize_employer_name(source["employer_name"]), [])
                 kvks, orgs = [c[0] for c in candidates], [c[1] for c in candidates]
                 status = "name_inferred" if candidates else "unmatched"
+            delisted_on = None
+            was_linked = source["old_status"] in ("kvk_confirmed", "name_inferred") or source["old_delisted_on"]
+            if status == "unmatched" and was_linked and source["old_kvks"] and not any(k in by_kvk for k in source["old_kvks"]):
+                # Every KvK it was linked to left the register: keep them, and the first date it was seen gone.
+                kvks, orgs = source["old_kvks"], source["old_orgs"]
+                delisted_on = source["old_delisted_on"] or snapshot["updated_on"]
             conn.execute(
                 """
-                INSERT INTO sponsor_matches (source_id, snapshot_id, status, kvk_numbers, organisations)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO sponsor_matches (source_id, snapshot_id, status, kvk_numbers, organisations, delisted_on)
+                VALUES (%s, %s, %s, %s, %s, %s)
                 ON CONFLICT (source_id) DO UPDATE SET snapshot_id = EXCLUDED.snapshot_id, status = EXCLUDED.status,
-                    kvk_numbers = EXCLUDED.kvk_numbers, organisations = EXCLUDED.organisations, decided_at = now()
+                    kvk_numbers = EXCLUDED.kvk_numbers, organisations = EXCLUDED.organisations,
+                    delisted_on = EXCLUDED.delisted_on, decided_at = now()
                 """,
-                (source["id"], snapshot["id"], status, kvks, orgs),
+                (source["id"], snapshot["id"], status, kvks, orgs, delisted_on),
             )
             counts[status] += 1
+            counts["delisted"] += bool(delisted_on)
     return dict(counts)

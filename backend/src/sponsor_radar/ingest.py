@@ -98,28 +98,34 @@ def apply_postings(
     )
 
 
-# Minimum seconds between requests per ATS. Recruitee rate-limits across all company
+# Minimum seconds between requests per host kind. Recruitee rate-limits across all company
 # subdomains together and sends no Retry-After; ~250 requests at full speed hit 429.
-MIN_INTERVAL = {"recruitee": 1.0, "greenhouse": 0.2, "ashby": 0.2}
+# archive.org asks crawlers to stay near one request per second.
+MIN_INTERVAL = {"recruitee": 1.0, "greenhouse": 0.2, "ashby": 0.2, "archive": 1.0}
 RETRY_DELAYS = (5.0, 15.0, 45.0)
 _last_request: dict[str, float] = {}
 
 
-def fetch_json(client: httpx.Client, kind: str, url: str, sleep=time.sleep, clock=time.monotonic) -> dict:
+def paced_get(client: httpx.Client, kind: str, url: str, sleep=time.sleep, clock=time.monotonic, **kwargs) -> httpx.Response:
+    """GET at the `MIN_INTERVAL` pace for `kind`, backing off on 429/503; raises on any other error status."""
     for attempt in range(len(RETRY_DELAYS) + 1):
         wait = _last_request.get(kind, float("-inf")) + MIN_INTERVAL[kind] - clock()
         if wait > 0:
             sleep(wait)
         _last_request[kind] = clock()
-        response = client.get(url)
+        response = client.get(url, **kwargs)
         if response.status_code not in (429, 503) or attempt == len(RETRY_DELAYS):
             response.raise_for_status()
-            return response.json()
+            return response
         retry_after = response.headers.get("Retry-After", "")
         delay = float(retry_after) if retry_after.isdigit() else RETRY_DELAYS[attempt]
         log.info("%s %s returned %s; retrying in %.0fs", kind, url, response.status_code, delay)
         sleep(delay)
     raise AssertionError("unreachable")
+
+
+def fetch_json(client: httpx.Client, kind: str, url: str, sleep=time.sleep, clock=time.monotonic) -> dict:
+    return paced_get(client, kind, url, sleep=sleep, clock=clock).json()
 
 
 def collect_source(conn: psycopg.Connection, client: httpx.Client, source: dict) -> RunResult:
