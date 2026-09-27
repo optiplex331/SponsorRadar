@@ -35,3 +35,36 @@ def test_parses_register_rows_and_update_date():
     assert all(len(e.kvk_number) == 8 for e in entries)
     assert "A&S System Integrators B.V." in {e.organisation for e in entries}
     assert updated_on.isoformat() == "2026-09-03"
+
+
+def test_recruitee_salary_periods():
+    postings = {p.external_id: p for p in recruitee.parse(load_fixture("recruitee_northwave.json"))}
+
+    monthly, hourly, yearly, empty = postings["2756160"], postings["2738715"], postings["2701927"], postings["1733171"]
+    assert (monthly.salary_min, monthly.salary_max, monthly.salary_currency, monthly.salary_period) == (
+        2625, 4000, "EUR", "month")
+    assert (hourly.salary_min, hourly.salary_max, hourly.salary_period) == (16, 17, "hour")
+    assert (yearly.salary_min, yearly.salary_max, yearly.salary_period) == (47000, 60000, "year")
+    # A period without amounts is no salary.
+    assert (empty.salary_min, empty.salary_max, empty.salary_currency, empty.salary_period) == (None, None, None, None)
+
+
+def test_ashby_compensation():
+    sentry = {p.title: p for p in ashby.parse(load_fixture("ashby_sentry.json"))}
+    yearly, monthly = sentry["Sales Engineer"], sentry["Software Engineer, Intern (Summer 2027)"]
+    assert (yearly.salary_min, yearly.salary_max, yearly.salary_currency, yearly.salary_period) == (
+        91000, 124000, "EUR", "year")
+    assert (monthly.salary_min, monthly.salary_max, monthly.salary_period) == (2800, 3285, "month")
+
+    # Only US tiers: the range spans both tiers and keeps its currency, so the page shows no EUR comparison.
+    [clickhouse] = ashby.parse(load_fixture("ashby_clickhouse.json"))
+    assert (clickhouse.salary_min, clickhouse.salary_max, clickhouse.salary_currency, clickhouse.salary_period) == (
+        195000, 260000, "USD", "year")
+
+    # Boards without compensation data and Greenhouse boards leave salary empty.
+    assert all(p.salary_min is None for p in ashby.parse(load_fixture("ashby_mollie.json")))
+    assert all(p.salary_period is None for p in greenhouse.parse(load_fixture("greenhouse_flowtraders.json")))
+
+
+def test_ashby_board_url_requests_compensation():
+    assert ashby.board_url("sentry").endswith("/sentry?includeCompensation=true")

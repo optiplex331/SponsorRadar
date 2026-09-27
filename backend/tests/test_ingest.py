@@ -4,7 +4,7 @@ import copy
 
 import httpx
 
-from sponsor_radar.collectors import greenhouse
+from sponsor_radar.collectors import greenhouse, recruitee
 from sponsor_radar.ingest import apply_postings, collect_source, prune, replay, store_raw_capture
 
 from conftest import load_fixture
@@ -70,6 +70,28 @@ def test_replay_rebuilds_postings_from_raw_captures(conn):
     replay(conn)
 
     assert _postings(conn) == before
+
+
+def test_replay_fills_salary_and_stance(conn):
+    source_id = conn.execute(
+        "INSERT INTO sources (kind, board, employer_name) VALUES ('recruitee', 'northwave', 'Northwave') RETURNING id"
+    ).fetchone()["id"]
+    payload = load_fixture("recruitee_northwave.json")
+    raw_id = store_raw_capture(conn, source_id, payload)
+    apply_postings(conn, source_id, raw_id, recruitee.parse(payload))
+    conn.execute("INSERT INTO fetch_runs (source_id, finished_at, ok, raw_capture_id) VALUES (%s, now(), true, %s)",
+                 (source_id, raw_id))
+    conn.execute("UPDATE job_postings SET salary_min = NULL, salary_period = NULL, sponsorship_stance = NULL")
+    conn.commit()
+
+    replay(conn)
+
+    row = conn.execute(
+        "SELECT salary_min, salary_max, salary_currency, salary_period, sponsorship_stance FROM job_postings "
+        "WHERE external_id = '2756160'"
+    ).fetchone()
+    assert (row["salary_min"], row["salary_max"], row["salary_currency"], row["salary_period"]) == (2625, 4000, "EUR", "month")
+    assert row["sponsorship_stance"] in {"offers", "refuses_visa", "refuses_relocation", "silent"}
 
 
 def test_replay_picks_up_capture_whose_parse_failed(conn, monkeypatch):

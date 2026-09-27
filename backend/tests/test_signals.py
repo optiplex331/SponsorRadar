@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from sponsor_radar.signals import dutch_required, min_years
+from sponsor_radar.signals import dutch_required, min_years, sponsorship_stance
 
 DUTCH_REQUIRED = [
     "You are fluent in Dutch and English.",
@@ -70,3 +70,58 @@ def test_mostly_dutch_description_requires_dutch():
 )
 def test_min_years(text, expected):
     assert min_years(text) == expected
+
+
+# Sponsorship stance. Sentences marked SP (Schuberg Philis) and Sytac are copied from their live postings.
+STANCE = [
+    # refuses_visa
+    ("Currently we do not offer visa sponsorship.", "refuses_visa"),  # SP
+    ("We bieden geen relocatie of visumsponsoring en nemen geen sollicitaties vanuit het buitenland in behandeling.",
+     "refuses_visa"),  # SP
+    ("No sponsorship is available, and candidates must already reside in the Netherlands.", "refuses_visa"),  # Sytac
+    ("Fluent in English + EU residency (no sponsorship).", "refuses_visa"),  # Sytac
+    ("Unfortunately we are unable to sponsor a work permit for this role.", "refuses_visa"),
+    ("You must already have the right to work in the Netherlands.", "refuses_visa"),
+    ("Valid EU work permit required.", "refuses_visa"),
+    ("Een geldige werkvergunning is vereist; werkvergunning vereist voor deze rol.", "refuses_visa"),
+    ("Please note: we don’t offer visa sponsorship.", "refuses_visa"),
+    # offers
+    ("For this role we offer relocation support and more information about our perks can be found on our What we "
+     "offer page.", "offers"),  # SP
+    ("Visa sponsorship available for eligible candidates.", "offers"),
+    ("We can sponsor your visa as a recognised kennismigrant sponsor.", "offers"),
+    ("We provide a relocation package and full visa sponsorship for international hires.", "offers"),
+    # refuses_relocation
+    ("We do not provide relocation sponsorship.", "refuses_relocation"),  # SP
+    ("At this moment we are not providing relocation sponsorships.", "refuses_relocation"),  # SP
+    ("Please note: At this point we are only considering applications from candidates currently based in the "
+     "Netherlands.", "refuses_relocation"),  # SP
+    ("NL residency required, expats already living and working in the Netherlands are very welcome.",
+     "refuses_relocation"),  # Sytac
+    ("Please note: we don’t offer relocation support for this role.", "refuses_relocation"),
+    ("You must be based in the Netherlands.", "refuses_relocation"),
+    # silent: the phrases appear but state no stance
+    ("Whether or not you need visa sponsorship, we would love to hear from you.", "silent"),
+    ("IMC is unable to obtain immigration sponsorship for candidates who currently have citizenship from Russia.",
+     "silent"),
+    ("You are based in the Netherlands, have an EU passport, or have a partner / highly skilled migrant visa here.",
+     "refuses_relocation"),
+    ("You are preferably already living in the Netherlands.", "silent"),
+    ("Based in Amsterdam, or willing to relocate.", "silent"),
+    ("Company-sponsored sports teams and a relocation of our office to Utrecht.", "silent"),
+    ("Experience integrating card networks such as Visa and Mastercard.", "silent"),
+    ("We work with highly skilled engineers on our platform.", "silent"),
+]
+
+
+@pytest.mark.parametrize(("text", "stance"), STANCE)
+def test_sponsorship_stance(text, stance):
+    assert sponsorship_stance(f"About the role\nWe build payment software for merchants.\n{text}") == stance
+
+
+def test_stance_precedence():
+    offer = "We offer a relocation package."
+    assert sponsorship_stance(f"{offer}\nWe do not offer visa sponsorship.") == "refuses_visa"
+    assert sponsorship_stance(f"{offer}\nYou must be based in the Netherlands.") == "offers"
+    # A negation in another sentence does not void an offer.
+    assert sponsorship_stance(f"No recruiters please.\n{offer}") == "offers"

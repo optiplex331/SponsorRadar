@@ -1,0 +1,97 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "eb0f2127-9dd0-4a3b-8f7d-f0d4f728312c",
+      "title": "Core Software Engineer (C++) - Remote",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "The Netherlands",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-01-16T17:54:21.480+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Remote",
+      "address": null,
+      "jobUrl": "https://jobs.ashbyhq.com/clickhouse/eb0f2127-9dd0-4a3b-8f7d-f0d4f728312c",
+      "applyUrl": "https://jobs.ashbyhq.com/clickhouse/eb0f2127-9dd0-4a3b-8f7d-f0d4f728312c/application",
+      "descriptionHtml": "<p style=\"min-height:1.5em\">NOTE: this role can be located anywhere ClickHouse has a hiring presence.</p><div style=\"min-height:1.2em;margin-top:0;margin-bottom:0\"> </div><p style=\"min-height:1.5em\">With over 49,000 stars on<a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://github.com/ClickHouse\"> GitHub</a>, ClickHouse is the fastest and most resource efficient open-source databa",
+      "descriptionPlain": "NOTE: this role can be located anywhere ClickHouse has a hiring presence.\n\n \n\nWith over 49,000 stars on GitHub https://github.com/ClickHouse, ClickHouse is the fastest and most resource efficient open-source database for real-time apps and analytics. Our Core Engineering teams own the heart of our ClickHouse Open Source project.  We are looking for exceptional C++ engineers to join our remote-firs",
+      "compensation": {
+        "compensationTierSummary": "$195K – $260K • Offers Equity • Multiple Ranges",
+        "scrapeableCompensationSalarySummary": "$195K - $260K",
+        "compensationTiers": [
+          {
+            "id": "72e83d27-a4c3-4748-81af-f40010929e11",
+            "tierSummary": "$215K – $260K • Offers Equity",
+            "title": "US Premium (SF, NYC, Sea, LA)",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "f9cff532-3927-4c32-b529-85a7527e834e",
+                "summary": "$215K – $260K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 215000,
+                "maxValue": 260000
+              },
+              {
+                "id": "821217ec-45e7-41d7-9648-e687fc6f3245",
+                "summary": "Offers Equity",
+                "compensationType": "EquityPercentage",
+                "interval": "NONE",
+                "currencyCode": null,
+                "minValue": null,
+                "maxValue": null
+              }
+            ]
+          },
+          {
+            "id": "34bb043c-f95d-47dd-a4db-7c4dc69010dc",
+            "tierSummary": "$195K – $245K • Offers Equity",
+            "title": "All other US locations",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "e437e8ef-efea-4d95-8f01-bfc901951c48",
+                "summary": "Offers Equity",
+                "compensationType": "EquityPercentage",
+                "interval": "NONE",
+                "currencyCode": null,
+                "minValue": null,
+                "maxValue": null
+              },
+              {
+                "id": "622e9457-5a41-48ae-bc36-54e4d204df47",
+                "summary": "$195K – $245K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 195000,
+                "maxValue": 245000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "minValue": 195000,
+            "maxValue": 260000,
+            "currencyCode": "USD",
+            "interval": "1 YEAR",
+            "compensationType": "Salary"
+          },
+          {
+            "compensationType": "EquityPercentage",
+            "minValue": null,
+            "maxValue": null,
+            "interval": "1 YEAR"
+          }
+        ]
+      }
+    }
+  ]
+}

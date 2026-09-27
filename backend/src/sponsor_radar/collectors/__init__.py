@@ -13,6 +13,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from html.parser import HTMLParser
 from types import ModuleType
+from typing import Literal
+
+SalaryPeriod = Literal["year", "month", "hour"]
 
 
 @dataclass(frozen=True)
@@ -25,6 +28,11 @@ class Posting:
     department: str | None
     description: str
     published_at: datetime | None
+    # Structured salary as the ATS states it; only Recruitee and Ashby expose one.
+    salary_min: float | None = None
+    salary_max: float | None = None
+    salary_currency: str | None = None
+    salary_period: SalaryPeriod | None = None
 
 
 NL_PLACES = (
@@ -68,6 +76,21 @@ def parse_time(value: str | None) -> datetime | None:
     if not value:
         return None
     return datetime.fromisoformat(value.replace(" UTC", "+00:00"))
+
+
+def salary_amounts(low, high) -> tuple[float | None, float | None]:
+    """Positive amounts as floats; zero or missing means not stated. A single value is kept on its own side."""
+    def amount(value) -> float | None:
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            return None
+        return number if number > 0 else None
+
+    low, high = amount(low), amount(high)
+    if low is not None and high is not None and low > high:
+        low, high = high, low
+    return low, high
 
 
 def module_for(kind: str) -> ModuleType:

@@ -24,8 +24,10 @@ def _posting(conn, source_id, external_id, **overrides):
     conn.execute(
         """
         INSERT INTO job_postings (source_id, external_id, title, url, location, in_netherlands, description,
-                                  raw_capture_id, seniority, is_tech, dutch_required, min_years, closed_at)
-        VALUES (%s, %s, %s, 'https://example.com', 'Amsterdam', %s, 'secret description', %s, 'junior', %s, false, 2, %s)
+                                  raw_capture_id, seniority, is_tech, dutch_required, min_years, closed_at,
+                                  sponsorship_stance, salary_min, salary_max, salary_currency, salary_period)
+        VALUES (%s, %s, %s, 'https://example.com', 'Amsterdam', %s, 'secret description', %s, 'junior', %s, false, 2, %s,
+                'refuses_relocation', 4000, 5500, 'EUR', 'month')
         """,
         (source_id, external_id, f"Engineer {external_id}", values["in_netherlands"], raw_id, values["is_tech"],
          values["closed_at"]),
@@ -48,6 +50,9 @@ def test_postings_lists_only_open_nl_tech(client, conn):
     assert rows[0]["employer"] == "Acme"
     assert rows[0]["match_status"] == "unmatched"
     assert rows[0]["register_organisations"] == []
+    assert rows[0]["sponsorship_stance"] == "refuses_relocation"
+    assert (rows[0]["salary_min"], rows[0]["salary_max"], rows[0]["salary_currency"], rows[0]["salary_period"]) == (
+        4000, 5500, "EUR", "month")
     assert "description" not in rows[0]
 
 

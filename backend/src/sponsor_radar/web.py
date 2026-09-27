@@ -28,7 +28,8 @@ POSTINGS_SQL = """
 SELECT coalesce(json_agg(t ORDER BY coalesce(t.published_at, t.first_seen_at) DESC, t.id DESC), '[]')::text AS body
 FROM (
     SELECT p.id, p.title, p.url, p.location, p.department, p.published_at, p.first_seen_at,
-           p.seniority, p.dutch_required, p.min_years, s.employer_name AS employer,
+           p.seniority, p.dutch_required, p.min_years, p.sponsorship_stance,
+           p.salary_min, p.salary_max, p.salary_currency, p.salary_period, s.employer_name AS employer,
            coalesce(m.status, 'unmatched') AS match_status,
            coalesce(m.organisations, '{}') AS register_organisations
     FROM job_postings p

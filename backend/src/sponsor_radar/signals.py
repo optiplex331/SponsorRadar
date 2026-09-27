@@ -116,3 +116,94 @@ def min_years(description: str) -> int | None:
             if n <= 15:
                 found.append(n)
     return min(found) if found else None
+
+
+# Sponsorship stance: explicit phrases only, judged per sentence so a negation elsewhere never flips a phrase.
+# Precedence refuses_visa > offers > refuses_relocation > silent: one refusal outweighs generic perks text.
+Stance = Literal["offers", "refuses_visa", "refuses_relocation", "silent"]
+
+_WHERE = r"(?:the\s+)?(?:netherlands|nl|eu|eea|european union|europe|here)\b"
+_IN_NL = r"in\s+(?:the\s+)?netherlands\b"
+_NEGATOR = (r"(?<!or )\b(?:no|not|unable to|cannot|can ?not|can['’]t|won['’]t|will not|don['’]t|do not|does not|doesn['’]t|"
+            r"are not able to|aren['’]t able to|is not|isn['’]t|are not|aren['’]t)")
+_REFUSES_VISA = re.compile(
+    "|".join((
+        # "we do not offer visa sponsorship", "unable to sponsor", "(no sponsorship)"; "relocation sponsorship" is relocation
+        rf"{_NEGATOR}(?:\s+\w+){{0,4}}?\s+(?<!relocation )(?:visa\s+|immigration\s+|work permit\s+)?sponsor(?:ship|ing|ed)?s?\b",
+        rf"{_NEGATOR}(?:\s+\w+){{0,3}}?\s+(?:support|assist with|help with)\s+(?:\w+\s+)?(?:visa|work permit|residency)",
+        r"\b(?:visa\s+)?sponsorship\s+(?:is\s+|will\s+)?(?:\w+\s+)?(?:not|un)\s*(?:be\s+)?(?:available|provided|offered|possible)",
+        r"\bwithout\s+(?:the\s+need\s+for\s+|requiring\s+|needing\s+|any\s+)?(?:visa\s+|company\s+)?sponsorship",
+        # "must already have the right to work in the Netherlands", "with the right to work in the EU"
+        rf"\b(?:must|need to|should|required to|with|who)\s+(?:already\s+)?(?:have|hold|possess|be granted)?\s*"
+        rf"(?:the\s+|a\s+|valid\s+|full\s+|legal\s+)*(?:right|authori[sz]ation|permission|permit|eligibility)\s+to\s+work\s+"
+        rf"(?:in\s+|within\s+)?{_WHERE}",
+        rf"\b(?:allowed|authori[sz]ed|eligible|permitted)\s+to\s+work\s+(?:in|within)\s+{_WHERE}",
+        r"\b(?:have|hold|holds|possess)\s+an?\s+(?:valid|existing)\s+(?:\w+\s+){0,3}?"
+        r"(?:work\s+permit|work\s+visa|residence\s+permit|visa\s+to\s+work)",
+        r"\bvalid\s+(?:eu\s+|eea\s+|dutch\s+)?work\s+permit\s+(?:is\s+)?(?:required|mandatory|needed)",
+        r"\b(?:required|mandatory):?\s+(?:a\s+)?valid\s+(?:eu\s+|eea\s+|dutch\s+)?work\s+permit",
+        r"\bgeen\b(?:\s+\w+){0,4}?\s+(?:visum|visa)?sponsor\w*",
+        r"\bsponsor\w*\s+(?:\w+\s+){0,4}?niet\s+(?:beschikbaar|mogelijk)",
+        r"\bwerkvergunning\s+(?:is\s+)?(?:vereist|verplicht|noodzakelijk)",
+        r"\bgeen\s+(?:visum|visa|werkvergunning)(?:aanvra\w+)?\b",
+        r"\bgemachtigd\s+(?:zijn\s+)?om\s+in\s+nederland\s+te\s+werken",
+    )),
+    re.I,
+)
+# A refusal limited to some nationalities ("citizenship from Russia") is not a refusal for everyone.
+_NATIONALITY = re.compile(r"\b(?:citizenship|citizens|nationals)\s+(?:from|of)\b|\bcertain\s+(?:nations|nationalities|countries)", re.I)
+_OFFERS = re.compile(
+    "|".join((
+        r"\bvisa\s+sponsorship\s+(?:is\s+)?(?:available|provided|offered|possible)",
+        r"\b(?:offer|offers|offering|provide|provides|providing)\s+(?:\w+\s+){0,3}?visa\s+(?:sponsorship|support|assistance)",
+        r"\bwe\s+(?:can\s+|will\s+|do\s+|are able to\s+)?sponsor\s+(?:your\s+|a\s+|the\s+)?(?:visa|work permit|highly skilled|"
+        r"kennismigrant|relocation|you\b|candidates|international)",
+        r"\bwe(?:['’]ll)?\s+(?:will\s+|can\s+|also\s+)?(?:help|assist|support|provide\s+(?:full\s+)?support)\b[^.]{0,40}?"
+        r"\b(?:visa|relocat\w*|immigration)",
+        r"\brelocation\s+(?:support|package|assistance|allowance|budget|bonus)",
+        r"\bvisa\s+and\s+relocation\s+(?:support|assistance)",
+        r"\b(?:relocatiepakket|visumsponsoring|relocatieondersteuning)",
+        r"\bhighly[- ]skilled\s+migrant|\bkennismigrant",
+    )),
+    re.I,
+)
+# Anything that negates or conditions an offer phrase in the same sentence voids it.
+_OFFER_BLOCKER = re.compile(
+    r"\b(?:no|not|unable|cannot|\w+n['’]t|without|geen|niet|already|reeds|existing)\b"
+    # "have a partner / highly skilled migrant visa" is a requirement, not an offer.
+    r"|\b(?:have|hold|holding)\b[^.]{0,25}(?:highly[- ]skilled\s+migrant|kennismigrant)",
+    re.I,
+)
+# "preferably already living in the Netherlands" is a wish, not a refusal.
+_PREFERENCE = re.compile(r"\b(?:prefer\w*|ideally|a plus|bonus)\b", re.I)
+_REFUSES_RELOCATION = re.compile(
+    "|".join((
+        r"\bno\s+relocation\b",
+        r"(?:\b(?:do|does|will|can|are|is)\s*|['’]re\s+)(?:not|n['’]t)\s+(?:be\s+)?(?:able\s+to\s+)?(?:offer|provide|support|cover|offering|providing)\w*\s+"
+        r"(?:\w+\s+){0,2}?relocation",
+        r"\brelocation\s+(?:\w+\s+)?(?:is|will)\s+(?:\w+\s+)?not\s+(?:be\s+)?(?:offered|provided|available|possible|supported)",
+        rf"\b(?:must|need to|needs to|should)\s+(?:already\s+)?(?:live|be based|reside|be located|be living|be residing)\s+{_IN_NL}",
+        rf"\bonly\b.*\b(?:based|living|residing|located|reside|live)\s+{_IN_NL}",
+        rf"\balready\s+(?:based|living|residing|located)\s+{_IN_NL}",
+        rf"\byou(?:['’]re|\s+are)\s+(?:currently\s+|already\s+)?(?:based|living|residing|located)\s+{_IN_NL}",
+        rf"^\W*currently\s+(?:based|living|residing|located)\s+{_IN_NL}",
+        r"\b(?:nl|netherlands|dutch)\s+residency\s+(?:is\s+)?(?:required|mandatory)",
+        r"\bgeen\s+relocatie",
+    )),
+    re.I,
+)
+
+
+def sponsorship_stance(description: str, title: str = "") -> Stance:
+    found = set()
+    for sentence in _SENTENCE.split(f"{title}\n{description}"):
+        sentence = sentence.strip()
+        if _REFUSES_VISA.search(sentence) and not _NATIONALITY.search(sentence):
+            return "refuses_visa"
+        if _OFFERS.search(sentence) and not _OFFER_BLOCKER.search(sentence):
+            found.add("offers")
+        elif _REFUSES_RELOCATION.search(sentence) and not _PREFERENCE.search(sentence):
+            found.add("refuses_relocation")
+    if "offers" in found:
+        return "offers"
+    return "refuses_relocation" if found else "silent"
