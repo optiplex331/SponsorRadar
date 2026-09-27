@@ -618,6 +618,55 @@ input::placeholder {
   padding: 5px 0;
 }
 
+.lookup-form {
+  max-width: 420px;
+  margin-top: 14px;
+}
+
+.lookup-status,
+.lookup-more {
+  margin-top: 12px;
+}
+
+.lookup-list {
+  margin-top: 10px;
+}
+
+.lookup-brand {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.lookup-detail {
+  flex-basis: 100%;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.lookup-detail:empty {
+  display: none;
+}
+
+.lookup-untracked {
+  color: var(--ink-soft);
+}
+
+.lookup-empty {
+  max-width: 72ch;
+  margin-top: 12px;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+.lookup-empty p {
+  margin: 0 0 6px;
+}
+
+.lookup-empty strong {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
 .more {
   display: block;
   margin: 20px 0 0;
