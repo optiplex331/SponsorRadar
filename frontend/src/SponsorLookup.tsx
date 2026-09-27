@@ -66,7 +66,7 @@ export function SponsorLookup({ onShowEmployer }: { onShowEmployer: (employer: s
   }, [q]);
 
   return (
-    <section className="register lookup" id="sponsor-lookup" aria-labelledby="lookup-title">
+    <section className="panel register lookup" id="sponsor-lookup" aria-labelledby="lookup-title">
       <h2 id="lookup-title" className="register-title">
         Is it a sponsor?
       </h2>

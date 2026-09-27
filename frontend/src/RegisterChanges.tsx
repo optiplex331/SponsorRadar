@@ -40,7 +40,7 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "sh
 const versionDate = (v: RegisterVersion) => dateFormat.format(new Date(v.register_updated_on ?? v.captured_at));
 const openPostings = (tracked: Tracked[]) => tracked.reduce((n, t) => n + t.open_postings, 0);
 
-/** Shown below the postings; hidden entirely when the endpoint is missing or fails. */
+/** Beside the postings on wide screens, below them otherwise; hidden entirely when the endpoint is missing or fails. */
 export function RegisterChanges({ onShowEmployer }: { onShowEmployer: (employer: string, delisted: boolean) => void }) {
   const [data, setData] = useState<RegisterChangesData | null>(null);
 
@@ -72,7 +72,7 @@ export function RegisterChanges({ onShowEmployer }: { onShowEmployer: (employer:
   );
 
   return (
-    <section className="register" id="register-changes" aria-labelledby="register-title">
+    <section className="panel register" id="register-changes" aria-labelledby="register-title">
       <h2 id="register-title" className="register-title">
         Register changes
       </h2>
@@ -98,7 +98,7 @@ export function RegisterChanges({ onShowEmployer }: { onShowEmployer: (employer:
                 <li key={a.kvk_number}>
                   <span className="register-org">{a.organisation}</span>
                   {a.new_sponsor && (
-                    <span className="new-sponsor" title="Joined the register in the last 12 months">
+                    <span className="badge badge-plain" title="Joined the register in the last 12 months">
                       New sponsor
                     </span>
                   )}
@@ -118,7 +118,7 @@ export function RegisterChanges({ onShowEmployer }: { onShowEmployer: (employer:
                   <li key={a.kvk_number}>
                     <span className="register-org">{a.organisation}</span>
                     <span className="register-kvk">KvK {a.kvk_number}</span>
-                    {a.new_sponsor && <span className="new-sponsor">New sponsor</span>}
+                    {a.new_sponsor && <span className="badge badge-plain">New sponsor</span>}
                   </li>
                 ))}
               </ul>
