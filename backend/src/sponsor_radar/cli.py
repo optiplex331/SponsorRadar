@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import argparse
 import logging
+from datetime import date
+from pathlib import Path
 
 import httpx
 
-from . import db, ingest, matching, register, report
+from . import db, discover, ingest, matching, register, report
 
 USER_AGENT = "SponsorRadar/0.1 (+https://github.com/optiplex331/SponsorRadar)"
 
@@ -28,6 +30,11 @@ def main(argv: list[str] | None = None) -> None:
     rep.add_argument("--days", type=int, default=7)
     sub.add_parser("prune", help="delete raw captures older than 14 days that nothing needs")
     sub.add_parser("run", help="migrate, seed, register, collect, match, report, prune")
+    sub.add_parser("backfill-register", help="one-off: store past register versions from archive.org copies")
+    disc = sub.add_parser("discover", help="probe job boards of register sponsors no source is linked to")
+    disc.add_argument("--out", type=Path, required=True, metavar="PATH")
+    disc.add_argument("--since", type=date.fromisoformat, metavar="YYYY-MM-DD",
+                      help="all unlinked KvKs first seen on or after this date (default: added in the last register change)")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
@@ -54,3 +61,8 @@ def main(argv: list[str] | None = None) -> None:
                 print(report.build_report(conn, getattr(args, "days", 7)))
             elif step == "prune":
                 print("raw captures pruned:", ingest.prune(conn))
+            elif step == "backfill-register":
+                print("archive copies:", register.backfill_register(conn, client))
+            elif step == "discover":
+                probed, hits = discover.discover(conn, client, args.out, args.since)
+                print(f"KvKs probed: {probed}; boards found: {hits}; written to {args.out}")
