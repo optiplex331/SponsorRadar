@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from sponsor_radar.signals import dutch_required, min_years, sponsorship_stance
+from sponsor_radar.signals import dutch_required, is_tech_role, min_years, sponsorship_stance
 
 DUTCH_REQUIRED = [
     "You are fluent in Dutch and English.",
@@ -125,3 +125,28 @@ def test_stance_precedence():
     assert sponsorship_stance(f"{offer}\nYou must be based in the Netherlands.") == "offers"
     # A negation in another sentence does not void an offer.
     assert sponsorship_stance(f"No recruiters please.\n{offer}") == "offers"
+
+
+# Technical support and pre-sales titles count as tech roles; titles taken from live postings.
+TECH_TITLES = [
+    ("Technical Support Specialist - Payments", True),
+    ("Support Engineer", True),
+    ("Solutions Engineer", True),
+    ("Sales Engineer", True),
+    ("Forward Deployed Architect - Amsterdam", True),
+    ("Pre-Sales Consultant - AV / UC", True),
+    ("Solutions Architect - Netherlands", True),
+    ("Junior IT Support Specialist", True),
+    ("Second Line Support Agent (f/m/x)", True),
+    ("Systeembeheerder", True),
+    ("Technisch Applicatiebeheerder Bancaire Applicaties", True),
+    ("Technisch Helpdesk Medewerker", True),
+    ("Customer Support Agent", False),
+    ("Sales Support Specialist", False),
+    ("Backoffice Support Specialist", False),
+]
+
+
+@pytest.mark.parametrize(("title", "tech"), TECH_TITLES)
+def test_tech_support_and_presales_titles(title, tech):
+    assert is_tech_role(title) is tech

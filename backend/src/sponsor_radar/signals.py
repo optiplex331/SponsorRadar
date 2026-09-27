@@ -17,7 +17,11 @@ _SENIOR = re.compile(r"\b(senior|sr\.?|staff|principal|lead|head|director|manage
 _TECH = re.compile(
     r"\b(engineer\w*|developer|software|back[- ]?end|front[- ]?end|full[- ]?stack|devops|sre|platform|"
     r"data|machine learning|ml|ai|security|cloud|infrastructure|qa|test automation|mobile|ios|android|"
-    r"python|java|golang|kotlin|typescript)\b",
+    r"python|java|golang|kotlin|typescript|"
+    # Technical support and pre-sales roles are in scope; "Support/Sales/Solutions Engineer" already match engineer.
+    r"technical support|tech support|it[- ]support|ict[- ]support|(?:1st|2nd|3rd|first|second|third)[- ]line support|"
+    r"pre-?sales|forward[- ]deployed|solutions? architect|systeembeheerder|(?:technisch\s+)?applicatie\s?beheerder|"
+    r"(?:it|ict|technische?)\s+helpdesk)\b",
     re.I,
 )
 
@@ -194,15 +198,22 @@ _REFUSES_RELOCATION = re.compile(
 )
 
 
+# Every phrase of a pattern contains one of its stems; substring checks skip most sentences cheaply.
+_VISA_STEMS = ("sponsor", "visa", "visum", "work", "werkvergunning", "gemachtigd")
+_OFFER_STEMS = ("sponsor", "visa", "visum", "relocat", "migrant")
+_RELOCATION_STEMS = ("relocat", "based", "liv", "resid", "locat")
+
+
 def sponsorship_stance(description: str, title: str = "") -> Stance:
     found = set()
     for sentence in _SENTENCE.split(f"{title}\n{description}"):
-        sentence = sentence.strip()
-        if _REFUSES_VISA.search(sentence) and not _NATIONALITY.search(sentence):
+        low = sentence.lower()
+        if any(stem in low for stem in _VISA_STEMS) and _REFUSES_VISA.search(sentence) and not _NATIONALITY.search(sentence):
             return "refuses_visa"
-        if _OFFERS.search(sentence) and not _OFFER_BLOCKER.search(sentence):
+        if any(stem in low for stem in _OFFER_STEMS) and _OFFERS.search(sentence) and not _OFFER_BLOCKER.search(sentence):
             found.add("offers")
-        elif _REFUSES_RELOCATION.search(sentence) and not _PREFERENCE.search(sentence):
+        elif (any(stem in low for stem in _RELOCATION_STEMS) and _REFUSES_RELOCATION.search(sentence.strip())
+              and not _PREFERENCE.search(sentence)):
             found.add("refuses_relocation")
     if "offers" in found:
         return "offers"
