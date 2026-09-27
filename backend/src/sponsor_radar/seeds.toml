@@ -1,4 +1,4 @@
-# Seed job boards. Add `kvk = "12345678"` only after checking the employer's KvK entry by hand.
+# Seed job boards. Add `kvk = "12345678"` only when the employer's link to that KvK is checked against recorded evidence (see AGENTS.md).
 
 [[source]]
 kind = "greenhouse"
@@ -14,6 +14,7 @@ employer = "bunq"
 kind = "ashby"
 board = "bynder"
 employer = "Bynder"
+kvk = "56995229"
 
 [[source]]
 kind = "greenhouse"
@@ -50,6 +51,7 @@ kvk = "27239483"  # Dept Design & Technology B.V., checked against the register 
 kind = "recruitee"
 board = "effectory"
 employer = "Effectory"
+kvk = "72541644"
 
 [[source]]
 kind = "greenhouse"
@@ -61,11 +63,13 @@ kvk = "54656230"  # elasticsearch B.V., checked against the register 2026-09-26
 kind = "recruitee"
 board = "fastned"
 employer = "Fastned"
+kvk = "54606179"
 
 [[source]]
 kind = "greenhouse"
 board = "flowtraders"
 employer = "Flow Traders"
+kvk = "33223268"
 
 [[source]]
 kind = "recruitee"
@@ -82,6 +86,7 @@ employer = "GetYourGuide"
 kind = "greenhouse"
 board = "gitlab"
 employer = "GitLab"
+kvk = "60034831"
 
 [[source]]
 kind = "greenhouse"
@@ -110,6 +115,7 @@ kvk = "71057153"  # RealtimeBoard, Miro's former name, checked against the regis
 kind = "ashby"
 board = "mollie"
 employer = "Mollie"
+kvk = "30204462"
 
 [[source]]
 kind = "ashby"
@@ -134,6 +140,7 @@ employer = "Typeform"
 kind = "ashby"
 board = "airwallex"
 employer = "Airwallex"
+kvk = "77519256"
 
 [[source]]
 kind = "ashby"
@@ -144,6 +151,7 @@ employer = "Altura"
 kind = "ashby"
 board = "atabix"
 employer = "Atabix"
+kvk = "54687195"
 
 [[source]]
 kind = "ashby"
@@ -154,6 +162,7 @@ employer = "Axelera AI"
 kind = "ashby"
 board = "blocktech"
 employer = "BlockTech"
+kvk = "70787972"
 
 [[source]]
 kind = "ashby"
@@ -164,11 +173,13 @@ employer = "BlueDolphin"
 kind = "ashby"
 board = "cenosco"
 employer = "Cenosco"
+kvk = "27314026"
 
 [[source]]
 kind = "ashby"
 board = "clearbank"
 employer = "ClearBank"
+kvk = "89463366"
 
 [[source]]
 kind = "ashby"
@@ -184,6 +195,7 @@ employer = "Constructor"
 kind = "ashby"
 board = "contentoo"
 employer = "Contentoo"
+kvk = "66406234"
 
 [[source]]
 kind = "ashby"
@@ -199,6 +211,7 @@ employer = "DataSnipper"
 kind = "ashby"
 board = "deepl"
 employer = "DeepL"
+kvk = "84080930"
 
 [[source]]
 kind = "ashby"
@@ -239,6 +252,7 @@ employer = "Horizon3.ai"
 kind = "ashby"
 board = "innatera"
 employer = "Innatera"
+kvk = "72612169"
 
 [[source]]
 kind = "ashby"
@@ -254,6 +268,7 @@ employer = "Lemonade"
 kind = "ashby"
 board = "lightspeedhq"
 employer = "Lightspeed"
+kvk = "17229470"
 
 [[source]]
 kind = "ashby"
@@ -289,6 +304,7 @@ employer = "Paddle"
 kind = "ashby"
 board = "perk"
 employer = "Perk (formerly TravelPerk)"
+kvk = "84480742"
 
 [[source]]
 kind = "ashby"
@@ -309,6 +325,7 @@ employer = "Poki"
 kind = "ashby"
 board = "polaroid"
 employer = "Polaroid"
+kvk = "59065982"
 
 [[source]]
 kind = "ashby"
@@ -334,11 +351,13 @@ employer = "Reaktor"
 kind = "ashby"
 board = "rentman"
 employer = "Rentman"
+kvk = "60733144"
 
 [[source]]
 kind = "ashby"
 board = "sensorfact"
 employer = "Sensorfact"
+kvk = "72284404"
 
 [[source]]
 kind = "ashby"
@@ -354,11 +373,13 @@ employer = "SkyNRG"
 kind = "ashby"
 board = "stacks"
 employer = "Stacks"
+kvk = "93518528"
 
 [[source]]
 kind = "ashby"
 board = "swap"
 employer = "Swap"
+kvk = "89291506"
 
 [[source]]
 kind = "ashby"
@@ -374,6 +395,7 @@ employer = "Teero"
 kind = "ashby"
 board = "thoughtworks"
 employer = "Thoughtworks"
+kvk = "72270616"
 
 [[source]]
 kind = "ashby"
@@ -409,6 +431,7 @@ employer = "Algolia"
 kind = "greenhouse"
 board = "amplitude"
 employer = "Amplitude"
+kvk = "68002459"
 
 [[source]]
 kind = "greenhouse"
@@ -419,16 +442,19 @@ employer = "Artefact"
 kind = "greenhouse"
 board = "asm"
 employer = "ASM"
+kvk = "30037466"
 
 [[source]]
 kind = "greenhouse"
 board = "atricure"
 employer = "AtriCure"
+kvk = "27284379"
 
 [[source]]
 kind = "greenhouse"
 board = "autoscout24"
 employer = "AutoScout24"
+kvk = "34132428"
 
 [[source]]
 kind = "greenhouse"
@@ -439,6 +465,7 @@ employer = "Avantium"
 kind = "greenhouse"
 board = "avepoint"
 employer = "AvePoint"
+kvk = "58166815"
 
 [[source]]
 kind = "greenhouse"
@@ -454,11 +481,13 @@ employer = "AxiCom"
 kind = "greenhouse"
 board = "bluewireless"
 employer = "Blue Wireless"
+kvk = "72713887"
 
 [[source]]
 kind = "greenhouse"
 board = "bolcom"
 employer = "bol"
+kvk = "32147382"
 
 [[source]]
 kind = "greenhouse"
@@ -484,6 +513,7 @@ employer = "Celonis"
 kind = "greenhouse"
 board = "clevr"
 employer = "CLEVR"
+kvk = "33281311"
 
 [[source]]
 kind = "greenhouse"
@@ -499,6 +529,7 @@ employer = "Creative Fabrica"
 kind = "greenhouse"
 board = "datadog"
 employer = "Datadog"
+kvk = "77823664"
 
 [[source]]
 kind = "greenhouse"
@@ -509,6 +540,7 @@ employer = "Da Vinci"
 kind = "greenhouse"
 board = "dawnaerospace"
 employer = "Dawn Aerospace"
+kvk = "73356824"
 
 [[source]]
 kind = "greenhouse"
@@ -519,6 +551,7 @@ employer = "DroneShield"
 kind = "greenhouse"
 board = "drweng"
 employer = "DRW"
+kvk = "72007443"
 
 [[source]]
 kind = "greenhouse"
@@ -529,11 +562,13 @@ employer = "Ebury"
 kind = "greenhouse"
 board = "edgeconnex"
 employer = "EdgeConneX"
+kvk = "63051370"
 
 [[source]]
 kind = "greenhouse"
 board = "eqtpartners"
 employer = "EQT Group"
+kvk = "77321227"
 
 [[source]]
 kind = "greenhouse"
@@ -554,6 +589,7 @@ employer = "Fireblocks"
 kind = "greenhouse"
 board = "flexport"
 employer = "Flexport"
+kvk = "64391043"
 
 [[source]]
 kind = "greenhouse"
@@ -589,6 +625,7 @@ employer = "Gymshark"
 kind = "greenhouse"
 board = "highradius"
 employer = "HighRadius"
+kvk = "75050943"
 
 [[source]]
 kind = "greenhouse"
@@ -609,16 +646,19 @@ employer = "Hudl"
 kind = "greenhouse"
 board = "hunterdouglas"
 employer = "Hunter Douglas"
+kvk = "24083218"
 
 [[source]]
 kind = "greenhouse"
 board = "jetbrains"
 employer = "JetBrains"
+kvk = "56460279"
 
 [[source]]
 kind = "greenhouse"
 board = "jumptrading"
 employer = "Jump Trading"
+kvk = "70927359"
 
 [[source]]
 kind = "greenhouse"
@@ -639,11 +679,13 @@ employer = "Omnicom Media"
 kind = "greenhouse"
 board = "mewssystems"
 employer = "Mews"
+kvk = "66426995"
 
 [[source]]
 kind = "greenhouse"
 board = "modulrfinance"
 employer = "Modulr"
+kvk = "81852401"
 
 [[source]]
 kind = "greenhouse"
@@ -654,6 +696,7 @@ employer = "MongoDB"
 kind = "greenhouse"
 board = "monks"
 employer = "Monks"
+kvk = "32084006"
 
 [[source]]
 kind = "greenhouse"
@@ -674,6 +717,7 @@ employer = "Newtone"
 kind = "greenhouse"
 board = "nice"
 employer = "NICE"
+kvk = "34140161"
 
 [[source]]
 kind = "greenhouse"
@@ -689,6 +733,7 @@ employer = "NLC"
 kind = "greenhouse"
 board = "nlighten"
 employer = "nLighten"
+kvk = "84107588"
 
 [[source]]
 kind = "greenhouse"
@@ -749,11 +794,13 @@ employer = "QphoX"
 kind = "greenhouse"
 board = "reddit"
 employer = "Reddit"
+kvk = "83433880"
 
 [[source]]
 kind = "greenhouse"
 board = "redwoodsoftware"
 employer = "Redwood Software"
+kvk = "30141687"
 
 [[source]]
 kind = "greenhouse"
@@ -779,11 +826,13 @@ employer = "S-RM"
 kind = "greenhouse"
 board = "suitsupply"
 employer = "Suitsupply"
+kvk = "34118243"
 
 [[source]]
 kind = "greenhouse"
 board = "sumup"
 employer = "SumUp"
+kvk = "70199841"
 
 [[source]]
 kind = "greenhouse"
@@ -799,6 +848,7 @@ employer = "SurePay"
 kind = "greenhouse"
 board = "systemiq"
 employer = "Systemiq"
+kvk = "78214971"
 
 [[source]]
 kind = "greenhouse"
@@ -809,16 +859,19 @@ employer = "Sytac"
 kind = "greenhouse"
 board = "thoughtworks"
 employer = "Thoughtworks"
+kvk = "72270616"
 
 [[source]]
 kind = "greenhouse"
 board = "towerresearchcapital"
 employer = "Tower Research Capital"
+kvk = "71179569"
 
 [[source]]
 kind = "greenhouse"
 board = "travix"
 employer = "Travix"
+kvk = "51734370"
 
 [[source]]
 kind = "greenhouse"
@@ -854,6 +907,7 @@ employer = "Velocity Electronics"
 kind = "greenhouse"
 board = "verifone"
 employer = "Verifone"
+kvk = "34246766"
 
 [[source]]
 kind = "greenhouse"
@@ -864,6 +918,7 @@ employer = "William Blair"
 kind = "greenhouse"
 board = "wk"
 employer = "Wieden+Kennedy"
+kvk = "52337626"
 
 [[source]]
 kind = "greenhouse"
@@ -889,6 +944,7 @@ employer = "Zscaler"
 kind = "recruitee"
 board = "12build"
 employer = "12Build"
+kvk = "63719444"
 
 [[source]]
 kind = "recruitee"
@@ -899,6 +955,7 @@ employer = "50five"
 kind = "recruitee"
 board = "acomo"
 employer = "ACOMO N.V."
+kvk = "24191858"
 
 [[source]]
 kind = "recruitee"
@@ -914,11 +971,13 @@ employer = "AEGIR-Marine"
 kind = "recruitee"
 board = "afsenergy"
 employer = "AFS Energy"
+kvk = "37086118"
 
 [[source]]
 kind = "recruitee"
 board = "agriplace"
 employer = "Simvia"
+kvk = "72188561"
 
 [[source]]
 kind = "recruitee"
@@ -944,6 +1003,7 @@ employer = "AKD"
 kind = "recruitee"
 board = "alewijnse"
 employer = "ALEWIJNSE"
+kvk = "55752713"
 
 [[source]]
 kind = "recruitee"
@@ -959,26 +1019,31 @@ employer = "Allego"
 kind = "recruitee"
 board = "allinq"
 employer = "Allinq"
+kvk = "08085412"
 
 [[source]]
 kind = "recruitee"
 board = "allyourbi"
 employer = "All Your BI"
+kvk = "62936808"
 
 [[source]]
 kind = "recruitee"
 board = "alphacomm"
 employer = "Alphacomm"
+kvk = "24243279"
 
 [[source]]
 kind = "recruitee"
 board = "alpine"
 employer = "Alpine Hearing Protection"
+kvk = "32094029"
 
 [[source]]
 kind = "recruitee"
 board = "altrex"
 employer = "Altrex - Flex Impact"
+kvk = "08012289"
 
 [[source]]
 kind = "recruitee"
@@ -994,21 +1059,25 @@ employer = "Amsterdam Data Collective"
 kind = "recruitee"
 board = "anyonecom"
 employer = "Anyone.com"
+kvk = "87900769"
 
 [[source]]
 kind = "recruitee"
 board = "artez"
 employer = "ArtEZ University of the Arts"
+kvk = "09109756"
 
 [[source]]
 kind = "recruitee"
 board = "athora"
 employer = "Athora Netherlands"
+kvk = "30099450"
 
 [[source]]
 kind = "recruitee"
 board = "attendi"
 employer = "Attendi"
+kvk = "75868733"
 
 [[source]]
 kind = "recruitee"
@@ -1024,11 +1093,13 @@ employer = "Aveco de Bondt"
 kind = "recruitee"
 board = "axual"
 employer = "Axual"
+kvk = "64350622"
 
 [[source]]
 kind = "recruitee"
 board = "baeken"
 employer = "BAEKEN"
+kvk = "91018692"
 
 [[source]]
 kind = "recruitee"
@@ -1044,6 +1115,7 @@ employer = "Bdairy"
 kind = "recruitee"
 board = "benchmarkelectronics"
 employer = "Benchmark"
+kvk = "06090691"
 
 [[source]]
 kind = "recruitee"
@@ -1074,16 +1146,19 @@ employer = "Billink"
 kind = "recruitee"
 board = "bloem"
 employer = "BLOEM!"
+kvk = "61604003"
 
 [[source]]
 kind = "recruitee"
 board = "bloxs"
 employer = "Bloxs"
+kvk = "62076957"
 
 [[source]]
 kind = "recruitee"
 board = "blue10"
 employer = "Blue10"
+kvk = "27195343"
 
 [[source]]
 kind = "recruitee"
@@ -1109,6 +1184,7 @@ employer = "Bouwinvest Real Estate Investors"
 kind = "recruitee"
 board = "bpmcompany"
 employer = "BPM Company Netherlands B.V."
+kvk = "52987221"
 
 [[source]]
 kind = "recruitee"
@@ -1139,6 +1215,7 @@ employer = "BridgeFund"
 kind = "recruitee"
 board = "brownline"
 employer = "Brownline B.V."
+kvk = "24289722"
 
 [[source]]
 kind = "recruitee"
@@ -1169,6 +1246,7 @@ employer = "Centric"
 kind = "recruitee"
 board = "channelengine"
 employer = "ChannelEngine"
+kvk = "63350726"
 
 [[source]]
 kind = "recruitee"
@@ -1179,6 +1257,7 @@ employer = "Channext"
 kind = "recruitee"
 board = "chiropractiecentraal"
 employer = "Chiropractie Centraal"
+kvk = "82484767"
 
 [[source]]
 kind = "recruitee"
@@ -1209,6 +1288,7 @@ employer = "Conclusion"
 kind = "recruitee"
 board = "confocalnl"
 employer = "Confocal NL"
+kvk = "65256336"
 
 [[source]]
 kind = "recruitee"
@@ -1224,6 +1304,7 @@ employer = "Copernica"
 kind = "recruitee"
 board = "corendon"
 employer = "Corendon"
+kvk = "34220902"
 
 [[source]]
 kind = "recruitee"
@@ -1249,6 +1330,7 @@ employer = "Creative Clicks B.V."
 kind = "recruitee"
 board = "crowefoederer"
 employer = "Crowe"
+kvk = "17034844"
 
 [[source]]
 kind = "recruitee"
@@ -1264,6 +1346,7 @@ employer = "Customs Support Group"
 kind = "recruitee"
 board = "dalsem"
 employer = "Dalsem B.V."
+kvk = "27221420"
 
 [[source]]
 kind = "recruitee"
@@ -1274,6 +1357,7 @@ employer = "Dashmote"
 kind = "recruitee"
 board = "datenna"
 employer = "Datenna BV"
+kvk = "68808070"
 
 [[source]]
 kind = "recruitee"
@@ -1289,6 +1373,7 @@ employer = "Déhora Consultancy"
 kind = "recruitee"
 board = "demaco"
 employer = "Demaco"
+kvk = "37079728"
 
 [[source]]
 kind = "recruitee"
@@ -1299,6 +1384,7 @@ employer = "Devleaps"
 kind = "recruitee"
 board = "dexterenergyservices"
 employer = "Dexter Energy"
+kvk = "65426479"
 
 [[source]]
 kind = "recruitee"
@@ -1324,6 +1410,7 @@ employer = "dnata"
 kind = "recruitee"
 board = "dpgmedia"
 employer = "DPG Media"
+kvk = "34172906"
 
 [[source]]
 kind = "recruitee"
@@ -1369,11 +1456,13 @@ employer = "Ecochain Technologies"
 kind = "recruitee"
 board = "egeniq"
 employer = "Dawn Technology"
+kvk = "53062086"
 
 [[source]]
 kind = "recruitee"
 board = "egeria"
 employer = "Egeria"
+kvk = "78512867"
 
 [[source]]
 kind = "recruitee"
@@ -1389,16 +1478,19 @@ employer = "Electude International BV"
 kind = "recruitee"
 board = "emergo"
 employer = "E-mergo"
+kvk = "27199736"
 
 [[source]]
 kind = "recruitee"
 board = "eneve"
 employer = "Eneve"
+kvk = "24317941"
 
 [[source]]
 kind = "recruitee"
 board = "envipco"
 employer = "Envipco"
+kvk = "33304225"
 
 [[source]]
 kind = "recruitee"
@@ -1429,6 +1521,7 @@ employer = "FinDock"
 kind = "recruitee"
 board = "fixico"
 employer = "Fixico"
+kvk = "58322752"
 
 [[source]]
 kind = "recruitee"
@@ -1449,6 +1542,7 @@ employer = "Freeday"
 kind = "recruitee"
 board = "funxtion"
 employer = "Funxtion"
+kvk = "57141762"
 
 [[source]]
 kind = "recruitee"
@@ -1479,6 +1573,7 @@ employer = "GEODIS Benelux"
 kind = "recruitee"
 board = "gerimedica"
 employer = "Gerimedica"
+kvk = "34270859"
 
 [[source]]
 kind = "recruitee"
@@ -1499,6 +1594,7 @@ employer = "Greenchoice"
 kind = "recruitee"
 board = "greenflux"
 employer = "GreenFlux"
+kvk = "55511171"
 
 [[source]]
 kind = "recruitee"
@@ -1549,6 +1645,7 @@ employer = "Howden"
 kind = "recruitee"
 board = "htm"
 employer = "HTM"
+kvk = "27014495"
 
 [[source]]
 kind = "recruitee"
@@ -1579,6 +1676,7 @@ employer = "Innova Market Insights"
 kind = "recruitee"
 board = "intergas"
 employer = "Intergas"
+kvk = "04068371"
 
 [[source]]
 kind = "recruitee"
@@ -1599,6 +1697,7 @@ employer = "Invest-NL N.V."
 kind = "recruitee"
 board = "invisix"
 employer = "Invisix"
+kvk = "97757772"
 
 [[source]]
 kind = "recruitee"
@@ -1609,16 +1708,19 @@ employer = "IQIP B.V."
 kind = "recruitee"
 board = "iquality"
 employer = "Iquality"
+kvk = "10042190"
 
 [[source]]
 kind = "recruitee"
 board = "isispace"
 employer = "ISISPACE"
+kvk = "27293068"
 
 [[source]]
 kind = "recruitee"
 board = "itqconsultancy"
 employer = "ITQ"
+kvk = "28107312"
 
 [[source]]
 kind = "recruitee"
@@ -1629,6 +1731,7 @@ employer = "iwell"
 kind = "recruitee"
 board = "joanknecht"
 employer = "Joanknecht B.V."
+kvk = "17058227"
 
 [[source]]
 kind = "recruitee"
@@ -1639,6 +1742,7 @@ employer = "Joinson&Spice"
 kind = "recruitee"
 board = "joulz"
 employer = "Joulz B.V."
+kvk = "62280708"
 
 [[source]]
 kind = "recruitee"
@@ -1654,6 +1758,7 @@ employer = "Jump"
 kind = "recruitee"
 board = "kaizo"
 employer = "Kaizo"
+kvk = "71088415"
 
 [[source]]
 kind = "recruitee"
@@ -1679,6 +1784,7 @@ employer = "KommaGo BV"
 kind = "recruitee"
 board = "koninklijkegazelle"
 employer = "Gazelle"
+kvk = "09165859"
 
 [[source]]
 kind = "recruitee"
@@ -1709,6 +1815,7 @@ employer = "LessonUp"
 kind = "recruitee"
 board = "leydenjar"
 employer = "LeydenJar"
+kvk = "65766539"
 
 [[source]]
 kind = "recruitee"
@@ -1729,16 +1836,19 @@ employer = "LOGEX"
 kind = "recruitee"
 board = "luscii"
 employer = "Luscii"
+kvk = "53119843"
 
 [[source]]
 kind = "recruitee"
 board = "maastrichtaachenairport"
 employer = "Maastricht Aachen Airport"
+kvk = "66013283"
 
 [[source]]
 kind = "recruitee"
 board = "mainblades"
 employer = "Mainblades"
+kvk = "68523777"
 
 [[source]]
 kind = "recruitee"
@@ -1754,6 +1864,7 @@ employer = "Maqqie"
 kind = "recruitee"
 board = "marktlink"
 employer = "Marktlink"
+kvk = "80340180"
 
 [[source]]
 kind = "recruitee"
@@ -1789,6 +1900,7 @@ employer = "Momo Medical"
 kind = "recruitee"
 board = "mondaymerch"
 employer = "Monday Merch"
+kvk = "86827677"
 
 [[source]]
 kind = "recruitee"
@@ -1799,6 +1911,7 @@ employer = "MultiSafepay"
 kind = "recruitee"
 board = "multitankcard"
 employer = "MultiTankcard"
+kvk = "34069864"
 
 [[source]]
 kind = "recruitee"
@@ -1819,6 +1932,7 @@ employer = "Naktuinbouw"
 kind = "recruitee"
 board = "nearfieldinstruments"
 employer = "Nearfield Instruments"
+kvk = "65040007"
 
 [[source]]
 kind = "recruitee"
@@ -1834,6 +1948,7 @@ employer = "Nepocon B.V."
 kind = "recruitee"
 board = "newdayatwork"
 employer = "Workspace 365 - New Day at Work"
+kvk = "55440215"
 
 [[source]]
 kind = "recruitee"
@@ -1854,16 +1969,19 @@ employer = "NMi Certin B.V."
 kind = "recruitee"
 board = "nomios"
 employer = "Nomios"
+kvk = "28098276"
 
 [[source]]
 kind = "recruitee"
 board = "northwave"
 employer = "Northwave Cyber Security"
+kvk = "30212330"
 
 [[source]]
 kind = "recruitee"
 board = "novar"
 employer = "Novar Nederland BV"
+kvk = "62896245"
 
 [[source]]
 kind = "recruitee"
@@ -1874,11 +1992,13 @@ employer = "Novutech"
 kind = "recruitee"
 board = "nts"
 employer = "NTS"
+kvk = "17082576"
 
 [[source]]
 kind = "recruitee"
 board = "nxfiltration"
 employer = "NX Filtration"
+kvk = "64959910"
 
 [[source]]
 kind = "recruitee"
@@ -1889,6 +2009,7 @@ employer = "Oceans of Energy"
 kind = "recruitee"
 board = "ockto"
 employer = "Ockto"
+kvk = "66060923"
 
 [[source]]
 kind = "recruitee"
@@ -1919,6 +2040,7 @@ employer = "Online Payment Platform"
 kind = "recruitee"
 board = "onramper"
 employer = "Onramper"
+kvk = "76602877"
 
 [[source]]
 kind = "recruitee"
@@ -1929,16 +2051,19 @@ employer = "Optics11"
 kind = "recruitee"
 board = "optics11life"
 employer = "Optics11 Life"
+kvk = "90256832"
 
 [[source]]
 kind = "recruitee"
 board = "parfumado"
 employer = "Parfumado"
+kvk = "68443048"
 
 [[source]]
 kind = "recruitee"
 board = "pay"
 employer = "Pay."
+kvk = "24283498"
 
 [[source]]
 kind = "recruitee"
@@ -1954,6 +2079,7 @@ employer = "EVENTIM Benelux"
 kind = "recruitee"
 board = "peterson"
 employer = "Peterson"
+kvk = "96134534"
 
 [[source]]
 kind = "recruitee"
@@ -1969,11 +2095,13 @@ employer = "Portbase"
 kind = "recruitee"
 board = "power2x"
 employer = "Power2X"
+kvk = "80490522"
 
 [[source]]
 kind = "recruitee"
 board = "practical"
 employer = "Practical | Excellence in Finance"
+kvk = "57443130"
 
 [[source]]
 kind = "recruitee"
@@ -1989,6 +2117,7 @@ employer = "Priva"
 kind = "recruitee"
 board = "profitap"
 employer = "Profitap"
+kvk = "62775197"
 
 [[source]]
 kind = "recruitee"
@@ -2029,11 +2158,13 @@ employer = "QuandaGo International B.V."
 kind = "recruitee"
 board = "quintop"
 employer = "Quintop"
+kvk = "29047288"
 
 [[source]]
 kind = "recruitee"
 board = "quion"
 employer = "Quion"
+kvk = "24158410"
 
 [[source]]
 kind = "recruitee"
@@ -2069,6 +2200,7 @@ employer = "Rewire"
 kind = "recruitee"
 board = "riverflex"
 employer = "Riverflex"
+kvk = "71751483"
 
 [[source]]
 kind = "recruitee"
@@ -2079,6 +2211,7 @@ employer = "Road"
 kind = "recruitee"
 board = "rockfeather"
 employer = "Rockfeather"
+kvk = "77531019"
 
 [[source]]
 kind = "recruitee"
@@ -2089,6 +2222,7 @@ employer = "Rocsys"
 kind = "recruitee"
 board = "rotate"
 employer = "Rotate"
+kvk = "86066021"
 
 [[source]]
 kind = "recruitee"
@@ -2099,6 +2233,7 @@ employer = "Royal Swinkels"
 kind = "recruitee"
 board = "rtl"
 employer = "RTL"
+kvk = "32105893"
 
 [[source]]
 kind = "recruitee"
@@ -2119,6 +2254,7 @@ employer = "Sanday"
 kind = "recruitee"
 board = "sbe"
 employer = "SBE"
+kvk = "78504597"
 
 [[source]]
 kind = "recruitee"
@@ -2149,6 +2285,7 @@ employer = "SIDN"
 kind = "recruitee"
 board = "siebel"
 employer = "Siebel Juweliers"
+kvk = "60134577"
 
 [[source]]
 kind = "recruitee"
@@ -2159,6 +2296,7 @@ employer = "Sircle Collection"
 kind = "recruitee"
 board = "skygeo"
 employer = "SkyGeo"
+kvk = "61630896"
 
 [[source]]
 kind = "recruitee"
@@ -2174,6 +2312,7 @@ employer = "Snappet"
 kind = "recruitee"
 board = "solvinity"
 employer = "Solvinity"
+kvk = "59597291"
 
 [[source]]
 kind = "recruitee"
@@ -2194,6 +2333,7 @@ employer = "Spotzer Digital"
 kind = "recruitee"
 board = "sqills"
 employer = "Sqills"
+kvk = "08172403"
 
 [[source]]
 kind = "recruitee"
@@ -2234,6 +2374,7 @@ employer = "Syntho"
 kind = "recruitee"
 board = "talk360"
 employer = "Talk360"
+kvk = "66242592"
 
 [[source]]
 kind = "recruitee"
@@ -2244,6 +2385,7 @@ employer = "Tameson"
 kind = "recruitee"
 board = "tccglobal"
 employer = "TCC Global"
+kvk = "30129285"
 
 [[source]]
 kind = "recruitee"
@@ -2254,6 +2396,7 @@ employer = "TD Entertainment"
 kind = "recruitee"
 board = "teleperformance"
 employer = "Teleperformance Benelux & Surinam"
+kvk = "33287824"
 
 [[source]]
 kind = "recruitee"
@@ -2264,11 +2407,13 @@ employer = "The Fellas Ads"
 kind = "recruitee"
 board = "thinkwise"
 employer = "Thinkwise"
+kvk = "60653523"
 
 [[source]]
 kind = "recruitee"
 board = "thisworkz"
 employer = "Thisworkz"
+kvk = "86623990"
 
 [[source]]
 kind = "recruitee"
@@ -2309,6 +2454,7 @@ employer = "Tradin Organic Agriculture"
 kind = "recruitee"
 board = "transavia"
 employer = "Transavia"
+kvk = "34069081"
 
 [[source]]
 kind = "recruitee"
@@ -2319,6 +2465,7 @@ employer = "Transferz"
 kind = "recruitee"
 board = "transperfect"
 employer = "TransPerfect"
+kvk = "34251476"
 
 [[source]]
 kind = "recruitee"
@@ -2344,6 +2491,7 @@ employer = "UAB-Online"
 kind = "recruitee"
 board = "upfront"
 employer = "Upfront"
+kvk = "76913465"
 
 [[source]]
 kind = "recruitee"
@@ -2354,6 +2502,7 @@ employer = "Valori"
 kind = "recruitee"
 board = "vandebron"
 employer = "Vandebron"
+kvk = "59394218"
 
 [[source]]
 kind = "recruitee"
@@ -2394,6 +2543,7 @@ employer = "VIKTOR"
 kind = "recruitee"
 board = "visualfabriq"
 employer = "Visualfabriq"
+kvk = "57087156"
 
 [[source]]
 kind = "recruitee"
@@ -2414,11 +2564,13 @@ employer = "Voortman Steel Machinery"
 kind = "recruitee"
 board = "vsparticle"
 employer = "VSPARTICLE B.V."
+kvk = "65630688"
 
 [[source]]
 kind = "recruitee"
 board = "weeztix"
 employer = "Weeztix"
+kvk = "64925536"
 
 [[source]]
 kind = "recruitee"
@@ -2439,6 +2591,7 @@ employer = "Windcat"
 kind = "recruitee"
 board = "winstontaylor"
 employer = "Winston Taylor N.V."
+kvk = "17282726"
 
 [[source]]
 kind = "recruitee"
@@ -2449,6 +2602,7 @@ employer = "Wonderkind"
 kind = "recruitee"
 board = "woodwing"
 employer = "WoodWing"
+kvk = "34134682"
 
 [[source]]
 kind = "recruitee"
@@ -2469,6 +2623,7 @@ employer = "Xsens"
 kind = "recruitee"
 board = "yellowtail"
 employer = "Yellowtail Conclusion"
+kvk = "34186479"
 
 [[source]]
 kind = "recruitee"
@@ -2499,11 +2654,13 @@ employer = "Zenchef"
 kind = "recruitee"
 board = "zeromotorcycles"
 employer = "Zero Motorcycles Inc."
+kvk = "37162492"
 
 [[source]]
 kind = "recruitee"
 board = "zorgdomein"
 employer = "ZorgDomein"
+kvk = "34142150"
 
 [[source]]
 kind = "recruitee"

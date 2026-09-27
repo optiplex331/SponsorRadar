@@ -6,7 +6,7 @@ Junior technical job postings in the Netherlands from employers on the IND regis
 
 - `backend/src/sponsor_radar/`: CLI, collectors, ingest, register, matching, signals, report, `lookup.py` (sponsor search over an in-process index of the latest register snapshot), `web.py` (FastAPI).
 - `backend/src/sponsor_radar/migrations/`: forward-only numbered SQL. Never edit an applied migration; add a new file.
-- `backend/src/sponsor_radar/seeds.toml`: seed job boards. Set `kvk` only after checking the register by hand.
+- `backend/src/sponsor_radar/seeds.toml`: seed job boards. Set `kvk` only after checking it against evidence recorded in the workbench labels (the employer's own site, a regulator, or a lead-checked KvK search or address match).
 - `backend/tests/fixtures/`: trimmed real payloads. Refresh them from raw captures, never hand-write them.
 - `frontend/`: Vite + React + TypeScript page, plain CSS, no component or state library. Filtering runs in the browser; filter state lives in URL query params.
 - `Dockerfile`: one image for web (default CMD, port 8000) and collector (`sponsor-radar run`). The web app serves `<root>/frontend/dist`.
