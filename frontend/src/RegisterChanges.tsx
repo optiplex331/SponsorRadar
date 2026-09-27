@@ -27,7 +27,7 @@ interface Removed {
 }
 
 export interface RegisterChangesData {
-  current: RegisterVersion;
+  current: RegisterVersion | null; // null until the first register snapshot is stored
   previous: RegisterVersion | null;
   added_count: number;
   removed_count: number;
@@ -35,7 +35,8 @@ export interface RegisterChangesData {
   removed: Removed[];
 }
 
-const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+// Register dates are calendar days; format them in UTC so they do not shift a day west of Greenwich.
+const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const versionDate = (v: RegisterVersion) => dateFormat.format(new Date(v.register_updated_on ?? v.captured_at));
 const openPostings = (tracked: Tracked[]) => tracked.reduce((n, t) => n + t.open_postings, 0);
 
@@ -49,7 +50,7 @@ export function RegisterChanges({ onShowEmployer }: { onShowEmployer: (employer:
       .then(setData, () => setData(null));
   }, []);
 
-  if (!data) return null;
+  if (!data || !data.current) return null; // no register snapshot yet: nothing to compare
 
   const hiring = data.added
     .filter((a) => openPostings(a.tracked) > 0)

@@ -41,18 +41,18 @@ def _match(conn, source_id):
     ).fetchone()
 
 
-def _open_postings(conn, source_id, n):
+def _open_postings(conn, source_id, n, seniority="unspecified"):
     raw_id = conn.execute(
-        "INSERT INTO raw_captures (source_id, content_sha256, payload) VALUES (%s, 'x', '{}') RETURNING id", (source_id,)
+        "INSERT INTO raw_captures (source_id, content_sha256, payload) VALUES (%s, %s, '{}') RETURNING id", (source_id, seniority)
     ).fetchone()["id"]
     for i in range(n):
         conn.execute(
             """
             INSERT INTO job_postings (source_id, external_id, title, url, location, in_netherlands, description,
-                                      raw_capture_id, is_tech)
-            VALUES (%s, %s, 'Engineer', 'https://example.com', 'Amsterdam', true, '', %s, true)
+                                      raw_capture_id, is_tech, seniority)
+            VALUES (%s, %s, 'Engineer', 'https://example.com', 'Amsterdam', true, '', %s, true, %s)
             """,
-            (source_id, str(i), raw_id),
+            (source_id, f"{seniority}-{i}", raw_id, seniority),
         )
     conn.commit()
 
@@ -95,6 +95,7 @@ def test_register_changes_between_latest_two_snapshots(conn):
     beta = _source(conn, "beta", "Beta")
     gone = _source(conn, "gone", "Gone")
     _open_postings(conn, beta, 2)
+    _open_postings(conn, beta, 1, seniority="senior")  # hidden by the default view, so not counted
     _open_postings(conn, gone, 1)
     for source_id, status, kvk, org, delisted_on in ((beta, "name_inferred", "00123456", "Beta B.V.", None),
                                                      (gone, "unmatched", "08888888", "Gone B.V.", "2026-09-03")):

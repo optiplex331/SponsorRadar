@@ -30,7 +30,8 @@ type State =
 const MIN_QUERY = 2;
 const DEBOUNCE_MS = 300;
 const ISSUE_URL = "https://github.com/optiplex331/SponsorRadar/issues/new";
-const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+// Register dates are calendar days; format them in UTC so they do not shift a day west of Greenwich.
+const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 
 /** Is an employer on the IND register? The query stays in this component: it is not written to the URL. */
 export function SponsorLookup({ onShowEmployer }: { onShowEmployer: (employer: string, delisted: boolean) => void }) {

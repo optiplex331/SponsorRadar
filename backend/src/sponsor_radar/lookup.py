@@ -30,9 +30,11 @@ QUERY_SUFFIXES = LEGAL_FORMS | {"holding", "holdings"}
 KVK_QUERY = re.compile(r"0?(\d{8})")  # same rule as the register parser: 8 digits, one extra leading zero allowed
 
 # The page's default view, apart from the matched-sponsor filter: open, in the Netherlands, tech, not senior,
-# no Dutch requirement, at most 2 years asked or unstated, and not ruling out visa sponsorship.
+# no Dutch requirement, at most 2 years asked or unstated, and not ruling out visa sponsorship. A signal not
+# computed yet (NULL) hides nothing, as on the page.
 DEFAULT_VIEW_SQL = """
-    p.closed_at IS NULL AND p.in_netherlands AND p.is_tech AND p.seniority <> 'senior' AND NOT p.dutch_required
+    p.closed_at IS NULL AND p.in_netherlands AND p.is_tech AND p.seniority IS DISTINCT FROM 'senior'
+    AND p.dutch_required IS NOT TRUE
     AND (p.min_years IS NULL OR p.min_years <= 2) AND p.sponsorship_stance IS DISTINCT FROM 'refuses_visa'
 """
 

@@ -16,6 +16,7 @@ import httpx
 import psycopg
 
 from .ingest import paced_get
+from .lookup import DEFAULT_VIEW_SQL
 
 log = logging.getLogger(__name__)
 REGISTER_URL = "https://ind.nl/en/public-register-recognised-sponsors/public-register-work"
@@ -163,8 +164,7 @@ def _tracked(conn: psycopg.Connection, kvks: list[str], delisted: bool) -> dict[
     rows = conn.execute(
         f"""
         SELECT k.kvk, s.employer_name AS employer, s.kind, s.board,
-               (SELECT count(*) FROM job_postings p
-                WHERE p.source_id = s.id AND p.closed_at IS NULL AND p.in_netherlands AND p.is_tech)::int AS open_postings
+               (SELECT count(*) FROM job_postings p WHERE p.source_id = s.id AND {DEFAULT_VIEW_SQL})::int AS open_postings
         FROM sponsor_matches m
         JOIN sources s ON s.id = m.source_id
         CROSS JOIN LATERAL unnest(m.kvk_numbers) AS k (kvk)

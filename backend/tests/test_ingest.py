@@ -81,7 +81,8 @@ def test_replay_fills_salary_and_stance(conn):
     apply_postings(conn, source_id, raw_id, recruitee.parse(payload))
     conn.execute("INSERT INTO fetch_runs (source_id, finished_at, ok, raw_capture_id) VALUES (%s, now(), true, %s)",
                  (source_id, raw_id))
-    conn.execute("UPDATE job_postings SET salary_min = NULL, salary_period = NULL, sponsorship_stance = NULL")
+    # A wrong stored value proves replay recomputes the stance rather than keeping it.
+    conn.execute("UPDATE job_postings SET salary_min = NULL, salary_period = NULL, sponsorship_stance = 'refuses_visa'")
     conn.commit()
 
     replay(conn)
@@ -91,7 +92,7 @@ def test_replay_fills_salary_and_stance(conn):
         "WHERE external_id = '2756160'"
     ).fetchone()
     assert (row["salary_min"], row["salary_max"], row["salary_currency"], row["salary_period"]) == (2625, 4000, "EUR", "month")
-    assert row["sponsorship_stance"] in {"offers", "refuses_visa", "refuses_relocation", "silent"}
+    assert row["sponsorship_stance"] == "silent"  # the SOC Analyst text states no stance
 
 
 def test_replay_picks_up_capture_whose_parse_failed(conn, monkeypatch):

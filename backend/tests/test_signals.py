@@ -95,6 +95,19 @@ STANCE = [
     ("We are only considering candidates who are currently living and working in the Netherlands.", "refuses_visa"),
     ("EU citizenship or a valid work permit for the Netherlands", "refuses_visa"),
     ("Je woont in Nederland en beschikt over een geldige werkvergunning", "refuses_visa"),
+    ("Please note that we can only consider candidates who are already residing in the Netherlands and do not require "
+     "visa sponsorship", "refuses_visa"),
+    ("Applicants must currently reside in Europe and be legally authorized to work within the European Union",
+     "refuses_visa"),
+    # Not refusals: an offer, a reassurance, or a question (review of 2026-09-27).
+    ("We sponsor the highly skilled migrant visa, which makes you eligible to work in the Netherlands.", "offers"),
+    ("As an IND recognised sponsor we apply for your residence permit so you are allowed to work in the Netherlands",
+     "silent"),
+    ("You do not need visa sponsorship to apply", "silent"),
+    ("You can work with or without sponsorship from us", "silent"),
+    ("Not only do we sponsor your visa, we also cover relocation.", "silent"),  # the offer check still sees "not"
+    ("Geen werkvergunning? Wij regelen het", "silent"),
+    ("Geen probleem als je sponsoring nodig hebt", "silent"),
     # offers
     ("For this role we offer relocation support and more information about our perks can be found on our What we "
      "offer page.", "offers"),  # SP
@@ -163,6 +176,12 @@ TECH_TITLES = [
     ("Business Developer Offshore Solar", False),
     ("Embedded Software Engineer", True),
     ("FPGA Hardware Engineer", True),
+    ("Data Engineer - Manufacturing", True),
+    ("Senior SDK Hardware Simulator Engineer", True),
+    ("Site Reliability Engineer in Hardware Infrastructure", True),
+    ("Business Process Developer", True),
+    ("Process Engineer", False),
+    ("Data Centre Electrical Package Manager", False),
     ("Firmware Engineer", True),
 ]
 

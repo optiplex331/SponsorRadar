@@ -40,14 +40,19 @@ def seniority(title: str) -> Seniority:
 # Hardware, lab, and physical engineering titles are not tech even when they say "engineer" or "test"; embedded,
 # firmware, and FPGA roles are (owner decision 2026-09-27, from the phase 3 labels).
 _HARDWARE = re.compile(
-    r"\b(quantum|electrical|elektr\w*|mechanical|mechatronic\w*|structural|civil|civiele|manufacturing|process|"
+    r"\b(quantum|electrical|elektr\w*|mechanical|mechatronic\w*|structural|civil|civiele|manufacturing|process engineer\w*|"
     r"rf|photonic\w*|optic\w*|semiconductor|subsea|pipeline|facilit\w*|maintenance|field service|"
     r"field application|service engineer|commissioning|high voltage|hardware|cryogenic\w*|functional safety|"
     r"certification|sourcing|space systems|energievoorziening|installati\w*|bruggen|sluizen|"
     r"technical design engineer|business developer)\b",
     re.I,
 )
-_SOFTWARE = re.compile(r"\b(software|firmware|embedded|fpga)\b", re.I)
+# A software, data, or platform word keeps a title tech: "Data Engineer - Manufacturing", "SDK Hardware Simulator Engineer".
+_SOFTWARE = re.compile(
+    r"\b(software|firmware|embedded|fpga|data(?!\s+cent(?:re|er))|cloud|platform|site reliability|sre|devops|"
+    r"machine learning|ml|ai|sdk|simulator|python|java|backend|back-end|frontend|front-end|full[- ]?stack)\b",
+    re.I,
+)
 
 
 def is_tech_role(title: str) -> bool:
@@ -146,18 +151,22 @@ _NEGATOR = (r"(?<!or )\b(?:no|not|unable to|cannot|can ?not|can['’]t|won['’]
 _REFUSES_VISA = re.compile(
     "|".join((
         # "we do not offer visa sponsorship", "unable to sponsor", "(no sponsorship)"; "relocation sponsorship" is relocation
-        rf"{_NEGATOR}(?:\s+\w+){{0,4}}?\s+(?<!relocation )(?:visa\s+|immigration\s+|work permit\s+)?sponsor(?:ship|ing|ed)?s?\b",
+        rf"{_NEGATOR}(?!\s+(?:only|wait)\b)(?!(?:\s+\w+){{0,2}}?\s+(?:need|needs|needed|require|requires|required)\b)"
+        rf"(?:\s+\w+){{0,4}}?\s+(?<!relocation )(?:visa\s+|immigration\s+|work permit\s+)?sponsor(?:ship|ing|ed)?s?\b",
         rf"{_NEGATOR}(?:\s+\w+){{0,3}}?\s+(?:support|assist with|help with)\s+(?:\w+\s+)?(?:visa|work permit|residency)",
         r"\b(?:visa\s+)?sponsorship\s+(?:is\s+|will\s+)?(?:\w+\s+)?(?:not|un)\s*(?:be\s+)?(?:available|provided|offered|possible)",
         # "visa sponsorship and relocation support are not available", "relocation or visa support is not offered"
         r"\bvisa\s+(?:sponsorship|support|assistance)\b[^.]{0,40}?\b(?:is|are)\s+not\s+(?:available|provided|offered|possible)",
-        r"\bwithout\s+(?:the\s+need\s+for\s+|requiring\s+|needing\s+|any\s+)?(?:visa\s+|company\s+)?sponsorship",
+        # "candidates who are already residing in the Netherlands and do not require visa sponsorship"
+        r"\bwho\b[^.]{0,80}?\b(?:do|does)\s*(?:not|n['’]t)\s+(?:require|need)\s+(?:\w+\s+)?sponsorship",
+        r"(?<!or )\bwithout\s+(?:the\s+need\s+for\s+|requiring\s+|needing\s+|any\s+)?(?:visa\s+|company\s+)?sponsorship",
         # "must already have the right to work in the Netherlands", "with the right to work in the EU"
         rf"\b(?:must|need to|should|required to|with|who)\s+(?:already\s+)?(?:have|hold|possess|be granted)?\s*"
         rf"(?:the\s+|a\s+|valid\s+|full\s+|legal\s+)*(?:right|authori[sz]ation|permission|permit|eligibility)\s+to\s+work\s+"
         rf"(?:in\s+|within\s+)?{_WHERE}",
         # "authorized to work in the country in which they apply", "permitted to work in the job's location"
-        rf"\b(?:allowed|authori[sz]ed|eligible|permitted)\s+to\s+work\s+(?:in|within)\s+"
+        rf"(?:\b(?:must|need\s+to|needs\s+to|should|required\s+to)\s+(?:already\s+)?be|\b(?:and|or)\s+be|\bwho\s+are|\bonly\s+(?:\w+\s+){{0,4}}?|"
+        rf"^\W*|:\s*)\s*(?:legally\s+)?(?:allowed|authori[sz]ed|eligible|permitted)\s+to\s+work\s+(?:in|within)\s+"
         rf"(?:{_WHERE}|(?:the\s+)?(?:country|job['’]s\s+location)\b)",
         # "not able to consider candidates who are not living and working in the Netherlands"
         # "expats already living and working in the Netherlands are welcome" is not a requirement.
@@ -167,12 +176,12 @@ _REFUSES_VISA = re.compile(
         r"(?:work\s+permit|work\s+visa|residence\s+permit|visa\s+to\s+work)",
         r"\bvalid\s+(?:eu\s+|eea\s+|dutch\s+)?work\s+permit\s+(?:is\s+)?(?:required|mandatory|needed)",
         r"\b(?:required|mandatory):?\s+(?:a\s+)?valid\s+(?:eu\s+|eea\s+|dutch\s+)?work\s+permit",
-        r"\bgeen\b(?:\s+\w+){0,4}?\s+(?:visum|visa)?sponsor\w*",
+        r"\bgeen\b(?!\s+probleem)(?:\s+\w+){0,4}?\s+(?:visum|visa)?sponsor\w*",
         r"\bsponsor\w*\s+(?:\w+\s+){0,4}?niet\s+(?:beschikbaar|mogelijk)",
         r"\bwerkvergunning\s+(?:is\s+)?(?:vereist|verplicht|noodzakelijk)",
         # "je beschikt over een geldige werkvergunning"
         r"\b(?:beschik\w*\s+over|hebt|heeft|in\s+het\s+bezit\s+van)\s+een\s+geldige\s+werkvergunning",
-        r"\bgeen\s+(?:visum|visa|werkvergunning)(?:aanvra\w+)?\b",
+        r"\bgeen\s+(?:visum|visa|werkvergunning)(?:aanvra\w+)?\b(?!\s*\?)",
         r"\bgemachtigd\s+(?:zijn\s+)?om\s+in\s+nederland\s+te\s+werken",
     )),
     re.I,
@@ -226,11 +235,13 @@ _REFUSES_RELOCATION = re.compile(
 _VISA_STEMS = ("sponsor", "visa", "visum", "work", "werkvergunning", "gemachtigd")
 _OFFER_STEMS = ("sponsor", "visa", "visum", "relocat", "migrant")
 _RELOCATION_STEMS = ("relocat", "based", "liv", "resid", "locat")
+# Like _SENTENCE, but each piece keeps its closing punctuation.
+_STANCE_SENTENCE = re.compile(r"(?<=[.;!?\n•])")
 
 
 def sponsorship_stance(description: str, title: str = "") -> Stance:
     found = set()
-    for sentence in _SENTENCE.split(f"{title}\n{description}"):
+    for sentence in _STANCE_SENTENCE.split(f"{title}\n{description}"):
         low = sentence.lower()
         if any(stem in low for stem in _VISA_STEMS) and _REFUSES_VISA.search(sentence) and not _NATIONALITY.search(sentence):
             return "refuses_visa"

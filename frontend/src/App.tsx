@@ -86,6 +86,8 @@ function writeLastVisit(now: number): void {
 
 const dayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 const fullDayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+// `delisted_on` is a calendar day, so it is formatted in UTC; timestamps above use the visitor's zone.
+const calendarDayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
   day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
 });
@@ -379,7 +381,7 @@ function PostingRow({ posting: p, km, isNew }: { posting: Posting; km: KmTier | 
           )}
         </p>
         {p.delisted_on ? (
-          <p className="register-note">Removed from register on {fullDayFormat.format(new Date(p.delisted_on))}</p>
+          <p className="register-note">Removed from register on {calendarDayFormat.format(new Date(p.delisted_on))}</p>
         ) : (
           p.match_status === "unmatched" && (
             <p className="register-note">
