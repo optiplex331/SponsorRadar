@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import os
 
+import psycopg
 import pytest
 from fastapi.testclient import TestClient
 
+from sponsor_radar import db
 from sponsor_radar.web import create_app
 
 
@@ -107,3 +109,102 @@ def test_register_changes_with_one_snapshot(client, conn):
     assert body["current"]["register_updated_on"] == "2026-09-03"
     assert body["previous"] is None
     assert (body["added_count"], body["removed_count"], body["added"], body["removed"]) == (0, 0, [], [])
+
+
+@pytest.fixture
+def site(conn, tmp_path, monkeypatch):
+    """An app over a small dist and a hand-driven clock."""
+    monkeypatch.setenv("DATABASE_URL", os.environ["SPONSOR_RADAR_TEST_DATABASE_URL"])
+    (tmp_path / "index.html").write_text("<!doctype html><title>NL Sponsor Radar</title>")
+    (tmp_path / "404.html").write_text("<!doctype html><title>Page not found</title>")
+    (tmp_path / "favicon.svg").write_text("<svg/>")
+    (tmp_path / "assets").mkdir()
+    (tmp_path / "assets" / "index-abc123.js").write_text("console.log(1)")
+    now = [1000.0]
+    client = TestClient(create_app(tmp_path, clock=lambda: now[0]), raise_server_exceptions=False)
+    return client, now
+
+
+def _no_database(*args, **kwargs):
+    raise psycopg.OperationalError("database down")
+
+
+def test_security_headers_on_every_response(site):
+    client, _ = site
+    for path in ("/", "/api/status", "/assets/index-abc123.js", "/nope"):
+        headers = client.get(path).headers
+        assert "frame-ancestors 'none'" in headers["content-security-policy"], path
+        assert headers["strict-transport-security"] == "max-age=31536000", path
+        assert headers["x-content-type-options"] == "nosniff", path
+        assert headers["referrer-policy"] == "strict-origin-when-cross-origin", path
+        assert headers["cross-origin-opener-policy"] == "same-origin", path
+
+
+def test_cache_control_per_path_class(site):
+    client, _ = site
+
+    assert client.get("/").headers["cache-control"] == "no-cache"
+    assert client.get("/index.html").headers["cache-control"] == "no-cache"
+    assert client.get("/assets/index-abc123.js").headers["cache-control"] == "public, max-age=31536000, immutable"
+    assert client.get("/favicon.svg").headers["cache-control"] == "public, max-age=3600"
+    assert client.get("/api/status").headers["cache-control"] == "public, max-age=300"
+    missing = client.get("/assets/missing.js")
+    assert missing.status_code == 404
+    assert "immutable" not in missing.headers.get("cache-control", "")
+
+
+def test_api_cache_skips_database_within_ttl(site, conn, monkeypatch):
+    client, now = site
+    source_id = conn.execute(
+        "INSERT INTO sources (kind, board, employer_name) VALUES ('greenhouse', 'acme', 'Acme') RETURNING id"
+    ).fetchone()["id"]
+    first = client.get("/api/status").json()
+    _posting(conn, source_id, "open")
+    conn.commit()
+
+    with monkeypatch.context() as m:
+        m.setattr(db, "connect", _no_database)
+        now[0] += 299
+        assert client.get("/api/status").json() == first
+
+    now[0] += 2
+    assert client.get("/api/status").json()["postings"] == 1
+
+
+def test_api_cache_never_stores_a_failure(site, monkeypatch):
+    client, _ = site
+    with monkeypatch.context() as m:
+        m.setattr(db, "connect", _no_database)
+        assert client.get("/api/postings").status_code == 500
+
+    response = client.get("/api/postings")
+    assert (response.status_code, response.json()) == (200, [])
+
+
+def test_not_found_is_html_for_pages_and_json_for_api(site):
+    client, _ = site
+
+    page = client.get("/nope")
+    assert (page.status_code, page.headers["content-type"].split(";")[0]) == (404, "text/html")
+    assert "Page not found" in page.text
+    api = client.get("/api/nope")
+    assert (api.status_code, api.json()) == (404, {"detail": "Not Found"})
+
+
+def test_head_index_counts_no_view(site, conn):
+    client, _ = site
+
+    assert client.head("/").status_code == 200
+    assert conn.execute("SELECT count(*) AS n FROM page_views").fetchone()["n"] == 0
+
+
+def test_plain_http_redirects_to_canonical_https(site):
+    client, _ = site
+
+    response = client.get(
+        "/api/postings?city=Delft", headers={"X-Forwarded-Proto": "http", "Host": "evil.example"},
+        follow_redirects=False,
+    )
+    assert response.status_code == 301
+    assert response.headers["location"] == "https://sponsorradar.halligalli.games/api/postings?city=Delft"
+    assert client.get("/", headers={"X-Forwarded-Proto": "https"}).status_code == 200
