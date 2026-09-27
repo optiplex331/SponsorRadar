@@ -44,7 +44,7 @@ def main(argv: list[str] | None = None) -> None:
         print(evaluate.evaluate(args.labels))
         return
 
-    with db.connect() as conn, _client() as client:
+    with db.connect(attempts=10) as conn, _client() as client:
         steps = ["migrate", "seed", "register", "collect", "match", "report", "prune"] if args.command == "run" else [args.command]
         for step in steps:
             if step == "migrate":

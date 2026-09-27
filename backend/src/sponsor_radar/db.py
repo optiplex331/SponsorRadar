@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import time
 from pathlib import Path
 
 import psycopg
@@ -11,8 +12,21 @@ DEFAULT_URL = "postgresql://radar:radar@127.0.0.1:5433/radar"
 MIGRATE_LOCK = 0x5350_5241  # pg_advisory_lock key shared by every `migrate` caller
 
 
-def connect(url: str | None = None) -> psycopg.Connection:
-    return psycopg.connect(url or os.environ.get("DATABASE_URL", DEFAULT_URL), row_factory=dict_row)
+def connect(url: str | None = None, attempts: int = 1) -> psycopg.Connection:
+    """Connect, trying `attempts` times 3 s apart.
+
+    The CLI passes 10: on K3s a new pod's first connections are refused until the NetworkPolicy controller admits
+    its IP, and the collector connects within a second of starting (2026-09-27: two collector runs failed this
+    way). Web requests keep one attempt so a database outage fails fast.
+    """
+    for attempt in range(1, attempts + 1):
+        try:
+            return psycopg.connect(url or os.environ.get("DATABASE_URL", DEFAULT_URL), row_factory=dict_row)
+        except psycopg.OperationalError:
+            if attempt == attempts:
+                raise
+            time.sleep(3)
+    raise AssertionError("unreachable")
 
 
 def migrate(conn: psycopg.Connection) -> list[str]:
