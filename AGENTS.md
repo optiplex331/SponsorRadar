@@ -23,6 +23,7 @@ uv run sponsor-radar prune                   # drop raw captures unused for 14 d
 uv run sponsor-radar backfill-register       # one-off by hand: past register versions from archive.org, never in `run`
 uv run sponsor-radar discover --out ../../SponsorRadar-workbench/notes/discover.csv [--since YYYY-MM-DD]
                                              # probe boards for KvKs added in the last register change (or since a date)
+uv run sponsor-radar evaluate --labels ../../SponsorRadar-workbench/notes/labels   # score rules; no database
 uv run uvicorn sponsor_radar.web:app --reload --port 8000
 SPONSOR_RADAR_TEST_DATABASE_URL=postgresql://radar:radar@127.0.0.1:5433/radar_test uv run pytest -q
 cd ../frontend && npm ci && npm run dev      # http://localhost:5173, proxies /api to :8000

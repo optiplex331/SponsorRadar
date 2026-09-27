@@ -7,7 +7,7 @@ from pathlib import Path
 
 import httpx
 
-from . import db, discover, ingest, matching, register, report
+from . import db, discover, evaluate, ingest, matching, register, report
 
 USER_AGENT = "SponsorRadar/0.1 (+https://github.com/optiplex331/SponsorRadar)"
 
@@ -35,8 +35,14 @@ def main(argv: list[str] | None = None) -> None:
     disc.add_argument("--out", type=Path, required=True, metavar="PATH")
     disc.add_argument("--since", type=date.fromisoformat, metavar="YYYY-MM-DD",
                       help="all unlinked KvKs first seen on or after this date (default: added in the last register change)")
+    ev = sub.add_parser("evaluate", help="score the rules against labeled pairs and postings")
+    ev.add_argument("--labels", type=Path, required=True, metavar="DIR")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+
+    if args.command == "evaluate":  # reads label files only; no database
+        print(evaluate.evaluate(args.labels))
+        return
 
     with db.connect() as conn, _client() as client:
         steps = ["migrate", "seed", "register", "collect", "match", "report", "prune"] if args.command == "run" else [args.command]
