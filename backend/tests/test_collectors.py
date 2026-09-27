@@ -68,3 +68,10 @@ def test_ashby_compensation():
 
 def test_ashby_board_url_requests_compensation():
     assert ashby.board_url("sentry").endswith("/sentry?includeCompensation=true")
+
+
+def test_recruitee_yearly_salary_in_thousands():
+    # Seen live on deephealth.recruitee.com: 115k-130k a year entered as "115.00" and "130.00".
+    assert recruitee.parse_salary({"min": "115.00", "max": "130.00", "period": "year", "currency": "EUR"}) == {
+        "salary_min": 115000, "salary_max": 130000, "salary_currency": "EUR", "salary_period": "year"}
+    assert recruitee.parse_salary({"min": "400", "max": None, "period": "month", "currency": "EUR"})["salary_min"] == 400

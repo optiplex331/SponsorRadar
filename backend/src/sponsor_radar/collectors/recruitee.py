@@ -16,8 +16,12 @@ def parse_salary(salary: dict | None) -> dict:
     low, high = salary_amounts(salary.get("min"), salary.get("max"))
     if low is None and high is None:
         return {}
+    period = PERIODS.get(salary.get("period"))
+    if period == "year" and (high or low) < 1000:
+        # Some employers type a yearly range in thousands ("115.00" for 115k); no yearly salary is below 1,000.
+        low, high = (v * 1000 if v is not None else None for v in (low, high))
     return {"salary_min": low, "salary_max": high, "salary_currency": salary.get("currency"),
-            "salary_period": PERIODS.get(salary.get("period"))}
+            "salary_period": period}
 
 
 def parse(payload: dict) -> list[Posting]:

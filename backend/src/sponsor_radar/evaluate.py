@@ -5,6 +5,7 @@ each posting's text. Rules run on that saved text, so a score does not depend on
 
 - `pairs.csv`: one row per source with the rule's status and candidate KvKs and a labeled verdict.
 - `postings.jsonl`: one object per posting with `title`, `description`, `labels`, and optional `stratum`.
+- `register.tsv` (optional): `kvk<TAB>organisation`, to score the brand-prefix candidate rule on the pairs.
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 from . import signals
+from .matching import normalize_employer_name
 
 MAX_CASES = 8
 
@@ -74,6 +76,10 @@ def _postings(rows: list[dict]) -> list[str]:
             lines += _binary(tech, f"sponsorship_stance {value}",
                              lambda r, v=value: r["rule"]["sponsorship_stance"] == v,
                              lambda r, v=value: lab(r, "sponsorship_stance") == v)
+        # Labels split "asks for existing work rights" from an outright refusal; the rule has one value for both.
+        lines += _binary(tech, "sponsorship_stance refuses_visa vs refuses_visa or requires_work_rights",
+                         lambda r: r["rule"]["sponsorship_stance"] == "refuses_visa",
+                         lambda r: lab(r, "sponsorship_stance") in ("refuses_visa", "requires_work_rights"))
     lines.append(f"nl_open among postings the NL check accepted: {_rate(sum(lab(r, 'nl_open') for r in rows), len(rows))}")
     for r in rows:
         if not lab(r, "nl_open"):
@@ -100,11 +106,39 @@ def _pairs(rows: list[dict]) -> list[str]:
     return lines
 
 
+def _prefix_rule(rows: list[dict], register: list[tuple[str, str]]) -> list[str]:
+    """Candidate rule: the brand's tokens are a whole-token prefix of a register name ("Atabix" -> "Atabix Solutions B.V.")."""
+    keys = [(kvk, normalize_employer_name(name).split()) for kvk, name in register]
+    decided = [r for r in rows if r["label"] in ("confirmed", "rejected")]
+    proposed, single, single_right, found = 0, 0, 0, 0
+    wrong = []
+    for r in decided:
+        brand = normalize_employer_name(r["employer"]).split()
+        candidates = {kvk for kvk, key in keys if brand and key[:len(brand)] == brand}
+        truth = r["kvk"] if r["label"] == "confirmed" else None
+        proposed += bool(candidates)
+        found += truth in candidates
+        if len(candidates) == 1:
+            single += 1
+            single_right += truth in candidates
+            if truth not in candidates:
+                wrong.append(f"  wrong: {r['employer']} -> {next(iter(candidates))} (labeled {truth or 'rejected'})")
+    confirmed = sum(1 for r in decided if r["label"] == "confirmed")
+    return [f"Brand-prefix candidate rule on {len(decided)} decided pairs: proposes for {proposed}",
+            f"  single-candidate precision: {_rate(single_right, single)}",
+            f"  confirmed KvK among candidates (recall): {_rate(found, confirmed)}"] + wrong[:MAX_CASES]
+
+
 def evaluate(labels: Path) -> str:
     lines: list[str] = []
     if (path := labels / "pairs.csv").exists():
         with path.open(newline="") as f:
-            lines += _pairs([r for r in csv.DictReader(f) if r.get("label")]) + [""]
+            pairs = [r for r in csv.DictReader(f) if r.get("label")]
+        lines += _pairs(pairs)
+        if (reg := labels / "register.tsv").exists():
+            with reg.open() as f:
+                lines += _prefix_rule(pairs, [tuple(line.rstrip("\n").split("\t", 1)) for line in f])
+        lines.append("")
     if (path := labels / "postings.jsonl").exists():
         with path.open() as f:
             lines += _postings([r for line in f if (r := json.loads(line)).get("labels")])

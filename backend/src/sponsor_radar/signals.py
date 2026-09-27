@@ -136,6 +136,8 @@ _REFUSES_VISA = re.compile(
         rf"{_NEGATOR}(?:\s+\w+){{0,4}}?\s+(?<!relocation )(?:visa\s+|immigration\s+|work permit\s+)?sponsor(?:ship|ing|ed)?s?\b",
         rf"{_NEGATOR}(?:\s+\w+){{0,3}}?\s+(?:support|assist with|help with)\s+(?:\w+\s+)?(?:visa|work permit|residency)",
         r"\b(?:visa\s+)?sponsorship\s+(?:is\s+|will\s+)?(?:\w+\s+)?(?:not|un)\s*(?:be\s+)?(?:available|provided|offered|possible)",
+        # "visa sponsorship and relocation support are not available", "relocation or visa support is not offered"
+        r"\bvisa\s+(?:sponsorship|support|assistance)\b[^.]{0,40}?\b(?:is|are)\s+not\s+(?:available|provided|offered|possible)",
         r"\bwithout\s+(?:the\s+need\s+for\s+|requiring\s+|needing\s+|any\s+)?(?:visa\s+|company\s+)?sponsorship",
         # "must already have the right to work in the Netherlands", "with the right to work in the EU"
         rf"\b(?:must|need to|should|required to|with|who)\s+(?:already\s+)?(?:have|hold|possess|be granted)?\s*"
@@ -171,7 +173,8 @@ _OFFERS = re.compile(
     )),
     re.I,
 )
-# Anything that negates or conditions an offer phrase in the same sentence voids it.
+# A negation or condition before an offer phrase in the same sentence voids it; one after it ("visa sponsorship
+# available; no relocation support") belongs to another clause.
 _OFFER_BLOCKER = re.compile(
     r"\b(?:no|not|unable|cannot|\w+n['’]t|without|geen|niet|already|reeds|existing)\b"
     # "have a partner / highly skilled migrant visa" is a requirement, not an offer.
@@ -210,7 +213,8 @@ def sponsorship_stance(description: str, title: str = "") -> Stance:
         low = sentence.lower()
         if any(stem in low for stem in _VISA_STEMS) and _REFUSES_VISA.search(sentence) and not _NATIONALITY.search(sentence):
             return "refuses_visa"
-        if any(stem in low for stem in _OFFER_STEMS) and _OFFERS.search(sentence) and not _OFFER_BLOCKER.search(sentence):
+        offer = any(stem in low for stem in _OFFER_STEMS) and _OFFERS.search(sentence)
+        if offer and not _OFFER_BLOCKER.search(sentence[:offer.end()]):
             found.add("offers")
         elif (any(stem in low for stem in _RELOCATION_STEMS) and _REFUSES_RELOCATION.search(sentence.strip())
               and not _PREFERENCE.search(sentence)):

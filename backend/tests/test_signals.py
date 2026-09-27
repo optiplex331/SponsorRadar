@@ -74,6 +74,10 @@ def test_min_years(text, expected):
 
 # Sponsorship stance. Sentences marked SP (Schuberg Philis) and Sytac are copied from their live postings.
 STANCE = [
+    # Real sentences from the phase 3 labeled set.
+    ("Please note that visa sponsorship and relocation support are not available for this position.", "refuses_visa"),
+    ("Kindly note that relocation or visa support is not offered for this role.", "refuses_visa"),
+    ("Visa sponsorship available (including takeover of an existing Dutch visa; no relocation support)", "offers"),
     # refuses_visa
     ("Currently we do not offer visa sponsorship.", "refuses_visa"),  # SP
     ("We bieden geen relocatie of visumsponsoring en nemen geen sollicitaties vanuit het buitenland in behandeling.",
