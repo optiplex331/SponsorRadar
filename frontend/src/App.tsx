@@ -28,6 +28,7 @@ import {
   type KmTier,
 } from "./km";
 import { RegisterChanges } from "./RegisterChanges";
+import { SponsorLookup } from "./SponsorLookup";
 
 interface Status {
   last_collect_at: string | null;
@@ -306,6 +307,8 @@ export default function App() {
             Show {Math.min(PAGE, results.length - shown)} more
           </button>
         )}
+
+        <SponsorLookup onShowEmployer={showEmployer} />
 
         <RegisterChanges onShowEmployer={showEmployer} />
       </main>

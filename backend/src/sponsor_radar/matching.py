@@ -32,12 +32,17 @@ def normalize_employer_name(name: str) -> str:
     join unrelated companies that share a first word. Brand-to-entity links such as
     Elastic -> elasticsearch B.V. belong in a hand-checked `kvk` seed instead.
     """
-    text = unicodedata.normalize("NFKD", html.unescape(name)).encode("ascii", "ignore").decode()
-    text = text.casefold().replace("&", " and ").replace(".", "")
-    tokens = re.findall(r"[a-z0-9]+", text)
+    tokens = name_tokens(name)
     while tokens and tokens[-1] in LEGAL_FORMS:
         tokens.pop()
     return " ".join(tokens)
+
+
+def name_tokens(name: str) -> list[str]:
+    """Lowercase ASCII word tokens of a name; dots are dropped first, so "B.V." is one token "bv"."""
+    text = unicodedata.normalize("NFKD", html.unescape(name)).encode("ascii", "ignore").decode()
+    text = text.casefold().replace("&", " and ").replace(".", "")
+    return re.findall(r"[a-z0-9]+", text)
 
 
 def match_sources(conn: psycopg.Connection) -> dict[str, int]:
