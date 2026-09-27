@@ -4,7 +4,7 @@ Junior technical job postings in the Netherlands from employers on the IND regis
 
 ## Layout
 
-- `backend/src/sponsor_radar/`: CLI, collectors, ingest, register, matching, signals, report, `web.py` (FastAPI).
+- `backend/src/sponsor_radar/`: CLI, collectors, ingest, register, matching, signals, report, `lookup.py` (sponsor search over an in-process index of the latest register snapshot), `web.py` (FastAPI).
 - `backend/src/sponsor_radar/migrations/`: forward-only numbered SQL. Never edit an applied migration; add a new file.
 - `backend/src/sponsor_radar/seeds.toml`: seed job boards. Set `kvk` only after checking the register by hand.
 - `backend/tests/fixtures/`: trimmed real payloads. Refresh them from raw captures, never hand-write them.

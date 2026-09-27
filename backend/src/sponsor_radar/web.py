@@ -11,12 +11,12 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import psycopg
-from fastapi import Depends, FastAPI, Response
+from fastapi import Depends, FastAPI, HTTPException, Response
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import db, register
+from . import db, lookup, register
 
 log = logging.getLogger(__name__)
 # Same relative layout in the repo and the image: <root>/backend/src/sponsor_radar, <root>/frontend/dist.
@@ -83,6 +83,14 @@ def create_app(dist: Path = DIST_DIR) -> FastAPI:
     def register_changes(response: Response, conn: psycopg.Connection = Depends(get_conn)) -> dict:
         response.headers["Cache-Control"] = "public, max-age=300"
         return register.register_changes(conn)
+
+    @app.get("/api/sponsors")
+    def sponsors(response: Response, q: str = "", conn: psycopg.Connection = Depends(get_conn)) -> dict:
+        # The query is never stored; it only appears where the server already logs request URLs.
+        if not lookup.MIN_QUERY <= len(q.strip()) <= 100:
+            raise HTTPException(400, f"q needs {lookup.MIN_QUERY} to 100 characters")
+        response.headers["Cache-Control"] = "public, max-age=300"
+        return lookup.search(conn, q)
 
     @app.get("/", include_in_schema=False)
     def index() -> FileResponse:
