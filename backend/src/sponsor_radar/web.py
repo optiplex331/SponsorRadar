@@ -16,7 +16,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import db
+from . import db, register
 
 log = logging.getLogger(__name__)
 # Same relative layout in the repo and the image: <root>/backend/src/sponsor_radar, <root>/frontend/dist.
@@ -30,7 +30,8 @@ FROM (
     SELECT p.id, p.title, p.url, p.location, p.department, p.published_at, p.first_seen_at,
            p.seniority, p.dutch_required, p.min_years, s.employer_name AS employer,
            coalesce(m.status, 'unmatched') AS match_status,
-           coalesce(m.organisations, '{}') AS register_organisations
+           coalesce(m.organisations, '{}') AS register_organisations,
+           m.delisted_on
     FROM job_postings p
     JOIN sources s ON s.id = p.source_id
     LEFT JOIN sponsor_matches m ON m.source_id = p.source_id
@@ -76,6 +77,11 @@ def create_app(dist: Path = DIST_DIR) -> FastAPI:
     @app.get("/api/status")
     def status(conn: psycopg.Connection = Depends(get_conn)) -> dict:
         return conn.execute(STATUS_SQL).fetchone()
+
+    @app.get("/api/register-changes")
+    def register_changes(response: Response, conn: psycopg.Connection = Depends(get_conn)) -> dict:
+        response.headers["Cache-Control"] = "public, max-age=300"
+        return register.register_changes(conn)
 
     @app.get("/", include_in_schema=False)
     def index() -> FileResponse:
