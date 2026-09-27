@@ -1,10 +1,23 @@
 from __future__ import annotations
 
-from . import Posting, html_to_text, mentions_netherlands, parse_time
+from . import Posting, html_to_text, mentions_netherlands, parse_time, salary_amounts
+
+# Recruitee's salary.period vocabulary seen in raw captures: month, year, hour, or null.
+# A null period is left unset rather than guessed from the amount.
+PERIODS = {"month": "month", "year": "year", "hour": "hour"}
 
 
 def board_url(board: str) -> str:
     return f"https://{board}.recruitee.com/api/offers/"
+
+
+def parse_salary(salary: dict | None) -> dict:
+    salary = salary or {}
+    low, high = salary_amounts(salary.get("min"), salary.get("max"))
+    if low is None and high is None:
+        return {}
+    return {"salary_min": low, "salary_max": high, "salary_currency": salary.get("currency"),
+            "salary_period": PERIODS.get(salary.get("period"))}
 
 
 def parse(payload: dict) -> list[Posting]:
@@ -21,5 +34,6 @@ def parse(payload: dict) -> list[Posting]:
             department=offer.get("department"),
             description=description.strip(),
             published_at=parse_time(offer.get("published_at") or offer.get("created_at")),
+            **parse_salary(offer.get("salary")),
         ))
     return postings

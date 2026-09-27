@@ -11,6 +11,8 @@
   --stamp-ink: oklch(98% 0.01 80);
   --stamp-soft: oklch(51% 0.155 35 / 0.1);
   --focus: oklch(55% 0.16 35);
+  --go: oklch(47% 0.1 150);
+  --go-soft: oklch(47% 0.1 150 / 0.1);
 
   --serif: "Iowan Old Style", "Charter", "Sitka Text", Cambria, Georgia, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
@@ -34,6 +36,8 @@
     --stamp-ink: oklch(18% 0.02 45);
     --stamp-soft: oklch(71% 0.14 42 / 0.14);
     --focus: oklch(74% 0.14 42);
+    --go: oklch(76% 0.11 150);
+    --go-soft: oklch(76% 0.11 150 / 0.13);
   }
 }
 
@@ -99,6 +103,13 @@ a {
 .lede {
   max-width: 62ch;
   margin: 10px 0 16px;
+  color: var(--ink-soft);
+}
+
+.default-note {
+  max-width: 72ch;
+  margin: -6px 0 16px;
+  font-size: 0.875rem;
   color: var(--ink-soft);
 }
 
@@ -237,6 +248,13 @@ input::placeholder {
   transform: scale(0.96);
 }
 
+.toggles {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+}
+
 .toggle {
   display: flex;
   align-items: center;
@@ -251,6 +269,19 @@ input::placeholder {
   height: 18px;
   margin: 0;
   accent-color: var(--stamp);
+}
+
+.km-note {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--rule-strong);
+  background: var(--paper-sunk);
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.km-note strong {
+  color: var(--ink);
 }
 
 /* Results */
@@ -378,6 +409,43 @@ input::placeholder {
   border: 1px dashed var(--rule-strong);
 }
 
+.new-mark {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 0 6px;
+  border-radius: var(--r-sm);
+  background: var(--ink);
+  color: var(--paper);
+  font: 600 0.6875rem/1.6 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 0.2em;
+}
+
+.stance-offers {
+  padding: 1px 7px;
+  border: 1px solid var(--go);
+  border-radius: var(--r-sm);
+  background: var(--go-soft);
+  color: var(--go);
+  font: 600 0.6875rem/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.register-note,
+.stance-note {
+  margin: 4px 0 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.stance-refuses {
+  color: var(--stamp);
+}
+
 .register-orgs {
   margin: 4px 0 0;
   font-size: 0.8125rem;
@@ -425,6 +493,131 @@ input::placeholder {
   font-variant-numeric: tabular-nums;
 }
 
+.date-stale {
+  color: var(--stamp);
+}
+
+.salary {
+  flex-basis: 100%;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.km {
+  font-weight: 600;
+}
+
+.km-meets {
+  color: var(--go);
+}
+
+.km-crosses {
+  color: var(--ink);
+}
+
+.km-below {
+  color: var(--stamp);
+}
+
+.km-check {
+  display: block;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+/* Register changes: below the postings so jobs stay first. */
+.register {
+  margin-top: 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.register-title {
+  margin: 0;
+  font: 600 1.375rem/1.2 var(--serif);
+}
+
+.register-summary {
+  max-width: 72ch;
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+}
+
+.register-summary strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.register-heading {
+  margin: 22px 0 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.register-empty {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+}
+
+.register-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.register-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.register-org {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.register-kvk {
+  font: 0.8125rem var(--mono);
+  color: var(--ink-soft);
+}
+
+.register-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  flex-basis: 100%;
+  font-size: 0.875rem;
+}
+
+.new-sponsor {
+  color: var(--go);
+  font: 600 0.6875rem/1.5 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.register-more {
+  margin-top: 14px;
+}
+
+.register-more summary {
+  min-height: 40px;
+  padding: 8px 0;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.register-list-plain li {
+  padding: 5px 0;
+}
+
 .more {
   display: block;
   margin: 20px 0 0;
@@ -459,7 +652,8 @@ input::placeholder {
   .field-q,
   .field-sponsor,
   .field-seniority,
-  .toggle {
+  .field-km,
+  .toggles {
     grid-column: 1 / -1;
   }
 

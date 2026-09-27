@@ -1,0 +1,135 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "6ce36964-7052-4c18-9497-68dd42c29cba",
+      "title": "Sales Engineer",
+      "department": "Sales ",
+      "team": "Sales ",
+      "employmentType": "FullTime",
+      "location": "Amsterdam, Netherlands",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-08-03T08:20:56.979+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "Netherlands",
+          "addressCountry": "Netherlands",
+          "addressLocality": "Amsterdam"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/sentry/6ce36964-7052-4c18-9497-68dd42c29cba",
+      "applyUrl": "https://jobs.ashbyhq.com/sentry/6ce36964-7052-4c18-9497-68dd42c29cba/application",
+      "descriptionHtml": "<h2><strong>About Sentry</strong></h2><p style=\"min-height:1.5em\">Software runs the world and the pace is faster than ever. Sentry helps developers fix errors and performance issues before users notice, so teams can spend less time firefighting and more time building.</p><p style=\"min-height:1.5em\">Trusted by 200,000+ organizations, Sentry is today’s application monitoring standard and our team is",
+      "descriptionPlain": "ABOUT SENTRY\n\nSoftware runs the world and the pace is faster than ever. Sentry helps developers fix errors and performance issues before users notice, so teams can spend less time firefighting and more time building.\n\nTrusted by 200,000+ organizations, Sentry is today’s application monitoring standard and our team is building its AI-native future.\n\n\n\n\nABOUT THE ROLE\n\nSentry's European Sales Engine",
+      "compensation": {
+        "compensationTierSummary": "€91K – €124K • Offers Equity",
+        "scrapeableCompensationSalarySummary": "€91K - €124K",
+        "compensationTiers": [
+          {
+            "id": "3baf65f5-23ae-496c-959c-965e83d48f24",
+            "tierSummary": "€91K – €124K • Offers Equity",
+            "title": null,
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "36b903d1-3bc2-48fe-9e53-f23d09502378",
+                "summary": "Offers Equity",
+                "compensationType": "EquityPercentage",
+                "interval": "NONE",
+                "currencyCode": null,
+                "minValue": null,
+                "maxValue": null
+              },
+              {
+                "id": "89f2679f-a70f-4020-8d95-7d098e1f5fd8",
+                "summary": "€91K – €124K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "EUR",
+                "minValue": 91000,
+                "maxValue": 124000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "EquityPercentage",
+            "interval": "NONE",
+            "currencyCode": null,
+            "minValue": null,
+            "maxValue": null
+          },
+          {
+            "compensationType": "Salary",
+            "interval": "1 YEAR",
+            "currencyCode": "EUR",
+            "minValue": 91000,
+            "maxValue": 124000
+          }
+        ]
+      }
+    },
+    {
+      "id": "fa522ac5-fc9f-4ce1-a191-842496a235a2",
+      "title": "Software Engineer, Intern (Summer 2027)",
+      "department": "Engineering ",
+      "team": "Engineering ",
+      "employmentType": "FullTime",
+      "location": "Vienna, Austria",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-09-10T15:39:22.153+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "Austria",
+          "addressCountry": "Austria",
+          "addressLocality": "Vienna"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/sentry/fa522ac5-fc9f-4ce1-a191-842496a235a2",
+      "applyUrl": "https://jobs.ashbyhq.com/sentry/fa522ac5-fc9f-4ce1-a191-842496a235a2/application",
+      "descriptionHtml": "<h2><strong>About Sentry</strong></h2><p style=\"min-height:1.5em\">Software runs the world and the pace is faster than ever. Sentry helps developers fix errors and performance issues before users notice, so teams can spend less time firefighting and more time building.</p><p style=\"min-height:1.5em\">Trusted by 200,000+ organizations, Sentry is today’s application monitoring standard and our team is",
+      "descriptionPlain": "ABOUT SENTRY\n\nSoftware runs the world and the pace is faster than ever. Sentry helps developers fix errors and performance issues before users notice, so teams can spend less time firefighting and more time building.\n\nTrusted by 200,000+ organizations, Sentry is today’s application monitoring standard and our team is building its AI-native future.\n\n\n\n\nABOUT THE ROLE\n\nEver wondered what it's actual",
+      "compensation": {
+        "compensationTierSummary": "€2,800 – €3,285 per month",
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [
+          {
+            "id": "bb0038a0-c907-4eb6-85eb-547ab0a414c5",
+            "tierSummary": "€2,800 – €3,285 per month",
+            "title": null,
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "1fb8f4f2-e1a1-4f94-bfb7-8b04dc8d99b0",
+                "summary": "€2,800 – €3,285 per month",
+                "compensationType": "Salary",
+                "interval": "1 MONTH",
+                "currencyCode": "EUR",
+                "minValue": 2800,
+                "maxValue": 3285
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "interval": "1 MONTH",
+            "currencyCode": "EUR",
+            "minValue": 2800,
+            "maxValue": 3285
+          }
+        ]
+      }
+    }
+  ]
+}

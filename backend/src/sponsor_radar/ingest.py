@@ -72,9 +72,10 @@ def apply_postings(
             """
             INSERT INTO job_postings (source_id, external_id, title, url, location, in_netherlands,
                                       department, description, published_at, raw_capture_id, first_seen_at, last_seen_at,
-                                      seniority, is_tech, dutch_required, min_years)
+                                      seniority, is_tech, dutch_required, min_years, sponsorship_stance,
+                                      salary_min, salary_max, salary_currency, salary_period)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, COALESCE(%s::timestamptz, now()), COALESCE(%s::timestamptz, now()),
-                    %s, %s, %s, %s)
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (source_id, external_id) DO UPDATE SET
                 title = EXCLUDED.title, url = EXCLUDED.url, location = EXCLUDED.location,
                 in_netherlands = EXCLUDED.in_netherlands, department = EXCLUDED.department,
@@ -82,12 +83,17 @@ def apply_postings(
                 raw_capture_id = EXCLUDED.raw_capture_id, closed_at = NULL,
                 last_seen_at = GREATEST(job_postings.last_seen_at, EXCLUDED.last_seen_at),
                 seniority = EXCLUDED.seniority, is_tech = EXCLUDED.is_tech,
-                dutch_required = EXCLUDED.dutch_required, min_years = EXCLUDED.min_years
+                dutch_required = EXCLUDED.dutch_required, min_years = EXCLUDED.min_years,
+                sponsorship_stance = EXCLUDED.sponsorship_stance, salary_min = EXCLUDED.salary_min,
+                salary_max = EXCLUDED.salary_max, salary_currency = EXCLUDED.salary_currency,
+                salary_period = EXCLUDED.salary_period
             """,
             (source_id, p.external_id, p.title, p.url, p.location, p.in_netherlands,
              p.department, p.description, p.published_at, raw_capture_id, seen_at, seen_at,
              signals.seniority(p.title), signals.is_tech_role(p.title),
-             signals.dutch_required(p.description, p.title), signals.min_years(p.description)),
+             signals.dutch_required(p.description, p.title), signals.min_years(p.description),
+             signals.sponsorship_stance(p.description, p.title),
+             p.salary_min, p.salary_max, p.salary_currency, p.salary_period),
         )
     conn.execute(
         """

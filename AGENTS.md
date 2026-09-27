@@ -40,5 +40,7 @@ docker compose up -d --build --wait          # postgres + web image on http://12
 - PostgreSQL is the only stateful dependency. No ORM, Redis, Kafka, or search engine without a measured need.
 - Store no personal data in v1.
 - `signals.py` rules match explicit phrases only: a wrong `dutch_required` or `min_years` hides a posting. After a rule change, run `replay`.
-- The web app is read-only apart from the daily `page_views` counter. No cookies, IPs, or client-side tracking.
+- The web app is read-only apart from the daily `page_views` counter. No cookies, IPs, or client-side tracking. The one exception: the page keeps a single `lastVisit` timestamp in `localStorage` to mark new postings; it never leaves the browser.
+- `sponsorship_stance` hides `refuses_visa` postings by default, so its rules need the same precision as the Dutch rules.
+- `frontend/dev/` holds dev-only mock data (`MOCK_REGISTER_CHANGES=1 npm run dev`); it never ships in `dist`.
 - Tests cover parsing against real fixtures, database behavior (idempotency, closing, replay, prune), the API, and table-driven Dutch/years phrases. Matching and title-rule quality are measured against labeled sets, not unit-tested.
