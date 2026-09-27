@@ -37,8 +37,21 @@ def seniority(title: str) -> Seniority:
     return "unspecified"
 
 
+# Hardware, lab, and physical engineering titles are not tech even when they say "engineer" or "test"; embedded,
+# firmware, and FPGA roles are (owner decision 2026-09-27, from the phase 3 labels).
+_HARDWARE = re.compile(
+    r"\b(quantum|electrical|elektr\w*|mechanical|mechatronic\w*|structural|civil|civiele|manufacturing|process|"
+    r"rf|photonic\w*|optic\w*|semiconductor|subsea|pipeline|facilit\w*|maintenance|field service|"
+    r"field application|service engineer|commissioning|high voltage|hardware|cryogenic\w*|functional safety|"
+    r"certification|sourcing|space systems|energievoorziening|installati\w*|bruggen|sluizen|"
+    r"technical design engineer|business developer)\b",
+    re.I,
+)
+_SOFTWARE = re.compile(r"\b(software|firmware|embedded|fpga)\b", re.I)
+
+
 def is_tech_role(title: str) -> bool:
-    return bool(_TECH.search(title))
+    return bool(_TECH.search(title)) and not (_HARDWARE.search(title) and not _SOFTWARE.search(title))
 
 
 # Dutch requirement: precision first, because a wrong True hides the posting by default.
@@ -143,7 +156,13 @@ _REFUSES_VISA = re.compile(
         rf"\b(?:must|need to|should|required to|with|who)\s+(?:already\s+)?(?:have|hold|possess|be granted)?\s*"
         rf"(?:the\s+|a\s+|valid\s+|full\s+|legal\s+)*(?:right|authori[sz]ation|permission|permit|eligibility)\s+to\s+work\s+"
         rf"(?:in\s+|within\s+)?{_WHERE}",
-        rf"\b(?:allowed|authori[sz]ed|eligible|permitted)\s+to\s+work\s+(?:in|within)\s+{_WHERE}",
+        # "authorized to work in the country in which they apply", "permitted to work in the job's location"
+        rf"\b(?:allowed|authori[sz]ed|eligible|permitted)\s+to\s+work\s+(?:in|within)\s+"
+        rf"(?:{_WHERE}|(?:the\s+)?(?:country|job['’]s\s+location)\b)",
+        # "not able to consider candidates who are not living and working in the Netherlands"
+        # "expats already living and working in the Netherlands are welcome" is not a requirement.
+        rf"\b(?:currently|not|are)\s+(?:living|based|residing)\s+and\s+working\s+{_IN_NL}",
+        r"\b(?:citizenship|passport)\s+or\s+(?:a\s+)?valid\s+(?:\w+\s+)?work\s+permit",
         r"\b(?:have|hold|holds|possess)\s+an?\s+(?:valid|existing)\s+(?:\w+\s+){0,3}?"
         r"(?:work\s+permit|work\s+visa|residence\s+permit|visa\s+to\s+work)",
         r"\bvalid\s+(?:eu\s+|eea\s+|dutch\s+)?work\s+permit\s+(?:is\s+)?(?:required|mandatory|needed)",
@@ -151,6 +170,8 @@ _REFUSES_VISA = re.compile(
         r"\bgeen\b(?:\s+\w+){0,4}?\s+(?:visum|visa)?sponsor\w*",
         r"\bsponsor\w*\s+(?:\w+\s+){0,4}?niet\s+(?:beschikbaar|mogelijk)",
         r"\bwerkvergunning\s+(?:is\s+)?(?:vereist|verplicht|noodzakelijk)",
+        # "je beschikt over een geldige werkvergunning"
+        r"\b(?:beschik\w*\s+over|hebt|heeft|in\s+het\s+bezit\s+van)\s+een\s+geldige\s+werkvergunning",
         r"\bgeen\s+(?:visum|visa|werkvergunning)(?:aanvra\w+)?\b",
         r"\bgemachtigd\s+(?:zijn\s+)?om\s+in\s+nederland\s+te\s+werken",
     )),

@@ -153,7 +153,7 @@ export default function App() {
           </p>
           <p className="default-note">
             By default the list shows roles asking for 2 years of experience or less (or not saying), at employers on
-            the register, without a Dutch requirement, and hides postings that rule out visa sponsorship.
+            the register, without a Dutch requirement, and hides postings that rule out visa sponsorship or ask for existing work rights.
           </p>
           <StatusLine status={status} />
         </div>
@@ -258,7 +258,7 @@ export default function App() {
                 checked={!filters.showRefusesVisa}
                 onChange={(e) => update({ showRefusesVisa: !e.target.checked })}
               />
-              <span>Hide jobs that rule out visa sponsorship</span>
+              <span>Hide jobs that rule out visa sponsorship or need existing work rights</span>
             </label>
           </div>
         </form>
@@ -398,7 +398,7 @@ function PostingRow({ posting: p, km, isNew }: { posting: Posting; km: KmTier | 
           <p className="stance-note">No relocation support: fine if you already live in the Netherlands.</p>
         )}
         {p.sponsorship_stance === "refuses_visa" && (
-          <p className="stance-note stance-refuses">The posting rules out visa sponsorship.</p>
+          <p className="stance-note stance-refuses">The posting rules out visa sponsorship or asks for existing work rights.</p>
         )}
       </div>
       <ul className="posting-meta" aria-label="Details">

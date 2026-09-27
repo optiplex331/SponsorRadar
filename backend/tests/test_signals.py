@@ -89,6 +89,12 @@ STANCE = [
     ("Valid EU work permit required.", "refuses_visa"),
     ("Een geldige werkvergunning is vereist; werkvergunning vereist voor deze rol.", "refuses_visa"),
     ("Please note: we don’t offer visa sponsorship.", "refuses_visa"),
+    # Existing work rights required: hidden like a refusal (owner decision 2026-09-27); phase 3 labeled postings.
+    ("Applicants must be authorized to work in the country in which they apply", "refuses_visa"),
+    ("Work authorization: Permitted to work in the job’s location", "refuses_visa"),
+    ("We are only considering candidates who are currently living and working in the Netherlands.", "refuses_visa"),
+    ("EU citizenship or a valid work permit for the Netherlands", "refuses_visa"),
+    ("Je woont in Nederland en beschikt over een geldige werkvergunning", "refuses_visa"),
     # offers
     ("For this role we offer relocation support and more information about our perks can be found on our What we "
      "offer page.", "offers"),  # SP
@@ -131,7 +137,7 @@ def test_stance_precedence():
     assert sponsorship_stance(f"No recruiters please.\n{offer}") == "offers"
 
 
-# Technical support and pre-sales titles count as tech roles; titles taken from live postings.
+# Technical support and pre-sales titles count as tech roles, hardware engineering does not; titles from live postings.
 TECH_TITLES = [
     ("Technical Support Specialist - Payments", True),
     ("Support Engineer", True),
@@ -148,9 +154,19 @@ TECH_TITLES = [
     ("Customer Support Agent", False),
     ("Sales Support Specialist", False),
     ("Backoffice Support Specialist", False),
+    # Hardware and physical engineering are not tech; embedded, firmware, and FPGA are (phase 3 labeled titles).
+    ("Quantum R&D Engineer – Processor Development", False),
+    ("RF Engineer", False),
+    ("Senior Mechanical Engineer", False),
+    ("Electrical Engineer - Scale Up Company", False),
+    ("(Junior) civiele engineer", False),
+    ("Business Developer Offshore Solar", False),
+    ("Embedded Software Engineer", True),
+    ("FPGA Hardware Engineer", True),
+    ("Firmware Engineer", True),
 ]
 
 
 @pytest.mark.parametrize(("title", "tech"), TECH_TITLES)
-def test_tech_support_and_presales_titles(title, tech):
+def test_tech_role_titles(title, tech):
     assert is_tech_role(title) is tech

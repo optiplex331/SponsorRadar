@@ -42,6 +42,7 @@ docker compose up -d --build --wait          # postgres + web image on http://12
 - Store no personal data in v1.
 - `signals.py` rules match explicit phrases only: a wrong `dutch_required` or `min_years` hides a posting. After a rule change, run `replay`.
 - The web app is read-only apart from the daily `page_views` counter. No cookies, IPs, or client-side tracking. The one exception: the page keeps a single `lastVisit` timestamp in `localStorage` to mark new postings; it never leaves the browser.
-- `sponsorship_stance` hides `refuses_visa` postings by default, so its rules need the same precision as the Dutch rules.
+- `sponsorship_stance` hides `refuses_visa` postings by default, so its rules need the same precision as the Dutch rules. `refuses_visa` also covers postings that ask for existing work rights ("must be authorized to work in the country").
+- `is_tech_role` excludes hardware, lab, and physical engineering titles; embedded, firmware, and FPGA stay tech.
 - `frontend/dev/` holds dev-only mock data (`MOCK_REGISTER_CHANGES=1 npm run dev`); it never ships in `dist`.
 - Tests cover parsing against real fixtures, database behavior (idempotency, closing, replay, prune), the API, and table-driven Dutch/years phrases. Matching and title-rule quality are measured against labeled sets, not unit-tested.

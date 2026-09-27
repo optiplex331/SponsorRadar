@@ -72,12 +72,13 @@ def _postings(rows: list[dict]) -> list[str]:
     confusion = Counter((r["rule"]["seniority"], lab(r, "seniority")) for r in tech)
     lines.append("seniority rule -> label: " + ", ".join(f"{a}->{b} {n}" for (a, b), n in sorted(confusion.items())))
     if all("sponsorship_stance" in r["rule"] for r in tech):
-        for value in ("offers", "refuses_visa", "refuses_relocation"):
+        for value in ("offers", "refuses_relocation"):
             lines += _binary(tech, f"sponsorship_stance {value}",
                              lambda r, v=value: r["rule"]["sponsorship_stance"] == v,
                              lambda r, v=value: lab(r, "sponsorship_stance") == v)
-        # Labels split "asks for existing work rights" from an outright refusal; the rule has one value for both.
-        lines += _binary(tech, "sponsorship_stance refuses_visa vs refuses_visa or requires_work_rights",
+        # The rule's refuses_visa hides a posting; labels split an outright refusal from "asks for existing work
+        # rights", and the owner hides both (2026-09-27).
+        lines += _binary(tech, "sponsorship_stance refuses_visa (refusal or existing work rights required)",
                          lambda r: r["rule"]["sponsorship_stance"] == "refuses_visa",
                          lambda r: lab(r, "sponsorship_stance") in ("refuses_visa", "requires_work_rights"))
     lines.append(f"nl_open among postings the NL check accepted: {_rate(sum(lab(r, 'nl_open') for r in rows), len(rows))}")
