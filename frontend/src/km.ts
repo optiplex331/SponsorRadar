@@ -59,7 +59,7 @@ export function readKmTier(search: string): KmTier | null {
 
 const PERIOD_LABEL: Record<SalaryPeriod, string> = { year: "year", month: "month", hour: "hour" };
 
-/** "€4,000–5,500 / month"; null when the posting states no amount. */
+/** "€4,000-5,500 / month"; null when the posting states no amount. */
 export function formatSalary(s: Salary): string | null {
   const low = s.salary_min ?? s.salary_max;
   const high = s.salary_max ?? s.salary_min;
@@ -72,6 +72,6 @@ export function formatSalary(s: Salary): string | null {
     money = (n) => `${s.salary_currency ?? ""} ${Math.round(n).toLocaleString("en-GB")}`.trim();
   }
   const plain = (n: number) => Math.round(n).toLocaleString("en-GB");
-  const amount = low === high ? money(low) : `${money(low)}–${plain(high)}`;
+  const amount = low === high ? money(low) : `${money(low)}-${plain(high)}`;
   return s.salary_period ? `${amount} / ${PERIOD_LABEL[s.salary_period]}` : amount;
 }

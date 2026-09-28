@@ -1,3 +1,4 @@
+import { Moon, Sun } from "@phosphor-icons/react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 type Theme = "light" | "dark";
@@ -72,22 +73,13 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className={spin ? "btn icon-btn theme-toggle is-spinning" : "btn icon-btn theme-toggle"}
+      className={`btn w-10 flex-none p-0${spin ? " theme-spin" : ""}`}
       aria-label={label}
       title={label}
       onClick={toggle}
       onAnimationEnd={() => setSpin(false)}
     >
-      {theme === "dark" ? (
-        <svg key="sun" viewBox="0 0 20 20" aria-hidden="true">
-          <circle cx="10" cy="10" r="3.5" />
-          <path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7" />
-        </svg>
-      ) : (
-        <svg key="moon" viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" />
-        </svg>
-      )}
+      {theme === "dark" ? <Sun key="sun" size={20} aria-hidden="true" /> : <Moon key="moon" size={20} aria-hidden="true" />}
     </button>
   );
 }

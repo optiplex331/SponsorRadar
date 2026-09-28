@@ -1,4 +1,4 @@
-import { readKmTier, type KmTier, type Salary } from "./km";
+import { KM_TIER_LABEL, readKmTier, type KmTier, type Salary } from "./km";
 
 export type Seniority = "intern" | "junior" | "unspecified" | "senior";
 export type MatchStatus = "kvk_confirmed" | "name_inferred" | "unmatched";
@@ -146,17 +146,10 @@ const NL_REGIONS = new Set([
   "groningen", "friesland", "fryslan", "drenthe", "zeeland", "limburg",
 ]);
 
+const NL_COUNTRY = new Set(["netherlands", "the netherlands", "nederland", "nl"]);
+
 const isDutchPart = (segments: string[]) =>
   segments.length === 1 || NL_REGIONS.has(fold(segments[segments.length - 1]));
-
-/** Long multi-office locations shrink to their Dutch parts plus a count of the rest. */
-export function shortLocation(location: string): string {
-  const parts = location.split(";").map((part) => part.trim()).filter(Boolean);
-  if (parts.length <= 2) return parts.join("; ");
-  const dutch = parts.filter((part) => isDutchPart(part.split(",").map((s) => s.trim()))).slice(0, 2);
-  const kept = dutch.length ? dutch : parts.slice(0, 1);
-  return `${kept.join("; ")} +${parts.length - kept.length} more`;
-}
 
 /** Most frequent place names: the first part of each ";"-separated location whose region is Dutch. */
 export function cityOptions(postings: Posting[], limit = 40): string[] {
@@ -175,4 +168,129 @@ export function cityOptions(postings: Posting[], limit = 40): string[] {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, limit)
     .map(([name]) => name);
+}
+
+const segmentsOf = (part: string) => part.split(",").map((s) => s.trim()).filter(Boolean);
+// A region or the country named in the part itself, not just a bare place name.
+const namesNL = (segments: string[]) =>
+  segments.length > 1 && (NL_REGIONS.has(fold(segments[segments.length - 1])) || segments.some((s) => NL_COUNTRY.has(fold(s))));
+
+/** Bare place names ("Amsterdam") that some posting pairs with a Dutch region or the country. */
+export function dutchPlaces(postings: Posting[]): Set<string> {
+  const places = new Set<string>();
+  for (const p of postings) {
+    for (const part of p.location.split(";")) {
+      const segments = segmentsOf(part);
+      if (namesNL(segments)) places.add(fold(segments[0]));
+    }
+  }
+  return places;
+}
+
+/**
+ * Short place label for a row: the Dutch parts of the location, each cut to its first comma segment when that
+ * segment is a place name. "Amsterdam, Noord-Holland, Netherlands" becomes "Amsterdam"; "France, Remote; Spain,
+ * Remote; The Netherlands, Remote" becomes "The Netherlands, Remote". A bare name counts as Dutch when `known`
+ * (from dutchPlaces) has it, so "London; Amsterdam" becomes "Amsterdam". The full string belongs in a title.
+ */
+export function cityLabel(location: string, known: Set<string> = new Set()): string {
+  const parts = location.split(";").map(segmentsOf).filter((segments) => segments.length > 0);
+  const dutch = parts.filter((segments) => namesNL(segments) || (segments.length === 1 && known.has(fold(segments[0]))));
+  const bare = parts.filter((segments) => segments.length === 1);
+  const kept = dutch.length ? dutch : bare.length ? bare : parts.slice(0, 1);
+  const labels: string[] = [];
+  for (const segments of kept) {
+    const first = segments[0];
+    const place = NOT_A_CITY.has(fold(first)) || NL_REGIONS.has(fold(first)) ? segments.join(", ") : first;
+    if (!labels.includes(place)) labels.push(place);
+  }
+  return labels.slice(0, 2).join("; ");
+}
+
+// Legal forms and regional words that brand names and register entries add or drop.
+const ENTITY_NOISE = new Set([
+  "bv", "nv", "gmbh", "ltd", "holding", "group", "groep", "netherlands", "nederland", "nl", "europe", "benelux",
+  "international",
+]);
+
+function entityKey(name: string): string {
+  return fold(name)
+    .replace(/[.,'’()]/g, "")
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word && !ENTITY_NOISE.has(word))
+    .join("");
+}
+
+/** True when a register organisation is the employer under its legal name ("Adyen" and "Adyen N.V."). */
+export function sameEntity(employer: string, organisation: string): boolean {
+  const a = entityKey(employer);
+  const b = entityKey(organisation);
+  // A prefix only counts for names long enough not to be a common word start ("pay" is not "Payconiq").
+  return a !== "" && (a === b || (a.length >= 5 && b.startsWith(a)));
+}
+
+export type ChipKey = "years" | "level" | "sponsor" | "dutch" | "visa" | "city" | "q" | "km";
+
+export interface FilterChip {
+  key: ChipKey;
+  label: string;
+}
+
+const LEVEL_WORD: Record<Seniority, string> = {
+  intern: "Intern",
+  junior: "Junior",
+  unspecified: "not stated",
+  senior: "Senior",
+};
+
+/** Every filter that narrows the list, defaults included, so the reader sees that the default view is filtered. */
+export function narrowingChips(f: Filters): FilterChip[] {
+  const chips: FilterChip[] = [];
+  if (f.maxYears !== null) {
+    const n = f.maxYears;
+    chips.push({
+      key: "years",
+      label: n === 0 ? "No experience or not stated" : `Up to ${n} ${n === 1 ? "yr" : "yrs"} or not stated`,
+    });
+  }
+  if (f.seniority.length < SENIORITIES.length) {
+    const onlySeniorOff = f.seniority.length === SENIORITIES.length - 1 && !f.seniority.includes("senior");
+    const kept = SENIORITIES.filter((s) => f.seniority.includes(s)).map((s) => LEVEL_WORD[s]);
+    chips.push({
+      key: "level",
+      label: onlySeniorOff ? "Excludes senior" : `Level: ${kept.length ? kept.join(", ") : "none"}`,
+    });
+  }
+  if (f.sponsor === "matched") chips.push({ key: "sponsor", label: "On IND register" });
+  if (f.hideDutch) chips.push({ key: "dutch", label: "No Dutch requirement" });
+  if (!f.showRefusesVisa) chips.push({ key: "visa", label: "Sponsorship not ruled out" });
+  if (f.city.trim()) chips.push({ key: "city", label: `City: ${f.city.trim()}` });
+  if (f.q.trim()) chips.push({ key: "q", label: `"${f.q.trim()}"` });
+  if (f.km) {
+    const tier = KM_TIER_LABEL[f.km];
+    chips.push({ key: "km", label: `Salary check: ${tier.charAt(0).toLowerCase()}${tier.slice(1)}` });
+  }
+  return chips;
+}
+
+/** The filters with one chip removed: that filter goes to its widest setting. */
+export function relaxFilter(f: Filters, key: ChipKey): Filters {
+  switch (key) {
+    case "years":
+      return { ...f, maxYears: null };
+    case "level":
+      return { ...f, seniority: [...SENIORITIES] };
+    case "sponsor":
+      return { ...f, sponsor: "all" };
+    case "dutch":
+      return { ...f, hideDutch: false };
+    case "visa":
+      return { ...f, showRefusesVisa: true };
+    case "city":
+      return { ...f, city: "" };
+    case "q":
+      return { ...f, q: "" };
+    case "km":
+      return { ...f, km: null };
+  }
 }

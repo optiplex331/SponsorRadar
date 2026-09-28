@@ -27,6 +27,7 @@ type State =
   | { kind: "error" }
   | { kind: "done"; query: string; data: LookupResponse };
 
+const ROW = "flex flex-wrap items-center gap-x-2.5 gap-y-1 border-b border-line py-2.5 last:border-b-0";
 const MIN_QUERY = 2;
 const DEBOUNCE_MS = 300;
 const ISSUE_URL = "https://github.com/optiplex331/SponsorRadar/issues/new";
@@ -66,19 +67,20 @@ export function SponsorLookup({ onShowEmployer }: { onShowEmployer: (employer: s
   }, [q]);
 
   return (
-    <section className="panel register lookup" id="sponsor-lookup" aria-labelledby="lookup-title">
-      <h2 id="lookup-title" className="register-title">
+    <section className="panel scroll-mt-[72px] p-5" id="sponsor-lookup" aria-labelledby="lookup-title">
+      <h2 id="lookup-title" className="font-serif text-xl/tight font-medium">
         Is it a sponsor?
       </h2>
-      <p className="register-summary">
+      <p className="mt-1.5 text-sm text-ink-2">
         Search the latest IND register by organisation name or KvK number, including employers whose job boards we
         do not track.
       </p>
-      <form className="lookup-form" role="search" onSubmit={(e) => e.preventDefault()}>
-        <div className="field">
-          <label htmlFor="sponsor-q">Organisation or KvK number</label>
+      <form className="mt-3.5" role="search" onSubmit={(e) => e.preventDefault()}>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="sponsor-q" className="field-label">Organisation or KvK number</label>
           <input
             id="sponsor-q"
+            className="input"
             type="search"
             placeholder="Adyen, 34259528"
             autoComplete="off"
@@ -103,18 +105,18 @@ function LookupResult({
   onShowEmployer: (employer: string, delisted: boolean) => void;
 }) {
   if (state.kind === "idle") return null;
-  if (state.kind === "loading") return <p className="register-empty lookup-status">Searching the register</p>;
+  if (state.kind === "loading") return <p className="mt-3 text-sm text-ink-2">Searching the register</p>;
   if (state.kind === "error") {
-    return <p className="register-empty lookup-status">The lookup failed. Try again in a moment.</p>;
+    return <p className="mt-3 text-sm text-ink-2">The lookup failed. Try again in a moment.</p>;
   }
   const { query, data } = state;
   if (data.results.length === 0) {
     return (
-      <div className="lookup-empty">
-        <p>
-          No organisation on the register matches <strong>{query}</strong>.
+      <div className="mt-3 text-sm text-ink-2">
+        <p className="mb-1.5">
+          No organisation on the register matches <strong className="text-ink wrap-anywhere">{query}</strong>.
         </p>
-        <p>
+        <p className="mb-1.5">
           The register lists legal entity names, which often differ from the brand: try the name from the company's
           imprint or KvK extract (often ending in B.V.), or its KvK number. If an employer is missing that should be
           there, <a href={ISSUE_URL}>report it on GitHub</a>.
@@ -124,21 +126,21 @@ function LookupResult({
   }
   return (
     <>
-      <ul className="register-list lookup-list">
+      <ul className="mt-2">
         {data.results.map((s) => (
-          <li key={s.kvk_number}>
-            <span className="register-org">{s.organisation}</span>
-            <span className="register-kvk">KvK {s.kvk_number}</span>
-            {s.brand && <span className="lookup-brand">Known as {s.brand}</span>}
-            <span className="lookup-detail">
+          <li key={s.kvk_number} className={ROW}>
+            <span className="font-semibold wrap-anywhere">{s.organisation}</span>
+            <span className="text-[0.8125rem] text-ink-2 tabular-nums">KvK {s.kvk_number}</span>
+            {s.brand && <span className="text-sm text-ink-2">Known as {s.brand}</span>}
+            <span className="basis-full text-sm text-ink-2 empty:hidden">
               {s.first_seen_on &&
                 (s.before_history
                   ? `On the register since ${dateFormat.format(new Date(s.first_seen_on))} or earlier`
                   : `Joined the register ${dateFormat.format(new Date(s.first_seen_on))}`)}
             </span>
-            <span className="register-links">
+            <span className="flex basis-full flex-wrap gap-x-3.5 gap-y-0.5 text-sm">
               {s.tracked.length === 0 ? (
-                <span className="lookup-untracked">We do not track its job board.</span>
+                <span className="text-ink-2">We do not track its job board.</span>
               ) : (
                 s.tracked.map((t) =>
                   t.open_postings > 0 ? (
@@ -153,7 +155,7 @@ function LookupResult({
                       {t.employer}: {t.open_postings} open {t.open_postings === 1 ? "posting" : "postings"}
                     </a>
                   ) : (
-                    <span key={`${t.kind}:${t.board}`} className="lookup-untracked">
+                    <span key={`${t.kind}:${t.board}`} className="text-ink-2">
                       {t.employer}: board tracked, no postings in the default view
                     </span>
                   ),
@@ -164,7 +166,7 @@ function LookupResult({
         ))}
       </ul>
       {data.more && (
-        <p className="register-empty lookup-more">Showing the first {data.results.length}. Type more of the name to narrow it.</p>
+        <p className="mt-3 text-sm text-ink-2">Showing the first {data.results.length}. Type more of the name to narrow it.</p>
       )}
     </>
   );

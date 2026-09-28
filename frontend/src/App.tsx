@@ -1,32 +1,34 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FunnelSimple, MagnifyingGlass, MapPin, X } from "@phosphor-icons/react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+  type RefObject,
+} from "react";
+import { FilterPanel } from "./FilterPanel";
 import {
   applyFilters,
   cityOptions,
   DEFAULTS,
+  dutchPlaces,
   freshFirst,
   isDefaultView,
   isNew,
-  postedAgo,
+  narrowingChips,
   readFilters,
-  SENIORITIES,
-  shortLocation,
+  relaxFilter,
   staleMonths,
   writeFilters,
+  type ChipKey,
   type Filters,
-  type MatchStatus,
   type Posting,
-  type Seniority,
 } from "./filters";
-import {
-  formatSalary,
-  KM_MONTHLY_EUR,
-  KM_SOURCE,
-  KM_TIER_LABEL,
-  KM_TIERS,
-  kmFlag,
-  type KmState,
-  type KmTier,
-} from "./km";
+import { KM_MONTHLY_EUR, KM_SOURCE, KM_TIER_LABEL } from "./km";
+import { euro, formatDay, MatchBadge, PostingRow, type Entrance } from "./PostingRow";
 import { RegisterChanges } from "./RegisterChanges";
 import { SponsorLookup } from "./SponsorLookup";
 import { ThemeToggle } from "./ThemeToggle";
@@ -40,33 +42,13 @@ interface Status {
 }
 
 const PAGE = 100;
+const STAGGERED = 8;
 const REPO_URL = "https://github.com/optiplex331/SponsorRadar";
 const REGISTER_URL =
   "https://ind.nl/en/public-register-recognised-sponsors/public-register-regular-labour-and-highly-skilled-migrants";
 const FRESH_COLLECT_MS = 30 * 3_600_000;
-const SENIORITY_LABEL: Record<Seniority, string> = {
-  intern: "Intern",
-  junior: "Junior",
-  unspecified: "Level not stated",
-  senior: "Senior",
-};
-const MATCH_LABEL: Record<MatchStatus, string> = {
-  kvk_confirmed: "KvK confirmed",
-  name_inferred: "Likely match",
-  unmatched: "Not on register",
-};
-const MATCH_HINT: Record<MatchStatus, string> = {
-  kvk_confirmed: "The employer's KvK number was checked by hand against the IND register.",
-  name_inferred: "The employer name matches a register organisation. Check the register before applying.",
-  unmatched:
-    "The employer itself is not on the IND register. The register also lists payroll and employer-of-record firms, so hiring through one of them may still be possible.",
-};
-const KM_LABEL: Record<KmState, string> = {
-  meets: "Meets the threshold",
-  crosses: "Threshold: depends on offer",
-  below: "Below the threshold",
-};
-const euro = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const WIDE_QUERY = "(min-width: 47.5rem)"; // the md breakpoint: inline filter panel instead of the sheet
+const FILTERS_ID = "filter-panel";
 
 // Kept in the browser: when this browser last opened the page, to mark new postings (and, in
 // ThemeToggle, a theme override). Neither leaves the browser, and storage may be blocked, so every access is guarded.
@@ -89,18 +71,9 @@ function writeLastVisit(now: number): void {
   }
 }
 
-const dayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
-const fullDayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
-// `delisted_on` is a calendar day, so it is formatted in UTC; timestamps above use the visitor's zone.
-const calendarDayFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
   day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
 });
-
-function formatDay(iso: string): string {
-  const d = new Date(iso);
-  return d.getFullYear() === new Date().getFullYear() ? dayFormat.format(d) : fullDayFormat.format(d);
-}
 
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url);
@@ -108,20 +81,29 @@ async function getJson<T>(url: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-/** Filters that differ from the defaults; the salary check is a display choice and does not count. */
-function activeFilterCount(f: Filters): number {
-  const sameSeniority =
-    f.seniority.length === DEFAULTS.seniority.length && f.seniority.every((s) => DEFAULTS.seniority.includes(s));
-  return [
-    !sameSeniority,
-    f.sponsor !== DEFAULTS.sponsor,
-    f.hideDutch !== DEFAULTS.hideDutch,
-    f.maxYears !== DEFAULTS.maxYears,
-    f.showRefusesVisa !== DEFAULTS.showRefusesVisa,
-    f.city.trim() !== "",
-    f.q.trim() !== "",
-  ].filter(Boolean).length;
+function useWide(): boolean {
+  const [wide, setWide] = useState(() => window.matchMedia(WIDE_QUERY).matches);
+  useEffect(() => {
+    const query = window.matchMedia(WIDE_QUERY);
+    const change = () => setWide(query.matches);
+    query.addEventListener("change", change);
+    return () => query.removeEventListener("change", change);
+  }, []);
+  return wide;
 }
+
+/** Rows that animate in: the first load (staggered) and each Show more batch; nothing after a filter change. */
+interface EntranceRange {
+  from: number;
+  to: number;
+  kind: Exclude<Entrance, null>;
+}
+
+const STATE = "panel px-5 py-6";
+const GROUP_H = "mb-2 text-[0.8125rem] font-semibold text-ink-2";
+const FOOTER_H = "mb-2 font-serif text-[1.0625rem]/[1.3] font-medium text-ink";
+const FOOTER_P = "mb-2.5 max-w-[62ch]";
+const LEGEND_ROW = "grid grid-cols-[minmax(0,1fr)] items-baseline gap-1 md:grid-cols-[8.5rem_minmax(0,1fr)] md:gap-3";
 
 export default function App() {
   const [filters, setFilters] = useState<Filters>(() => readFilters(window.location.search));
@@ -130,7 +112,11 @@ export default function App() {
   const [failed, setFailed] = useState(false);
   const [shown, setShown] = useState(PAGE);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [fromPointer, setFromPointer] = useState(false);
+  const [entrance, setEntrance] = useState<EntranceRange | null>(null);
   const [lastVisit] = useState(readLastVisit);
+  const wide = useWide();
+  const filtersButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => writeLastVisit(Date.now()), []);
 
@@ -138,76 +124,193 @@ export default function App() {
     setFailed(false);
     setPostings(null);
     setStatus(undefined);
-    getJson<Posting[]>("/api/postings").then(setPostings, () => setFailed(true));
+    getJson<Posting[]>("/api/postings").then(
+      (data) => {
+        setPostings(data);
+        setEntrance({ from: 0, to: STAGGERED, kind: "stagger" });
+      },
+      () => setFailed(true),
+    );
     getJson<Status>("/api/status").then(setStatus, () => setStatus(null));
   }, []);
 
   useEffect(load, [load]);
 
+  const query = writeFilters(filters);
   useEffect(() => {
-    const url = `${window.location.pathname}${writeFilters(filters)}`;
-    window.history.replaceState(null, "", url);
+    window.history.replaceState(null, "", `${window.location.pathname}${query}`);
     setShown(PAGE);
-  }, [filters]);
+  }, [query]);
 
   const results = useMemo(() => (postings ? freshFirst(applyFilters(postings, filters)) : []), [postings, filters]);
   const cities = useMemo(() => (postings ? cityOptions(postings) : []), [postings]);
-  const update = (patch: Partial<Filters>) => setFilters((f) => ({ ...f, ...patch }));
-  const toggleSeniority = (s: Seniority) =>
-    update({
-      seniority: filters.seniority.includes(s)
-        ? filters.seniority.filter((x) => x !== s)
-        : SENIORITIES.filter((x) => x === s || filters.seniority.includes(x)),
-    });
+  const known = useMemo(() => (postings ? dutchPlaces(postings) : new Set<string>()), [postings]);
+  const update = (patch: Partial<Filters>) => {
+    setEntrance(null);
+    setFilters((f) => ({ ...f, ...patch }));
+  };
   const isDefault = isDefaultView(filters);
-  const active = activeFilterCount(filters);
-  const reset = () => setFilters({ ...DEFAULTS, km: filters.km });
+  const reset = () => {
+    setEntrance(null);
+    setFilters({ ...DEFAULTS, km: filters.km });
+  };
   const showEmployer = (employer: string, delisted: boolean) => {
     update({ q: employer, ...(delisted ? { sponsor: "all" as const } : {}) });
     window.scrollTo({ top: 0 });
   };
+  const toggleFilters = (e: MouseEvent<HTMLButtonElement>) => {
+    setFromPointer(e.detail > 0);
+    setFiltersOpen((o) => !o);
+  };
+  const closeFilters = () => {
+    setFiltersOpen(false);
+    filtersButton.current?.focus();
+  };
+  const showMore = () => {
+    setEntrance({ from: shown, to: shown + PAGE, kind: "plain" });
+    setShown((n) => n + PAGE);
+  };
+
+  // A returning visitor sees what is new since the last visit first; stale reposts stay with the rest. Grouping runs
+  // over all results before paging, so Show more appends to "Earlier" and the "new" count does not change.
+  const { ordered, newCount } = useMemo(() => {
+    const isFresh = (p: Posting) => isNew(p, lastVisit) && staleMonths(p) === null;
+    const fresh = lastVisit === null ? [] : results.filter(isFresh);
+    return fresh.length === 0
+      ? { ordered: results, newCount: 0 }
+      : { ordered: [...fresh, ...results.filter((p) => !isFresh(p))], newCount: fresh.length };
+  }, [results, lastVisit]);
+  const visible = ordered.slice(0, shown);
+  const grouped = newCount > 0;
+  const fresh = visible.slice(0, newCount);
+  const earlier = visible.slice(fresh.length);
+  const entranceOf = (index: number): Entrance =>
+    entrance && index >= entrance.from && index < entrance.to ? entrance.kind : null;
+
+  const renderRows = (rows: Posting[], offset: number) => (
+    <ol className="panel divide-y divide-line overflow-hidden">
+      {rows.map((p, i) => (
+        <PostingRow
+          key={p.id}
+          posting={p}
+          km={filters.km}
+          isNew={isNew(p, lastVisit) && staleMonths(p) === null}
+          known={known}
+          heading={grouped ? "h3" : "h2"}
+          entrance={entranceOf(offset + i)}
+        />
+      ))}
+    </ol>
+  );
 
   return (
     <>
-      <header className="masthead wrap">
-        <div className="masthead-top">
-          <h1 className="wordmark">
-            <svg className="wordmark-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <header className="wrap pt-4 pb-3 md:pt-7 md:pb-5">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+          <h1 className="mr-auto flex items-center gap-2.5 font-serif text-2xl/[1.1] font-medium tracking-[-0.015em] md:gap-3 md:text-[2rem]">
+            <svg className="size-6 flex-none fill-none stroke-accent stroke-2 md:size-[30px]" viewBox="0 0 32 32" aria-hidden="true">
               <circle cx="16" cy="16" r="13" />
               <circle cx="16" cy="16" r="7.5" />
-              <circle className="wordmark-dot" cx="16" cy="16" r="3" />
+              <circle className="fill-accent stroke-none" cx="16" cy="16" r="3" />
             </svg>
             NL Sponsor Radar
           </h1>
+          <nav aria-label="On this page" className="order-last flex w-full gap-x-5 text-sm md:order-none md:w-auto md:text-[0.9375rem]">
+            <a href="#sponsor-lookup" className="inline-flex min-h-8 items-center">
+              Check an employer
+            </a>
+            <a href="#register-changes" className="inline-flex min-h-8 items-center">
+              Register changes
+            </a>
+          </nav>
           <ThemeToggle />
         </div>
-        <p className="lede">Tech jobs in the Netherlands at employers the IND recognises as visa sponsors.</p>
+        <p className="mt-1.5 mb-2 max-w-[60ch] text-[0.9375rem] text-ink-2 md:mt-2 md:mb-3 md:text-[1.0625rem]">
+          Tech jobs in the Netherlands at employers the IND recognises as visa sponsors.
+        </p>
         <StatusLine status={status} />
       </header>
 
-      <div className="wrap layout">
-        <main className="main" id="main">
-          <section className="panel filter-panel" aria-label="Filters">
-            <div className="filter-bar">
-              <button
-                type="button"
-                className="btn filter-toggle"
-                aria-expanded={filtersOpen}
-                aria-controls="filters"
-                onClick={() => setFiltersOpen((o) => !o)}
-              >
-                <svg viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M3 5h14M6 10h8M8.5 15h3" />
-                </svg>
-                Filters
-                {active > 0 && (
-                  <span className="filter-count">
-                    {active}
-                    <span className="sr-only"> active</span>
-                  </span>
-                )}
-              </button>
-              <p className="count" aria-live="polite">
+      <div>
+        <div className="sticky top-0 z-20 border-b border-line bg-bg">
+          <form className="wrap flex items-center gap-1.5 py-2 md:gap-3" role="search" onSubmit={(e) => e.preventDefault()}>
+            <div className="relative min-w-0 flex-[3]">
+              <label htmlFor="q" className="sr-only">
+                Role or employer
+              </label>
+              <MagnifyingGlass
+                size={18}
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2 text-ink-2 md:left-3"
+              />
+              <input
+                id="q"
+                type="search"
+                className="input pr-2 pl-8 md:pr-3 md:pl-9"
+                placeholder={wide ? "Role or employer" : "Role, employer"}
+                value={filters.q}
+                onChange={(e) => update({ q: e.target.value })}
+              />
+            </div>
+            <div className="relative w-20 flex-none md:w-auto md:max-w-60 md:flex-[2]">
+              <label htmlFor="city" className="sr-only">
+                City
+              </label>
+              <MapPin
+                size={18}
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1/2 left-3 hidden -translate-y-1/2 text-ink-2 md:block"
+              />
+              <input
+                id="city"
+                type="search"
+                className="input px-2.5 md:pr-3 md:pl-9"
+                list="city-options"
+                placeholder="City"
+                value={filters.city}
+                onChange={(e) => update({ city: e.target.value })}
+              />
+              <datalist id="city-options">
+                {cities.map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
+            </div>
+            <button
+              ref={filtersButton}
+              type="button"
+              className="btn flex-none gap-1.5 px-2.5 aria-expanded:bg-surface-2 md:px-4"
+              aria-expanded={filtersOpen}
+              aria-controls={FILTERS_ID}
+              onClick={toggleFilters}
+            >
+              <FunnelSimple size={18} aria-hidden="true" />
+              Filters
+            </button>
+          </form>
+        </div>
+
+        <div className="wrap">
+          {filtersOpen && (
+            <FilterPanel
+              id={FILTERS_ID}
+              filters={filters}
+              update={update}
+              mode={wide ? "inline" : "sheet"}
+              fromPointer={fromPointer}
+              count={postings === null ? null : results.length}
+              onClose={closeFilters}
+            />
+          )}
+
+          <ChipRow
+            filters={filters}
+            isDefault={isDefault}
+            onRemove={(key) => update(relaxFilter(filters, key))}
+            onReset={reset}
+            focusFallback={filtersButton}
+            count={
+              <p className="ml-auto pl-2 text-sm whitespace-nowrap text-ink-2 tabular-nums" aria-live="polite">
                 {postings === null ? (
                   failed ? (
                     "Postings unavailable"
@@ -215,368 +318,248 @@ export default function App() {
                     "Loading postings"
                   )
                 ) : (
-                  <>
-                    <strong>{results.length.toLocaleString("en-GB")}</strong>{" "}
-                    {results.length === 1 ? "posting" : "postings"}
-                    <span className="count-of"> of {postings.length.toLocaleString("en-GB")}</span>
-                  </>
+                  <span key={query} className="fade-in">
+                    <strong className="font-semibold text-ink">{results.length.toLocaleString("en-GB")}</strong> of{" "}
+                    {postings.length.toLocaleString("en-GB")}
+                    <span className="sr-only"> postings</span>
+                  </span>
                 )}
               </p>
-              {!isDefault && (
-                <button type="button" className="btn btn-quiet reset" onClick={reset}>
-                  Reset
-                </button>
-              )}
-            </div>
-
-            <form
-              id="filters"
-              className={filtersOpen ? "filters is-open" : "filters"}
-              role="search"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <div className="field field-q">
-                <label htmlFor="q">Role or employer</label>
-                <input
-                  id="q"
-                  type="search"
-                  placeholder="backend, data, Adyen"
-                  value={filters.q}
-                  onChange={(e) => update({ q: e.target.value })}
-                />
-              </div>
-              <div className="field field-city">
-                <label htmlFor="city">City</label>
-                <input
-                  id="city"
-                  type="search"
-                  list="city-options"
-                  placeholder="Any city"
-                  value={filters.city}
-                  onChange={(e) => update({ city: e.target.value })}
-                />
-                <datalist id="city-options">
-                  {cities.map((c) => (
-                    <option key={c} value={c} />
-                  ))}
-                </datalist>
-              </div>
-              <div className="field field-years">
-                <label htmlFor="years">Experience asked</label>
-                <select
-                  id="years"
-                  value={filters.maxYears ?? "any"}
-                  onChange={(e) => update({ maxYears: e.target.value === "any" ? null : Number(e.target.value) })}
-                >
-                  <option value="any">Any</option>
-                  {[0, 1, 2, 3, 5].map((n) => (
-                    <option key={n} value={n}>
-                      {n === 0 ? "No experience" : `Up to ${n} ${n === 1 ? "year" : "years"}`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <fieldset className="field field-seniority">
-                <legend>Level</legend>
-                <div className="chips">
-                  {SENIORITIES.map((s) => (
-                    <label key={s} className="chip">
-                      <input
-                        type="checkbox"
-                        checked={filters.seniority.includes(s)}
-                        onChange={() => toggleSeniority(s)}
-                      />
-                      <span>{SENIORITY_LABEL[s]}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <div className="field field-sponsor">
-                <label htmlFor="sponsor">Employers</label>
-                <select
-                  id="sponsor"
-                  value={filters.sponsor}
-                  onChange={(e) => update({ sponsor: e.target.value as Filters["sponsor"] })}
-                >
-                  <option value="matched">On IND register</option>
-                  <option value="all">All employers</option>
-                </select>
-              </div>
-              <div className="field field-km">
-                <label htmlFor="km">Salary vs. visa threshold</label>
-                <select
-                  id="km"
-                  value={filters.km ?? ""}
-                  onChange={(e) => update({ km: (e.target.value || null) as KmTier | null })}
-                >
-                  <option value="">Off</option>
-                  {KM_TIERS.map((t) => (
-                    <option key={t} value={t}>
-                      {KM_TIER_LABEL[t]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="toggles">
-                <label className="toggle">
-                  <input
-                    type="checkbox"
-                    checked={filters.hideDutch}
-                    onChange={(e) => update({ hideDutch: e.target.checked })}
-                  />
-                  <span>Hide jobs that require Dutch</span>
-                </label>
-                <label className="toggle">
-                  <input
-                    type="checkbox"
-                    checked={!filters.showRefusesVisa}
-                    onChange={(e) => update({ showRefusesVisa: !e.target.checked })}
-                  />
-                  <span>Hide jobs that rule out visa sponsorship or need existing work rights</span>
-                </label>
-              </div>
-            </form>
-            {/* Outside the form, which is collapsed on mobile: the reader must see that the list is pre-filtered. */}
-            <p className="default-note">
-              By default the list shows roles asking for 2 years of experience or less (or not saying), at employers on
-              the register, without a Dutch requirement, and hides postings that rule out visa sponsorship or ask for
-              existing work rights.
-            </p>
-          </section>
+            }
+          />
 
           {filters.km && (
-            <p className="note km-note">
-              Salary compared with the IND highly skilled migrant threshold for 2026,{" "}
-              {KM_TIER_LABEL[filters.km].toLowerCase()}: <strong>{euro.format(KM_MONTHLY_EUR[filters.km])}</strong> gross
-              a month, without holiday allowance. Only postings with a salary in euros per month or year get a mark;
-              yearly figures are divided by 12. <a href={KM_SOURCE}>IND required amounts</a>.
+            <p className="mb-2 text-[0.8125rem] text-ink-2">
+              Salary marks use the 2026 IND threshold, {KM_TIER_LABEL[filters.km].toLowerCase()}:{" "}
+              <strong className="text-ink tabular-nums">{euro.format(KM_MONTHLY_EUR[filters.km])}</strong> gross a
+              month. <a href={KM_SOURCE}>IND required amounts</a>
             </p>
           )}
+        </div>
 
-          {failed ? (
-            <div className="state" role="alert">
-              <p>We couldn't load the postings. The server may be restarting or your connection dropped.</p>
-              <button type="button" className="btn btn-accent" onClick={load}>
-                Try again
-              </button>
-            </div>
-          ) : postings === null ? (
-            <ol className="postings" aria-hidden="true">
-              {[0, 1, 2, 3].map((i) => (
-                <li key={i} className="posting skeleton">
-                  <span className="bone bone-title" />
-                  <span className="bone bone-line" />
-                  <span className="bone bone-meta" />
-                </li>
-              ))}
-            </ol>
-          ) : results.length === 0 ? (
-            <div className="state">
-              <p>No postings match these filters. Widen the level or experience filter, or clear the search.</p>
-              {!isDefault && (
-                <button type="button" className="link-button" onClick={reset}>
-                  Reset filters
+        <div className="wrap grid grid-cols-[minmax(0,1fr)] items-start gap-8 pt-1 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-7">
+          <main className="min-w-0" id="main">
+            {failed ? (
+              <div className={STATE} role="alert">
+                <p className="mb-3 max-w-[60ch]">
+                  We couldn't load the postings. The server may be restarting or your connection dropped.
+                </p>
+                <button type="button" className="btn btn-accent" onClick={load}>
+                  Try again
                 </button>
-              )}
-            </div>
-          ) : (
-            <ol className="postings">
-              {results.slice(0, shown).map((p) => (
-                <PostingCard key={p.id} posting={p} km={filters.km} isNew={isNew(p, lastVisit)} />
-              ))}
-            </ol>
-          )}
+              </div>
+            ) : postings === null ? (
+              <ol className="panel divide-y divide-line" aria-hidden="true">
+                {[0, 1, 2, 3].map((i) => (
+                  <li key={i} className="grid gap-2.5 px-4 py-4 md:px-5">
+                    <span className="bone h-4 w-[55%]" />
+                    <span className="bone w-[35%]" />
+                    <span className="bone w-[48%]" />
+                  </li>
+                ))}
+              </ol>
+            ) : results.length === 0 ? (
+              <div className={STATE}>
+                <p className="mb-3 max-w-[60ch]">
+                  No postings match these filters. Widen the level or experience filter, or clear the search.
+                </p>
+                {!isDefault && (
+                  <button type="button" className="link-button" onClick={reset}>
+                    Reset filters
+                  </button>
+                )}
+              </div>
+            ) : grouped ? (
+              <>
+                <h2 className={GROUP_H}>{newCount.toLocaleString("en-GB")} new since your last visit</h2>
+                {renderRows(fresh, 0)}
+                {earlier.length > 0 && (
+                  <>
+                    <h2 className={`${GROUP_H} mt-6`}>Earlier</h2>
+                    {renderRows(earlier, fresh.length)}
+                  </>
+                )}
+              </>
+            ) : (
+              renderRows(visible, 0)
+            )}
 
-          {results.length > shown && (
-            <button type="button" className="btn more" onClick={() => setShown((n) => n + PAGE)}>
-              Show {Math.min(PAGE, results.length - shown)} more
-            </button>
-          )}
-        </main>
+            {results.length > shown && (
+              <button type="button" className="btn mt-4 w-full" onClick={showMore}>
+                Show {Math.min(PAGE, results.length - shown)} more
+              </button>
+            )}
+          </main>
 
-        <aside className="aside" aria-label="IND register">
-          <SponsorLookup onShowEmployer={showEmployer} />
-          <RegisterChanges onShowEmployer={showEmployer} />
-        </aside>
+          <aside className="grid gap-4" aria-label="IND register">
+            <SponsorLookup onShowEmployer={showEmployer} />
+            <RegisterChanges onShowEmployer={showEmployer} />
+          </aside>
+        </div>
       </div>
 
-      <footer className="wrap footer">
-        <section aria-labelledby="about-title">
-          <h2 id="about-title">About and method</h2>
-          <p>
-            Postings come from public Greenhouse, Ashby, and Recruitee job boards. Employers are linked to the{" "}
-            <a href={REGISTER_URL}>IND public register</a> of recognised sponsors. The list is collected once a day,
-            around 05:00 UTC, and the register is checked on every run.
-          </p>
-          <dl className="legend">
-            <div>
-              <dt>
-                <MatchBadge status="kvk_confirmed" />
-              </dt>
-              <dd>The employer's KvK number was checked by hand against the register.</dd>
-            </div>
-            <div>
-              <dt>
-                <MatchBadge status="name_inferred" />
-              </dt>
-              <dd>The employer's name matches a register organisation. Check the register yourself.</dd>
-            </div>
-            <div>
-              <dt>
-                <MatchBadge status="unmatched" />
-              </dt>
-              <dd>The employer itself is not on the register; a payroll or employer-of-record firm may still hire.</dd>
-            </div>
-          </dl>
-          <p>Dutch, experience, and sponsorship hints are read from the posting text and can be wrong.</p>
-        </section>
-        <section aria-labelledby="privacy-title">
-          <h2 id="privacy-title">Privacy</h2>
-          <p>
-            No cookies and no tracking. Your browser keeps two values in local storage: when you last visited, to mark
-            new postings, and your theme choice if you changed it. Neither is sent to us.
-          </p>
-        </section>
-        <section aria-labelledby="disclaimer-title">
-          <h2 id="disclaimer-title">Not advice</h2>
-          <p>
-            This is not legal or immigration advice. Salary checks use the amounts the job board states. Check the{" "}
-            <a href={REGISTER_URL}>IND register</a> and the <a href={KM_SOURCE}>IND required amounts</a> before
-            applying.
-          </p>
-          <p>
-            <a href={REPO_URL}>Source on GitHub</a>
-          </p>
-        </section>
-      </footer>
+      <Footer />
     </>
   );
 }
 
+interface ChipRowProps {
+  filters: Filters;
+  isDefault: boolean;
+  onRemove: (key: ChipKey) => void;
+  onReset: () => void;
+  focusFallback: RefObject<HTMLButtonElement | null>;
+  count: ReactNode;
+}
+
+/** Every filter that narrows the list, defaults included; each × widens that one filter. */
+function ChipRow({ filters, isDefault, onRemove, onReset, focusFallback, count }: ChipRowProps) {
+  const chips = narrowingChips(filters);
+  const buttons = useRef(new Map<ChipKey, HTMLButtonElement>());
+  const focusAt = useRef<number | null>(null);
+  // Chips present at first render do not animate; later additions fade and scale in until their animation ends.
+  const seen = useRef<Set<ChipKey> | null>(null);
+  const entering = useRef(new Set<ChipKey>());
+  const keys = new Set(chips.map((c) => c.key));
+  if (seen.current === null) seen.current = keys;
+  for (const key of keys) if (!seen.current.has(key)) entering.current.add(key);
+  for (const key of entering.current) if (!keys.has(key)) entering.current.delete(key);
+  seen.current = keys;
+
+  useEffect(() => {
+    if (focusAt.current === null) return;
+    const next = chips[focusAt.current] ?? chips[chips.length - 1];
+    focusAt.current = null;
+    (next ? buttons.current.get(next.key) : focusFallback.current)?.focus();
+  });
+
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 py-3">
+      <ul className="contents" aria-label="Active filters">
+        {chips.map((chip, index) => (
+          <li
+            key={chip.key}
+            className={`inline-flex h-8 min-w-0 items-center gap-0.5 rounded-full border border-line-strong bg-surface pr-0.5 pl-3 text-[0.8125rem] text-ink ${
+              entering.current.has(chip.key) ? "chip-in" : ""
+            }`}
+            onAnimationEnd={() => entering.current.delete(chip.key)}
+          >
+            <span className="max-w-[16rem] truncate">{chip.label}</span>
+            <button
+              type="button"
+              ref={(el) => {
+                if (el) buttons.current.set(chip.key, el);
+                else buttons.current.delete(chip.key);
+              }}
+              className="grid size-7 flex-none cursor-pointer place-items-center rounded-full text-ink-2 hover:bg-surface-2 hover:text-ink"
+              aria-label={`Remove filter: ${chip.label}`}
+              onClick={() => {
+                focusAt.current = index;
+                onRemove(chip.key);
+              }}
+            >
+              <X size={14} weight="bold" aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+      </ul>
+      {!isDefault && (
+        <button type="button" className="link-button min-h-8 px-1.5 text-[0.8125rem]" onClick={onReset}>
+          Reset
+        </button>
+      )}
+      {count}
+    </div>
+  );
+}
+
 function StatusLine({ status }: { status: Status | null | undefined }) {
-  if (status === undefined) return <p className="status">Loading collection status</p>;
-  if (status === null) return <p className="status">Collection status unavailable</p>;
+  const cls = "flex flex-wrap gap-x-4 gap-y-0.5 text-[0.8125rem]/normal text-ink-2 tabular-nums";
+  if (status === undefined) return <p className={cls}>Loading collection status</p>;
+  if (status === null) return <p className={cls}>Collection status unavailable</p>;
   const last = status.last_collect_at ? new Date(status.last_collect_at) : null;
   const fresh = last !== null && Date.now() - last.getTime() < FRESH_COLLECT_MS;
   return (
-    <dl className="status">
-      <div>
-        <dt>
-          <span className={fresh ? "status-dot" : "status-dot is-stale"} aria-hidden="true" />
+    <dl className={cls}>
+      <div className="flex items-center gap-1.5">
+        <dt className="inline-flex items-center gap-[7px]">
+          <span className={`size-2 rounded-full ${fresh ? "bg-ok" : "bg-warn"}`} aria-hidden="true" />
           Collected
         </dt>
-        <dd>
+        <dd className="text-ink">
           {last ? timeFormat.format(last) : "not yet"}
           {last && !fresh && <span className="sr-only"> (more than 30 hours ago)</span>}
         </dd>
       </div>
-      <div>
-        <dt>Job boards ok</dt>
-        <dd>
+      <div className="flex gap-1.5">
+        <dt>Job boards</dt>
+        <dd className="text-ink">
           {status.sources_ok}/{status.sources_total}
         </dd>
       </div>
-      <div>
+      <div className="flex gap-1.5">
         <dt>IND register</dt>
-        <dd>{status.register_updated_on ? formatDay(status.register_updated_on) : "unknown"}</dd>
+        <dd className="text-ink">{status.register_updated_on ? formatDay(status.register_updated_on) : "unknown"}</dd>
       </div>
     </dl>
   );
 }
 
-function MatchBadge({ status }: { status: MatchStatus }) {
+function Footer() {
   return (
-    <span className={`badge match-${status}`} title={MATCH_HINT[status]}>
-      {status === "kvk_confirmed" && (
-        <svg viewBox="0 0 12 12" aria-hidden="true">
-          <path d="M2.5 6.2 5 8.6l4.5-5" />
-        </svg>
-      )}
-      {MATCH_LABEL[status]}
-    </span>
-  );
-}
-
-function PostingCard({ posting: p, km, isNew }: { posting: Posting; km: KmTier | null; isNew: boolean }) {
-  const orgs = p.register_organisations;
-  const date = p.published_at ?? p.first_seen_at;
-  const months = staleMonths(p);
-  const salary = formatSalary(p);
-  const flag = km ? kmFlag(p, km) : null;
-  return (
-    <li className="posting">
-      <div className="posting-head">
-        <h2 className="posting-title">
-          <a href={p.url} target="_blank" rel="noopener noreferrer">
-            {p.title}
-          </a>
+    <footer className="wrap mt-14 grid grid-cols-[minmax(0,1fr)] gap-x-10 gap-y-6 border-t border-line pt-8 pb-[calc(40px+env(safe-area-inset-bottom))] text-sm text-ink-2 min-[56.25rem]:grid-cols-[2fr_1fr_1fr]">
+      <section aria-labelledby="about-title">
+        <h2 id="about-title" className={FOOTER_H}>
+          About and method
         </h2>
-        <p className="posting-employer">
-          <span className="employer">{p.employer}</span>
-          <MatchBadge status={p.match_status} />
-          {isNew && <span className="badge badge-new">New</span>}
-          {p.sponsorship_stance === "offers" && (
-            <span className="badge badge-plain" title="The posting states visa or relocation support.">
-              Visa or relocation support
-            </span>
-          )}
+        <p className={FOOTER_P}>
+          Postings come from public Greenhouse, Ashby, and Recruitee job boards. Employers are linked to the{" "}
+          <a href={REGISTER_URL}>IND public register</a> of recognised sponsors. The list is collected once a day,
+          around 05:00 UTC, and the register is checked on every run.
         </p>
-      </div>
-
-      {(salary || flag) && (
-        <div className="posting-pay">
-          {salary && <p className="salary">{salary}</p>}
-          {flag && (
-            <p className={`km km-${flag.state}`} title={`IND threshold ${euro.format(flag.threshold)} gross a month`}>
-              {KM_LABEL[flag.state]}
-              {flag.checkHolidayAllowance && <span className="km-check">Check: IND excludes the 8% holiday allowance</span>}
-            </p>
-          )}
-        </div>
-      )}
-
-      <ul className="posting-meta" aria-label="Details">
-        <li className={p.seniority === "senior" ? "level level-senior" : "level"}>{SENIORITY_LABEL[p.seniority]}</li>
-        {p.location && <li>{shortLocation(p.location)}</li>}
-        {p.min_years !== null && <li>{p.min_years}+ yrs asked</li>}
-        {p.dutch_required && <li className="hint-dutch">Dutch required</li>}
-        <li className="date">
-          {months === null ? (
-            <time dateTime={date}>{formatDay(date)}</time>
-          ) : (
-            <time dateTime={date} title={fullDayFormat.format(new Date(date))}>
-              Posted {postedAgo(months)} ago
-            </time>
-          )}
-        </li>
-      </ul>
-
-      {(p.delisted_on || p.match_status === "unmatched" || orgs.length > 0 || p.sponsorship_stance?.startsWith("refuses")) && (
-        <div className="posting-notes">
-          {p.delisted_on ? (
-            <p className="note-warn">Removed from register on {calendarDayFormat.format(new Date(p.delisted_on))}</p>
-          ) : (
-            p.match_status === "unmatched" && (
-              <p>
-                Employer itself is not on the register; hiring through a payroll or employer-of-record firm may still be
-                possible.
-              </p>
-            )
-          )}
-          {orgs.length > 0 && (
-            <p className="register-orgs" title={orgs.join("\n")}>
-              Register: {orgs.slice(0, 2).join(", ")}
-              {orgs.length > 2 && ` +${orgs.length - 2}`}
-            </p>
-          )}
-          {p.sponsorship_stance === "refuses_relocation" && (
-            <p>No relocation support: fine if you already live in the Netherlands.</p>
-          )}
-          {p.sponsorship_stance === "refuses_visa" && (
-            <p className="note-warn">The posting rules out visa sponsorship or asks for existing work rights.</p>
-          )}
-        </div>
-      )}
-    </li>
+        <dl className="mb-3 grid gap-2">
+          <div className={LEGEND_ROW}>
+            <dt>
+              <MatchBadge status="kvk_confirmed" />
+            </dt>
+            <dd>The employer's KvK number was checked by hand against the register.</dd>
+          </div>
+          <div className={LEGEND_ROW}>
+            <dt>
+              <MatchBadge status="name_inferred" />
+            </dt>
+            <dd>The employer's name matches a register organisation. Check the register yourself.</dd>
+          </div>
+          <div className={LEGEND_ROW}>
+            <dt>
+              <MatchBadge status="unmatched" />
+            </dt>
+            <dd>The employer itself is not on the register; a payroll or employer-of-record firm may still hire.</dd>
+          </div>
+        </dl>
+        <p className={FOOTER_P}>Dutch, experience, and sponsorship hints are read from the posting text and can be wrong.</p>
+      </section>
+      <section aria-labelledby="privacy-title">
+        <h2 id="privacy-title" className={FOOTER_H}>
+          Privacy
+        </h2>
+        <p className={FOOTER_P}>
+          No cookies and no tracking. Your browser keeps two values in local storage: when you last visited, to mark
+          new postings, and your theme choice if you changed it. Neither is sent to us.
+        </p>
+      </section>
+      <section aria-labelledby="disclaimer-title">
+        <h2 id="disclaimer-title" className={FOOTER_H}>
+          Not advice
+        </h2>
+        <p className={FOOTER_P}>
+          This is not legal or immigration advice. Salary checks use the amounts the job board states. Check the{" "}
+          <a href={REGISTER_URL}>IND register</a> and the <a href={KM_SOURCE}>IND required amounts</a> before applying.
+        </p>
+        <p className={FOOTER_P}>
+          <a href={REPO_URL}>Source on GitHub</a>
+        </p>
+      </section>
+    </footer>
   );
 }
