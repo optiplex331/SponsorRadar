@@ -10,8 +10,8 @@ import csv
 import html
 import logging
 import re
+import time
 import unicodedata
-from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
@@ -26,17 +26,8 @@ log = logging.getLogger(__name__)
 KINDS = ("greenhouse", "ashby", "recruitee")
 # Group and country words that register names add to a brand ("Adyen Netherlands B.V.").
 NOISE_WORDS = {"holding", "holdings", "netherlands", "nederland", "group", "groep", "the"}
+PROGRESS_EVERY = 100  # KvKs between progress log lines
 CSV_COLUMNS = ["kvk_number", "organisation", "kind", "board", "nl_postings", "total_postings"]
-
-
-@dataclass(frozen=True)
-class Hit:
-    kvk_number: str
-    organisation: str
-    kind: str
-    board: str
-    nl_postings: int
-    total_postings: int
 
 
 def slug_candidates(organisation: str) -> list[str]:
@@ -110,23 +101,33 @@ def probe(client: httpx.Client, kind: str, board: str) -> tuple[int, int] | None
 def discover(conn: psycopg.Connection, client: httpx.Client, out: Path, since: date | None = None) -> tuple[int, int]:
     """Probe every slug candidate of the target KvKs and write hits to `out`. Returns (KvKs probed, hits)."""
     rows = targets(conn, since)
-    hits: list[Hit] = []
-    # Organisation names are joined with " / " when a KvK has several; each name yields its own candidates.
-    for row in rows:
-        slugs = list(dict.fromkeys(s for name in row["organisation"].split(" / ") for s in slug_candidates(name)))
-        for kind in KINDS:
-            for slug in slugs:
-                try:
-                    found = probe(client, kind, slug)
-                except Exception as exc:  # one failing probe must not stop the run
-                    log.warning("probe %s:%s failed: %s: %s", kind, slug, type(exc).__name__, exc)
-                    continue
-                if found:
-                    hits.append(Hit(row["kvk_number"], row["organisation"], kind, slug, *found))
-                    log.info("hit %s:%s for %s (%d NL of %d)", kind, slug, row["organisation"], *found)
+    hits = errors = 0
+    started = time.monotonic()
     out.parent.mkdir(parents=True, exist_ok=True)
+    # Hits are written as they are found, so a run that dies after hours keeps what it found.
     with out.open("w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(CSV_COLUMNS)
-        writer.writerows((h.kvk_number, h.organisation, h.kind, h.board, h.nl_postings, h.total_postings) for h in hits)
-    return len(rows), len(hits)
+        # Organisation names are joined with " / " when a KvK has several; each name yields its own candidates.
+        for done, row in enumerate(rows, 1):
+            slugs = list(dict.fromkeys(s for name in row["organisation"].split(" / ") for s in slug_candidates(name)))
+            for kind in KINDS:
+                for slug in slugs:
+                    try:
+                        found = probe(client, kind, slug)
+                    except Exception as exc:  # one failing probe must not stop the run
+                        errors += 1
+                        log.warning("probe %s:%s failed: %s: %s", kind, slug, type(exc).__name__, exc)
+                        continue
+                    if found:
+                        hits += 1
+                        writer.writerow((row["kvk_number"], row["organisation"], kind, slug, *found))
+                        f.flush()
+                        log.info("hit %s:%s for %s (%d NL of %d)", kind, slug, row["organisation"], *found)
+            if done % PROGRESS_EVERY == 0 or done == len(rows):
+                elapsed = time.monotonic() - started
+                log.info(
+                    "progress %d/%d KvKs, %d hits, %d probe errors, %.0f min elapsed, ~%.0f min left",
+                    done, len(rows), hits, errors, elapsed / 60, elapsed / done * (len(rows) - done) / 60,
+                )
+    return len(rows), hits
