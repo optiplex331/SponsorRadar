@@ -2,7 +2,7 @@
 
 International students looking for junior tech jobs in the Netherlands need an employer that the IND recognises as a sponsor for the highly skilled migrant permit. Job boards do not say which employers qualify. NL Sponsor Radar collects postings from public company job boards, links each employer to the [IND public register](https://ind.nl/en/public-register-recognised-sponsors/public-register-regular-labour-and-highly-skilled-migrants) by KvK number, and shows how confident each link is.
 
-Live at <https://sponsorradar.halligalli.games>, refreshed daily from 500 job boards. Deployment lives in [SponsorRadar-infrastructure](https://github.com/optiplex331/SponsorRadar-infrastructure).
+Live at <https://sponsorradar.halligalli.games>, refreshed daily from 500 job boards. Deployment lives in [SponsorRadar-infrastructure](https://github.com/optiplex331/SponsorRadar-infrastructure). An hourly GitHub Actions probe (`scripts/probe.sh`) checks from outside the cluster that the site is up and that collection, posting counts, and the register snapshot are fresh; a failed run is the alert.
 
 ## How it works
 

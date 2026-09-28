@@ -29,6 +29,7 @@ SPONSOR_RADAR_TEST_DATABASE_URL=postgresql://radar:radar@127.0.0.1:5433/radar_te
 cd ../frontend && npm ci && npm run dev      # http://localhost:5173, proxies /api to :8000
 npm run build                                # tsc --noEmit, then vite build into frontend/dist
 docker compose up -d --build --wait          # postgres + web image on http://127.0.0.1:8000
+scripts/probe.sh https://sponsorradar.halligalli.games   # SLO checks; hourly in .github/workflows/probe.yml
 ```
 
 ## Rules
